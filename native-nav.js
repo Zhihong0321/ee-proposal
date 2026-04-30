@@ -49,11 +49,12 @@
       display: grid;
       gap: 8px;
       padding: 8px;
-      border: 1px solid rgba(17, 24, 39, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.9);
+      background:
+        linear-gradient(180deg, rgba(19, 23, 32, 0.98), rgba(10, 12, 18, 0.96));
       backdrop-filter: blur(18px);
-      box-shadow: 0 12px 28px rgba(17, 24, 39, 0.08);
+      box-shadow: 0 16px 34px rgba(10, 12, 18, 0.34);
     }
 
     .native-site-nav__row {
@@ -74,10 +75,10 @@
       align-items: center;
       justify-content: center;
       min-height: 24px;
-      border: 1px solid rgba(17, 24, 39, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       padding: 0 10px;
-      color: rgba(17, 24, 39, 0.62);
-      background: rgba(17, 24, 39, 0.03);
+      color: rgba(255, 255, 255, 0.66);
+      background: rgba(255, 255, 255, 0.05);
       font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 0.64rem;
       font-weight: 700;
@@ -105,11 +106,11 @@
       justify-content: center;
       min-width: 0;
       min-height: 42px;
-      border: 1px solid rgba(17, 24, 39, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.07);
       border-radius: 9px;
       padding: 4px 4px;
-      color: rgba(17, 24, 39, 0.68);
-      background: rgba(17, 24, 39, 0.03);
+      color: rgba(255, 255, 255, 0.68);
+      background: rgba(255, 255, 255, 0.05);
       box-shadow: none;
       font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 0.54rem;
@@ -124,13 +125,13 @@
     }
 
     .native-site-nav__button.is-active {
-      border-color: rgba(16, 80, 208, 0.22);
+      border-color: rgba(48, 116, 255, 0.45);
       color: #ffffff;
-      background: #1050d0;
+      background: linear-gradient(180deg, #2f67f4, #1149ce);
     }
 
     .native-site-nav__button:focus-visible {
-      outline: 2px solid #1050d0;
+      outline: 2px solid #3b73ff;
       outline-offset: 2px;
     }
 
