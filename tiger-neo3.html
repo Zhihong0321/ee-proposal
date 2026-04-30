@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Jinko Tiger Neo 3.0 | Mobile Comparison</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #EEEEEC;
+        --surface: #FFFFFF;
+        --surface-inset: #F5F5F3;
+        --border: rgba(0, 0, 0, 0.08);
+        --text: #0C0C0C;
+        --muted: #6B6B6B;
+        --faint: #B0B0B0;
+        --accent: #1050D0;
+        --accent-dim: rgba(16, 80, 208, 0.07);
+        --accent-border: rgba(16, 80, 208, 0.22);
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 18px rgba(0, 0, 0, 0.06);
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--bg);
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family:
+          "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.45;
+        background: var(--bg);
+        overflow-x: hidden;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .mobile-shell {
+        width: min(100%, 430px);
+        margin: 0 auto;
+        padding:
+          max(20px, env(safe-area-inset-top))
+          12px
+          max(36px, env(safe-area-inset-bottom));
+      }
+
+      /* ── HERO ── */
+
+      .hero {
+        padding: 24px 20px 20px;
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border-top: 3px solid var(--accent);
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--accent);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        margin: 10px 0 0;
+        max-width: 10ch;
+        font-size: clamp(2.75rem, 13vw, 3.75rem);
+        font-weight: 900;
+        line-height: 0.97;
+        letter-spacing: -0.025em;
+        color: var(--text);
+      }
+
+      .hero-copy {
+        margin: 14px 0 0;
+        max-width: 33ch;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.6;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .hero-stats div {
+        padding: 11px 12px;
+        background: var(--surface-inset);
+        border-radius: 8px;
+        min-width: 0;
+      }
+
+      .hero-stats span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .hero-stats strong {
+        display: block;
+        margin-top: 4px;
+        font-size: clamp(1.05rem, 5vw, 1.38rem);
+        font-weight: 800;
+        letter-spacing: -0.015em;
+        line-height: 1.1;
+        color: var(--text);
+      }
+
+      /* ── NAV RAIL ── */
+
+      .section-rail {
+        display: flex;
+        gap: 6px;
+        margin: 10px 0 0;
+        padding: 0 0 10px;
+        overflow-x: auto;
+        background: var(--bg);
+        scrollbar-width: none;
+      }
+
+      .section-rail::-webkit-scrollbar {
+        display: none;
+      }
+
+      .section-rail a {
+        flex: 0 0 auto;
+        padding: 7px 14px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--muted);
+        background: var(--surface);
+        text-decoration: none;
+        font-size: 0.78rem;
+        font-weight: 600;
+        white-space: nowrap;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        transition: color 0.15s, border-color 0.15s;
+      }
+
+      .section-rail a:hover {
+        color: var(--text);
+        border-color: rgba(0, 0, 0, 0.2);
+      }
+
+      /* ── INPUT DOCK ── */
+
+      .input-dock {
+        margin-top: 0;
+        padding: 20px;
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .dock-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .dock-head h2 {
+        margin: 6px 0 0;
+        font-size: 1.2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--text);
+      }
+
+      .dock-head > span {
+        max-width: 14ch;
+        text-align: right;
+        color: var(--faint);
+        font-size: 0.7rem;
+        font-weight: 500;
+        line-height: 1.45;
+      }
+
+      .controls-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .control {
+        display: grid;
+        gap: 6px;
+        padding: 12px;
+        background: var(--surface-inset);
+        border-radius: 8px;
+      }
+
+      .control span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .control input {
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 10px;
+        color: var(--text);
+        background: var(--surface);
+        font-size: 1.08rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        -moz-appearance: textfield;
+      }
+
+      .control input::-webkit-inner-spin-button,
+      .control input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+      }
+
+      .control input:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 0;
+        border-color: transparent;
+      }
+
+      /* ── COMPARISON CARDS ── */
+
+      .comparisons {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .comparison-card {
+        scroll-margin-top: 12px;
+        padding: 20px;
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        transition: box-shadow 0.2s;
+      }
+
+      .comparison-card:hover {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 10px 28px rgba(0, 0, 0, 0.09);
+      }
+
+      .section-kicker {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .section-kicker span {
+        display: inline-flex;
+        align-items: center;
+        height: 22px;
+        padding: 0 8px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--faint);
+        background: var(--surface-inset);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .section-kicker strong {
+        display: inline-flex;
+        align-items: center;
+        height: 22px;
+        padding: 0 10px;
+        border: 1px solid var(--accent-border);
+        border-radius: 4px;
+        color: var(--accent);
+        background: var(--accent-dim);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        max-width: 22ch;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-head h2 {
+        margin: 0;
+        max-width: 10ch;
+        font-size: clamp(2rem, 9.5vw, 2.9rem);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.025em;
+        color: var(--text);
+      }
+
+      .competitor {
+        margin: 8px 0 0;
+        color: var(--faint);
+        font-size: 0.78rem;
+        font-weight: 400;
+      }
+
+      .competitor span {
+        display: inline;
+        padding: 2px 8px;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        border-radius: 4px;
+        color: #92400E;
+        background: rgba(217, 119, 6, 0.08);
+        border: 1px solid rgba(217, 119, 6, 0.22);
+        line-height: 2;
+        font-weight: 600;
+        font-size: 0.76rem;
+      }
+
+      .video-header {
+        position: relative;
+        overflow: hidden;
+        margin: 14px 0 0;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #0C0C0C;
+        aspect-ratio: 16 / 9;
+      }
+
+      .video-header video {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+
+      .card-copy {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.65;
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .metric-row div {
+        min-width: 0;
+        padding: 12px 14px;
+        background: var(--surface-inset);
+        border-radius: 8px;
+      }
+
+      .metric-row span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .metric-row strong {
+        display: block;
+        margin-top: 5px;
+        font-size: clamp(1.2rem, 5.8vw, 1.75rem);
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.025em;
+        color: var(--accent);
+        overflow-wrap: anywhere;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ── CHART ── */
+
+      .chart-card {
+        margin-top: 10px;
+        padding: 12px 8px 10px;
+        overflow: hidden;
+        background: var(--surface-inset);
+        border-radius: 8px;
+      }
+
+      .chart-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        padding: 0 4px 8px;
+      }
+
+      .chart-title span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .chart-title strong {
+        color: var(--accent);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .system-basis {
+        margin: 0 4px 8px;
+        padding: 8px 10px;
+        border: 1px solid var(--accent-border);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .system-basis span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.56rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        line-height: 1.25;
+        text-transform: uppercase;
+      }
+
+      .system-basis strong {
+        display: block;
+        margin-top: 2px;
+        color: var(--text);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+      }
+
+      .chart-shell {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+      }
+
+      .chart-shell svg {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .chart-axis {
+        fill: var(--faint);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .legend-row {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        padding: 8px 4px 0;
+        color: var(--muted);
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+
+      .legend-row span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .legend-row i {
+        width: 20px;
+        height: 0;
+        display: inline-block;
+      }
+
+      .jinko-dot {
+        border-top: 3px solid var(--accent);
+      }
+
+      .competitor-dot {
+        border-top: 3px dashed var(--faint);
+      }
+
+      /* ── SUMMARY ── */
+
+      .page-summary {
+        margin-top: 12px;
+        padding: 20px;
+        background: linear-gradient(180deg, rgba(16, 80, 208, 0.09), rgba(255, 255, 255, 0.96));
+        border: 1px solid var(--accent-border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .page-summary h2 {
+        margin: 8px 0 0;
+        color: var(--text);
+        font-size: clamp(1.3rem, 5.7vw, 1.85rem);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        line-height: 1.08;
+      }
+
+      .page-summary__copy {
+        margin: 10px 0 0;
+        color: var(--text);
+        font-size: 1rem;
+        font-weight: 800;
+        line-height: 1.6;
+      }
+
+      .page-summary__copy strong {
+        color: var(--accent);
+        font-weight: 900;
+      }
+
+      .page-summary__copy .summary-emphasis {
+        color: var(--accent);
+        font-weight: 900;
+      }
+
+      .page-summary__note {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+
+      @keyframes num-in {
+        from {
+          opacity: 0;
+          transform: translateY(7px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .num-in {
+        animation: num-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      @media (max-width: 360px) {
+        .mobile-shell {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .metric-row strong {
+          font-size: 1.15rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mobile-shell">
+      <header class="hero">
+        <p class="eyebrow">Eternalgy Comparison Lab</p>
+        <h1>Tiger Neo 3.0 wins more every year.</h1>
+        <p class="hero-copy">
+          A mobile calculator for 10-year cumulative difference against key solar competitors.
+        </p>
+        <div class="hero-stats" aria-live="polite">
+          <div>
+            <span>System</span>
+            <strong data-system-size>9.75 kW DC</strong>
+          </div>
+          <div>
+            <span>Base annual</span>
+            <strong data-base-annual-kwh>12,100 kWh</strong>
+          </div>
+        </div>
+      </header>
+
+      <nav class="section-rail" aria-label="Comparison shortcuts">
+        <a href="#heat-co-efficiency">Heat</a>
+        <a href="#low-light-response">Low light</a>
+        <a href="#bi-facial-gain">Bifacial</a>
+        <a href="#anti-shading">Shade</a>
+        <a href="#degradation-rate">Degrade</a>
+      </nav>
+
+      <section class="input-dock" aria-labelledby="controls-title">
+        <div class="dock-head">
+          <div>
+            <p class="eyebrow">Assumptions</p>
+            <h2 id="controls-title">Tune the roof</h2>
+          </div>
+          <span>RM savings update live</span>
+        </div>
+
+        <form class="controls-grid" autocomplete="off">
+          <label class="control">
+            <span>Panels</span>
+            <input id="panel-count" name="panelCount" type="number" min="0" step="1" value="15" />
+          </label>
+          <label class="control">
+            <span>Wattage</span>
+            <input id="panel-watt" name="panelWatt" type="number" min="0" step="1" value="650" />
+          </label>
+          <label class="control">
+            <span>Sun hours</span>
+            <input id="peak-sun-hours" name="peakSunHours" type="number" min="0" step="0.1" value="3.4" />
+          </label>
+          <label class="control">
+            <span>RM / kWh</span>
+            <input id="electricity-rate" name="electricityRate" type="number" min="0" step="0.01" value="0.55" />
+          </label>
+        </form>
+      </section>
+
+      <main class="comparisons" aria-label="Tiger Neo 3.0 comparison sections">
+        <article class="comparison-card" id="heat-co-efficiency" data-section="heat">
+          <div class="card-head">
+            <div class="section-kicker">
+              <span>01</span>
+              <strong>80°C roof model</strong>
+            </div>
+            <h2>Heat Co-efficiency</h2>
+            <p class="competitor">vs <span>Canadian Solar TOPHiKu6</span></p>
+          </div>
+          <figure class="video-header">
+            <video autoplay muted loop playsinline preload="metadata" aria-label="Heat co-efficiency explainer video">
+              <source src="./video/jinko-heat-coefficiency.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <p class="card-copy">
+            At extreme Malaysian roof temperatures, Tiger Neo 3.0 loses less power and widens the gap year after year.
+          </p>
+          <div class="metric-row">
+            <div>
+              <span>10-year extra</span>
+              <strong data-extra-kwh>0 kWh</strong>
+            </div>
+            <div>
+              <span>Extra savings</span>
+              <strong data-extra-rm>RM 0</strong>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>Cumulative difference</span>
+              <strong>kWh advantage</strong>
+            </div>
+            <p class="system-basis" data-system-basis>
+              <span>Based on system size:</span>
+              <strong>9.75 kWp (650 W x 15 panels)</strong>
+            </p>
+            <div class="chart-shell">
+              <div data-chart role="img" aria-label="10-year cumulative difference chart"></div>
+            </div>
+            <div class="legend-row">
+              <span><i class="jinko-dot"></i>Jinko advantage</span>
+              <span><i class="competitor-dot"></i>Baseline</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="comparison-card" id="low-light-response" data-section="lowLight">
+          <div class="card-head">
+            <div class="section-kicker">
+              <span>02</span>
+              <strong>2.5% yield lift</strong>
+            </div>
+            <h2>Low Light Response</h2>
+            <p class="competitor">vs <span>LONGi Hi-MO X6 Explorer (BC Tech)</span></p>
+          </div>
+          <figure class="video-header">
+            <video autoplay muted loop playsinline preload="metadata" aria-label="Low light response explainer video">
+              <source src="./video/jinko-low-light.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <p class="card-copy">
+            N-type TOPCon cells keep working harder through dawn, dusk, haze, and monsoon overcast.
+          </p>
+          <div class="metric-row">
+            <div>
+              <span>10-year extra</span>
+              <strong data-extra-kwh>0 kWh</strong>
+            </div>
+            <div>
+              <span>Extra savings</span>
+              <strong data-extra-rm>RM 0</strong>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>Cumulative difference</span>
+              <strong>kWh advantage</strong>
+            </div>
+            <p class="system-basis" data-system-basis>
+              <span>Based on system size:</span>
+              <strong>9.75 kWp (650 W x 15 panels)</strong>
+            </p>
+            <div class="chart-shell">
+              <div data-chart role="img" aria-label="10-year cumulative difference chart"></div>
+            </div>
+            <div class="legend-row">
+              <span><i class="jinko-dot"></i>Jinko advantage</span>
+              <span><i class="competitor-dot"></i>Baseline</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="comparison-card" id="bi-facial-gain" data-section="bifacial">
+          <div class="card-head">
+            <div class="section-kicker">
+              <span>03</span>
+              <strong>10% roof albedo</strong>
+            </div>
+            <h2>Bi-Facial Gain</h2>
+            <p class="competitor">vs <span>LONGi Hi-MO X6 Guardian Bifacial</span></p>
+          </div>
+          <figure class="video-header">
+            <video autoplay muted loop playsinline preload="metadata" aria-label="Bifacial gain explainer video">
+              <source src="./video/jinko-bificial.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <p class="card-copy">
+            The transparent rear side harvests more reflected roof light, turning albedo into long-term output.
+          </p>
+          <div class="metric-row">
+            <div>
+              <span>10-year extra</span>
+              <strong data-extra-kwh>0 kWh</strong>
+            </div>
+            <div>
+              <span>Extra savings</span>
+              <strong data-extra-rm>RM 0</strong>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>Cumulative difference</span>
+              <strong>kWh advantage</strong>
+            </div>
+            <p class="system-basis" data-system-basis>
+              <span>Based on system size:</span>
+              <strong>9.75 kWp (650 W x 15 panels)</strong>
+            </p>
+            <div class="chart-shell">
+              <div data-chart role="img" aria-label="10-year cumulative difference chart"></div>
+            </div>
+            <div class="legend-row">
+              <span><i class="jinko-dot"></i>Jinko advantage</span>
+              <span><i class="competitor-dot"></i>Baseline</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="comparison-card" id="anti-shading" data-section="shading">
+          <div class="card-head">
+            <div class="section-kicker">
+              <span>04</span>
+              <strong>Partial shade model</strong>
+            </div>
+            <h2>Anti-Shading</h2>
+            <p class="competitor">vs <span>Trina Solar Vertex (Standard Half-Cut)</span></p>
+          </div>
+          <figure class="video-header">
+            <video autoplay muted loop playsinline preload="metadata" aria-label="Anti-shading explainer video">
+              <source src="./video/jinko-anti-shading.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <p class="card-copy">
+            Multi-cell power protection reduces losses when parapets, vents, or roof edges shade a panel.
+          </p>
+          <div class="metric-row">
+            <div>
+              <span>10-year extra</span>
+              <strong data-extra-kwh>0 kWh</strong>
+            </div>
+            <div>
+              <span>Extra savings</span>
+              <strong data-extra-rm>RM 0</strong>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>Cumulative difference</span>
+              <strong>kWh advantage</strong>
+            </div>
+            <p class="system-basis" data-system-basis>
+              <span>Based on system size:</span>
+              <strong>9.75 kWp (650 W x 15 panels)</strong>
+            </p>
+            <div class="chart-shell">
+              <div data-chart role="img" aria-label="10-year cumulative difference chart"></div>
+            </div>
+            <div class="legend-row">
+              <span><i class="jinko-dot"></i>Jinko advantage</span>
+              <span><i class="competitor-dot"></i>Baseline</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="comparison-card" id="degradation-rate" data-section="degradation">
+          <div class="card-head">
+            <div class="section-kicker">
+              <span>05</span>
+              <strong>10-year warranty curve</strong>
+            </div>
+            <h2>Degradation Rate</h2>
+            <p class="competitor">vs <span>JA Solar DeepBlue 3.0 (P-type PERC)</span></p>
+          </div>
+          <figure class="video-header">
+            <video autoplay muted loop playsinline preload="metadata" aria-label="Degradation rate explainer video">
+              <source src="./video/jinko-degradation.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <p class="card-copy">
+            Lower first-year and annual degradation keeps more rated output alive through harsh weather.
+          </p>
+          <div class="metric-row">
+            <div>
+              <span>10-year extra</span>
+              <strong data-extra-kwh>0 kWh</strong>
+            </div>
+            <div>
+              <span>Extra savings</span>
+              <strong data-extra-rm>RM 0</strong>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">
+              <span>Cumulative difference</span>
+              <strong>kWh advantage</strong>
+            </div>
+            <p class="system-basis" data-system-basis>
+              <span>Based on system size:</span>
+              <strong>9.75 kWp (650 W x 15 panels)</strong>
+            </p>
+            <div class="chart-shell">
+              <div data-chart role="img" aria-label="10-year cumulative difference chart"></div>
+            </div>
+            <div class="legend-row">
+              <span><i class="jinko-dot"></i>Jinko advantage</span>
+              <span><i class="competitor-dot"></i>Baseline</span>
+            </div>
+          </div>
+        </article>
+
+        <section class="page-summary" aria-labelledby="page-summary-title" aria-live="polite">
+          <p class="eyebrow">Bottom line</p>
+          <h2 id="page-summary-title">10-year savings summary</h2>
+          <p class="page-summary__copy" data-page-summary-copy>
+            In 10 years, for your 9.75 kWp system, you can save a total of RM 0 more compared with other Tier 1 panels.
+          </p>
+          <p class="page-summary__note" data-page-summary-note>
+            Combined across the five benchmark comparisons above.
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <script src="./native-nav.js"></script>
+    <script src="./page-i18n.js"></script>
+    <script src="./invoice-data.js"></script>
+    <script>
+      (() => {
+        const sectionDefinitions = [
+          {
+            id: "heat",
+            competitor: "Canadian Solar TOPHiKu6",
+            buildSeries(baseAnnualKwh) {
+              return buildCumulativeSeries(10, () => ({
+                jinko: baseAnnualKwh * 0.857,
+                competitor: baseAnnualKwh * 0.8405,
+              }));
+            },
+          },
+          {
+            id: "lowLight",
+            competitor: "LONGi Hi-MO X6 Explorer (BC Tech)",
+            buildSeries(baseAnnualKwh) {
+              return buildCumulativeSeries(10, () => ({
+                jinko: baseAnnualKwh * 1.025,
+                competitor: baseAnnualKwh,
+              }));
+            },
+          },
+          {
+            id: "bifacial",
+            competitor: "LONGi Hi-MO X6 Guardian Bifacial",
+            buildSeries(baseAnnualKwh) {
+              return buildCumulativeSeries(10, () => ({
+                jinko: baseAnnualKwh * 1.085,
+                competitor: baseAnnualKwh * 1.07,
+              }));
+            },
+          },
+          {
+            id: "shading",
+            competitor: "Trina Solar Vertex (Standard Half-Cut)",
+            buildSeries(baseAnnualKwh) {
+              return buildCumulativeSeries(10, () => ({
+                jinko: baseAnnualKwh * 0.984,
+                competitor: baseAnnualKwh * 0.963,
+              }));
+            },
+          },
+          {
+            id: "degradation",
+            competitor: "JA Solar DeepBlue 3.0 (P-type PERC)",
+            buildSeries(baseAnnualKwh) {
+              return buildCumulativeSeries(10, (year) => ({
+                jinko: baseAnnualKwh * (1 - 0.01 - (year - 1) * 0.0035),
+                competitor: baseAnnualKwh * (1 - 0.02 - (year - 1) * 0.0055),
+              }));
+            },
+          },
+        ];
+
+        const state = {
+          panelQty: document.querySelector("#panel-count"),
+          panelWattage: document.querySelector("#panel-watt"),
+          psh: document.querySelector("#peak-sun-hours"),
+          rate: document.querySelector("#electricity-rate"),
+          systemSize: document.querySelector("[data-system-size]"),
+          baseAnnualKwh: document.querySelector("[data-base-annual-kwh]"),
+          summaryCopy: document.querySelector("[data-page-summary-copy]"),
+          sections: Array.from(document.querySelectorAll("[data-section]")),
+          videos: Array.from(document.querySelectorAll(".video-header video")),
+        };
+
+        if (
+          !state.panelQty ||
+          !state.panelWattage ||
+          !state.psh ||
+          !state.rate ||
+          !state.systemSize ||
+          !state.baseAnnualKwh ||
+          state.sections.length < 5
+        ) {
+          return;
+        }
+
+        const wholeFormatter = new Intl.NumberFormat("en-US", {
+          maximumFractionDigits: 0,
+        });
+        const decimalFormatter = new Intl.NumberFormat("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+        const rmFormatter = new Intl.NumberFormat("en-MY", {
+          style: "currency",
+          currency: "MYR",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        });
+
+        function buildCumulativeSeries(years, getYearValues) {
+          let jinkoCumulative = 0;
+          let competitorCumulative = 0;
+
+          return Array.from({ length: years }, (_, index) => {
+            const year = index + 1;
+            const values = getYearValues(year);
+            jinkoCumulative += values.jinko;
+            competitorCumulative += values.competitor;
+
+            return {
+              year,
+              jinko: jinkoCumulative,
+              competitor: competitorCumulative,
+              difference: jinkoCumulative - competitorCumulative,
+            };
+          });
+        }
+
+        const metricTargets = new WeakMap();
+        const metricCurrentValues = new WeakMap();
+        const metricAnimationFrames = new WeakMap();
+        const visibleSections = new WeakSet();
+        const chartCache = new WeakMap();
+        const chartStepSeconds = 0.5;
+        const getChartDurationMs = (series) => series.length * chartStepSeconds * 1000;
+        const supportsReducedMotion =
+          typeof window.matchMedia === "function" &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const supportsIntersectionObserver = typeof window.IntersectionObserver === "function";
+
+        const restartNumberPop = (element) => {
+          if (!element || !element.style) {
+            return;
+          }
+
+          element.style.animation = "none";
+          element.offsetHeight;
+          element.style.animation = "num-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both";
+        };
+
+        const updateNumber = (element, text) => {
+          if (!element) {
+            return;
+          }
+
+          element.textContent = text;
+          restartNumberPop(element);
+        };
+
+        const requestMetricFrame = (callback) => {
+          if (typeof window.requestAnimationFrame === "function") {
+            return window.requestAnimationFrame(callback);
+          }
+
+          callback(Date.now());
+          return 0;
+        };
+
+        const cancelMetricFrame = (frame) => {
+          if (frame && typeof window.cancelAnimationFrame === "function") {
+            window.cancelAnimationFrame(frame);
+          }
+        };
+
+        const animateMetricNumber = (
+          element,
+          targetValue,
+          formatter,
+          duration = 850,
+          startValue = 0
+        ) => {
+          if (!element) {
+            return;
+          }
+
+          const previousFrame = metricAnimationFrames.get(element);
+          cancelMetricFrame(previousFrame);
+
+          if (supportsReducedMotion || typeof window.requestAnimationFrame !== "function") {
+            element.textContent = formatter(targetValue);
+            metricCurrentValues.set(element, targetValue);
+            return;
+          }
+
+          const delta = targetValue - startValue;
+          let startTime = 0;
+
+          element.textContent = formatter(startValue);
+          restartNumberPop(element);
+
+          const step = (timestamp) => {
+            if (!startTime) {
+              startTime = timestamp;
+            }
+
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const easedProgress = 1 - Math.pow(1 - progress, 3);
+            const currentValue = startValue + delta * easedProgress;
+            element.textContent = formatter(currentValue);
+
+            if (progress < 1) {
+              metricAnimationFrames.set(element, requestMetricFrame(step));
+              return;
+            }
+
+            element.textContent = formatter(targetValue);
+            metricCurrentValues.set(element, targetValue);
+            metricAnimationFrames.delete(element);
+          };
+
+          metricAnimationFrames.set(element, requestMetricFrame(step));
+        };
+
+        const setMetricNumber = (
+          element,
+          targetValue,
+          formatter,
+          shouldAnimate,
+          duration = 850
+        ) => {
+          if (!element) {
+            return;
+          }
+
+          metricTargets.set(element, { targetValue, formatter, duration });
+
+          if (shouldAnimate) {
+            animateMetricNumber(element, targetValue, formatter, duration, 0);
+            return;
+          }
+
+          element.textContent = formatter(0);
+          metricCurrentValues.set(element, 0);
+        };
+
+        const animateSectionMetrics = (section) => {
+          [section.querySelector("[data-extra-kwh]"), section.querySelector("[data-extra-rm]")]
+            .filter(Boolean)
+            .forEach((element) => {
+              const target = metricTargets.get(element);
+              if (target) {
+                animateMetricNumber(
+                  element,
+                  target.targetValue,
+                  target.formatter,
+                  target.duration,
+                  0
+                );
+              }
+            });
+        };
+
+        const playSectionChart = (section) => {
+          const cached = chartCache.get(section);
+          if (cached) {
+            renderChart(section, cached.definition, cached.series);
+          }
+        };
+
+        const revealSection = (section) => {
+          if (visibleSections.has(section)) {
+            return;
+          }
+
+          visibleSections.add(section);
+          playSectionChart(section);
+          animateSectionMetrics(section);
+        };
+
+        const clampToFinite = (value) =>
+          Number.isFinite(value) && value >= 0 ? value : 0;
+
+        const readNumber = (input) => {
+          const value = Number.parseFloat(input.value);
+          return clampToFinite(value);
+        };
+
+        const escapeHtml = (value) =>
+          String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+
+        const formatKwh = (value) => `${wholeFormatter.format(value)} kWh`;
+        const formatCompactKwh = (value) => {
+          if (Math.abs(value) < 1000) {
+            return wholeFormatter.format(value);
+          }
+
+          return `${decimalFormatter.format(value / 1000).replace(/\.00$/, "")}k`;
+        };
+        const formatRm = (value) => rmFormatter.format(value);
+        const formatKw = (value) => `${decimalFormatter.format(value)} kW DC`;
+        const formatSystemSizeSummary = (systemKw) => `${decimalFormatter.format(systemKw)} kWp`;
+        const formatSystemBasis = ({ systemKw, panelWattage, panelQty }) => {
+          const panelWord = panelQty === 1 ? "panel" : "panels";
+          return `${decimalFormatter.format(systemKw)} kWp (${wholeFormatter.format(panelWattage)} W x ${wholeFormatter.format(panelQty)} ${panelWord})`;
+        };
+
+        const formatSummaryCopy = (systemKw, totalExtraRm) => {
+          const systemSize = formatSystemSizeSummary(systemKw);
+          const savings = formatRm(totalExtraRm);
+
+          if (document.documentElement.lang && document.documentElement.lang.startsWith("zh")) {
+            return `10 年后，以您的 <strong class="summary-emphasis">${escapeHtml(systemSize)}</strong> 系统计算，您可比其他 Tier 1 组件多节省 <strong class="summary-emphasis">${escapeHtml(savings)}</strong>。`;
+          }
+
+          return `In 10 years, for your <strong class="summary-emphasis">${escapeHtml(systemSize)}</strong> system, you can save a total of <strong class="summary-emphasis">${escapeHtml(savings)}</strong> more compared with other Tier 1 panels.`;
+        };
+
+        const getInputs = () => {
+          const panelQty = readNumber(state.panelQty);
+          const panelWattage = readNumber(state.panelWattage);
+          const psh = readNumber(state.psh);
+          const rate = readNumber(state.rate);
+          const systemKw = (panelQty * panelWattage) / 1000;
+          const baseAnnualKwh = systemKw * psh * 365;
+
+          return {
+            panelQty,
+            panelWattage,
+            psh,
+            rate,
+            systemKw,
+            baseAnnualKwh,
+          };
+        };
+
+        const muteHeaderVideos = () => {
+          state.videos.forEach((video) => {
+            video.muted = true;
+            video.defaultMuted = true;
+            video.volume = 0;
+            video.setAttribute("muted", "");
+          });
+        };
+
+        const getPathData = (points) => {
+          if (points.length < 2) {
+            return "";
+          }
+
+          return points.reduce((path, point, index) => {
+            if (index === 0) {
+              return `M ${point.x} ${point.y}`;
+            }
+
+            const previous = points[index - 1];
+            const controlDistance = (point.x - previous.x) * 0.48;
+            return `${path} C ${previous.x + controlDistance} ${previous.y}, ${point.x - controlDistance} ${point.y}, ${point.x} ${point.y}`;
+          }, "");
+        };
+
+        const renderChart = (section, definition, series) => {
+          const target = section.querySelector("[data-chart]");
+          if (!target) {
+            return;
+          }
+
+          const width = 320;
+          const height = 230;
+          const left = 34;
+          const right = 10;
+          const top = 12;
+          const bottom = 34;
+          const plotWidth = width - left - right;
+          const plotHeight = height - top - bottom;
+          const maxValue = Math.max(1, ...series.map((point) => point.difference));
+
+          const toPoint = (value, index) => ({
+            x: left + (plotWidth / (series.length - 1)) * index,
+            y: top + plotHeight - (value / maxValue) * plotHeight,
+          });
+
+          const differencePoints = series.map((point, index) => toPoint(point.difference, index));
+          const baselineY = top + plotHeight;
+          const differencePath = getPathData(differencePoints);
+          const areaPath = `${differencePath} L ${left + plotWidth} ${baselineY} L ${left} ${baselineY} Z`;
+          const gridValues = [0, maxValue / 2, maxValue];
+          const gridMarkup = gridValues
+            .map((value) => {
+              const y = top + plotHeight - (value / maxValue) * plotHeight;
+              return `
+                <line x1="${left}" y1="${y}" x2="${left + plotWidth}" y2="${y}" stroke="rgba(0,0,0,0.07)" />
+                <text x="${left - 7}" y="${y + 4}" text-anchor="end" class="chart-axis">${escapeHtml(formatCompactKwh(value))}</text>
+              `;
+            })
+            .join("");
+          const yearMarkup = [
+            { label: "Y1", x: left },
+            { label: "Y5", x: left + (plotWidth / 9) * 4 },
+            { label: "Y10", x: left + plotWidth },
+          ]
+            .map(
+              (item) =>
+                `<text x="${item.x}" y="${height - 9}" text-anchor="middle" class="chart-axis">${item.label}</text>`
+            )
+            .join("");
+          const totalDur = getChartDurationMs(series) / 1000;
+          const pointMarkup = differencePoints
+            .map(
+              (point, index) =>
+                `<circle cx="${point.x}" cy="${point.y}" r="3.5" fill="#FFFFFF" stroke="#1050D0" stroke-width="2" opacity="0">
+                  <animate attributeName="opacity" from="0" to="1" begin="${(index + 1) * chartStepSeconds}s" dur="0.12s" fill="freeze" />
+                </circle>`
+            )
+            .join("");
+
+          target.innerHTML = `
+            <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="10-year cumulative difference chart">
+              <defs>
+                <linearGradient id="jinko-fill-${definition.id}" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1050D0" stop-opacity="0.18" />
+                  <stop offset="65%" stop-color="#1050D0" stop-opacity="0.06" />
+                  <stop offset="100%" stop-color="#1050D0" stop-opacity="0" />
+                </linearGradient>
+                <clipPath id="reveal-${definition.id}">
+                  <rect x="${left}" y="0" height="${height}" width="0">
+                    <animate attributeName="width" from="0" to="${plotWidth}" dur="${totalDur}s" fill="freeze" calcMode="linear" />
+                  </rect>
+                </clipPath>
+              </defs>
+              ${gridMarkup}
+              <path d="${areaPath}" fill="url(#jinko-fill-${definition.id})" clip-path="url(#reveal-${definition.id})" />
+              <line x1="${left}" y1="${baselineY}" x2="${left + plotWidth}" y2="${baselineY}" stroke="rgba(0,0,0,0.18)" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 7" />
+              <path d="${differencePath}" fill="none" stroke="#1050D0" stroke-width="2.5" stroke-linecap="round" clip-path="url(#reveal-${definition.id})" />
+              ${pointMarkup}
+              ${yearMarkup}
+            </svg>
+          `;
+        };
+
+        const refreshDerivedMetrics = () => {
+          const inputs = getInputs();
+          const summaries = {};
+          let totalExtraRm = 0;
+
+          updateNumber(state.systemSize, formatKw(inputs.systemKw));
+          updateNumber(state.baseAnnualKwh, formatKwh(inputs.baseAnnualKwh));
+
+          sectionDefinitions.forEach((definition) => {
+            const section = state.sections.find(
+              (candidate) => candidate.dataset.section === definition.id
+            );
+
+            if (!section) {
+              return;
+            }
+
+            const series = definition.buildSeries(inputs.baseAnnualKwh);
+            const lastPoint = series[series.length - 1] || { jinko: 0, competitor: 0 };
+            const extraKwh = lastPoint.jinko - lastPoint.competitor;
+            const extraRm = extraKwh * inputs.rate;
+            const chartDuration = getChartDurationMs(series);
+
+            const sectionIsVisible =
+              !supportsIntersectionObserver || visibleSections.has(section);
+            const chartTarget = section.querySelector("[data-chart]");
+
+            setMetricNumber(
+              section.querySelector("[data-extra-kwh]"),
+              extraKwh,
+              formatKwh,
+              sectionIsVisible,
+              chartDuration
+            );
+            setMetricNumber(
+              section.querySelector("[data-extra-rm]"),
+              extraRm,
+              formatRm,
+              sectionIsVisible,
+              chartDuration
+            );
+            updateNumber(
+              section.querySelector("[data-system-basis] strong"),
+              formatSystemBasis(inputs)
+            );
+            chartCache.set(section, { definition, series });
+
+            if (sectionIsVisible) {
+              renderChart(section, definition, series);
+            } else if (chartTarget) {
+              chartTarget.innerHTML = "";
+            }
+
+            summaries[definition.id] = {
+              competitor: definition.competitor,
+              series,
+              extraKwh,
+              extraRm,
+            };
+            totalExtraRm += extraRm;
+          });
+
+          if (state.summaryCopy) {
+            state.summaryCopy.innerHTML = formatSummaryCopy(inputs.systemKw, totalExtraRm);
+          }
+
+          return {
+            ...inputs,
+            sections: summaries,
+          };
+        };
+
+        [state.panelQty, state.panelWattage, state.psh, state.rate].forEach((input) => {
+          input.addEventListener("input", refreshDerivedMetrics);
+        });
+
+        const initScrollAnimations = () => {
+          if (!supportsIntersectionObserver) {
+            state.sections.forEach((section) => visibleSections.add(section));
+            return;
+          }
+
+          const observer = new window.IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  revealSection(entry.target);
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              root: null,
+              rootMargin: "0px 0px -12% 0px",
+              threshold: 0.28,
+            }
+          );
+
+          state.sections.forEach((section) => observer.observe(section));
+        };
+
+        async function loadInvoiceUid() {
+          const loader = window.EternalgyInvoiceData;
+          const uid = loader?.getInvoiceUid?.();
+
+          if (!uid) {
+            return null;
+          }
+
+          const bundle = await loader.fetchInvoiceBundle(uid);
+          const panelQty = Number(bundle.package.panel_qty) || 0;
+          const panelRating = Number(bundle.package.panel_rating) || 650;
+          const sunHours = Number(bundle.invoice.solar_sun_peak_hour) || readNumber(state.psh);
+
+          state.panelQty.value = String(panelQty);
+          state.panelWattage.value = String(panelRating);
+          state.psh.value = String(sunHours);
+
+          const heroCopy = document.querySelector(".hero-copy");
+          if (heroCopy) {
+            heroCopy.textContent = `Live Tiger Neo 3.0 comparison using ${bundle.invoice.invoice_number || bundle.invoice.uid}: ${panelQty} panels x ${panelRating} W.`;
+          }
+
+          return refreshDerivedMetrics();
+        }
+
+        window.EternalgyLanding = {
+          refreshDerivedMetrics,
+          buildCumulativeSeries,
+          muteHeaderVideos,
+          revealSection,
+          loadInvoiceUid,
+        };
+
+        muteHeaderVideos();
+        refreshDerivedMetrics();
+        initScrollAnimations();
+        loadInvoiceUid().catch((error) => {
+          const heroCopy = document.querySelector(".hero-copy");
+          if (heroCopy) {
+            heroCopy.textContent = `${error.message || "Invoice UID unavailable"}. Showing default comparison inputs.`;
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

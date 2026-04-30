@@ -1,0 +1,16 @@
+{
+  "name": "ee-proposal",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Eternalgy solar proposal site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "pg": "^8.13.0"
+  }
+}

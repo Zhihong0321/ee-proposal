@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Quotation | Eternalgy</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #eeeeec;
+        --surface: #ffffff;
+        --surface-inset: #f5f5f3;
+        --border: rgba(0, 0, 0, 0.08);
+        --text: #0c0c0c;
+        --muted: #6b6b6b;
+        --faint: #b0b0b0;
+        --accent: #1050d0;
+        --accent-dim: rgba(16, 80, 208, 0.07);
+        --accent-border: rgba(16, 80, 208, 0.22);
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 18px rgba(0, 0, 0, 0.06);
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--bg);
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family:
+          "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.45;
+        background: var(--bg);
+        overflow-x: hidden;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        letter-spacing: 0;
+        line-height: 1.04;
+      }
+
+      .page-shell {
+        width: min(100%, 560px);
+        margin: 0 auto;
+        padding:
+          max(16px, env(safe-area-inset-top))
+          12px
+          max(32px, env(safe-area-inset-bottom));
+      }
+
+      .doc-hero,
+      .invoice-sheet {
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .doc-hero {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 12px;
+        padding: 18px 18px 16px;
+        border-top: 3px solid var(--accent);
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--accent);
+        font-size: 0.64rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .brand-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand-copy {
+        min-width: 0;
+      }
+
+      .brand-copy h1 {
+        margin: 2px 0 0;
+        font-size: clamp(2rem, 8vw, 3rem);
+        font-weight: 900;
+        line-height: 0.98;
+      }
+
+      .hero-copy {
+        margin: 0;
+        max-width: 34ch;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        white-space: pre-line;
+      }
+
+      .invoice-chip {
+        flex: 0 0 auto;
+        min-width: 116px;
+        padding: 10px 12px;
+        border: 1px solid var(--accent-border);
+        border-radius: 10px;
+        background: var(--accent-dim);
+      }
+
+      .invoice-chip span,
+      .metric span,
+      .section-title span,
+      .doc-panel span,
+      .cell::before,
+      .detail-card span,
+      .logo-card span,
+      .table-note,
+      .footer-note {
+        color: var(--muted);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .invoice-chip span {
+        display: block;
+      }
+
+      .invoice-chip strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--accent);
+        font-size: 0.93rem;
+        font-weight: 900;
+        overflow-wrap: anywhere;
+      }
+
+      .invoice-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .metric {
+        min-width: 0;
+        padding: 12px;
+        border-radius: 10px;
+        background: var(--surface-inset);
+        border: 1px solid var(--border);
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--text);
+        font-size: 0.98rem;
+        font-weight: 900;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+      }
+
+      .invoice-sheet {
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .sheet-section {
+        padding: 16px 16px 18px;
+        border-top: 1px solid var(--border);
+      }
+
+      .sheet-section:first-child {
+        border-top: 0;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        min-width: 0;
+        font-size: 1.04rem;
+        font-weight: 900;
+      }
+
+      .section-title span {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 22px;
+        padding: 0 10px;
+        border: 1px solid var(--accent-border);
+        border-radius: 999px;
+        color: var(--accent);
+        background: var(--accent-dim);
+        text-align: center;
+      }
+
+      .doc-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .doc-panel {
+        min-width: 0;
+        padding: 12px;
+        border-radius: 10px;
+        background: var(--surface-inset);
+        border: 1px solid var(--border);
+      }
+
+      .doc-panel strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--text);
+        font-size: 0.96rem;
+        font-weight: 900;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+
+      .doc-panel p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+      }
+
+      .invoice-table {
+        display: grid;
+        gap: 8px;
+      }
+
+      .table-head,
+      .table-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) 72px 84px minmax(0, 1fr);
+        gap: 8px;
+        align-items: start;
+      }
+
+      .table-head {
+        padding: 0 4px;
+      }
+
+      .table-head span {
+        color: var(--muted);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .table-row {
+        padding: 12px;
+        border-radius: 10px;
+        background: var(--surface-inset);
+        border: 1px solid var(--border);
+      }
+
+      .table-row.included .amount strong {
+        color: var(--muted);
+      }
+
+      .cell {
+        min-width: 0;
+      }
+
+      .desc strong {
+        display: block;
+        color: var(--text);
+        font-size: 0.95rem;
+        font-weight: 900;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+
+      .desc span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.8rem;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+
+      .cell > strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--text);
+        font-size: 0.9rem;
+        font-weight: 800;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+
+      .amount strong {
+        color: var(--accent);
+        font-size: 1rem;
+        font-weight: 900;
+        text-align: right;
+      }
+
+      .table-note {
+        margin: 2px 0 0;
+        line-height: 1.55;
+      }
+
+      .total-band {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid var(--accent-border);
+        background: var(--accent-dim);
+      }
+
+      .total-band span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .total-band strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--accent);
+        font-size: 1.08rem;
+        font-weight: 900;
+        text-align: right;
+        overflow-wrap: anywhere;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .detail-card {
+        min-width: 0;
+        padding: 12px;
+        border-radius: 10px;
+        background: var(--surface-inset);
+        border: 1px solid var(--border);
+      }
+
+      .detail-card strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--text);
+        font-size: 0.94rem;
+        font-weight: 900;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+      }
+
+      .footer-note {
+        margin: 10px 0 0;
+        line-height: 1.55;
+      }
+
+      .tnc-section {
+        background: var(--surface-inset);
+      }
+
+      .tnc-copy {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.68rem;
+        font-weight: 500;
+        line-height: 1.65;
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+      }
+
+      @media print {
+        body {
+          background: #ffffff;
+        }
+
+        .page-shell {
+          width: 100%;
+          max-width: 760px;
+          padding: 0;
+        }
+
+        .doc-hero,
+        .invoice-sheet {
+          box-shadow: none;
+          border: 1px solid var(--border);
+        }
+
+        .sheet-section {
+          break-inside: avoid;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .page-shell {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        .brand-row {
+          flex-direction: column;
+        }
+
+        .invoice-chip {
+          align-self: stretch;
+          text-align: left;
+        }
+
+        .invoice-metrics,
+        .doc-grid,
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .section-title {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .table-head {
+          display: none;
+        }
+
+        .table-row {
+          grid-template-columns: 0.72fr 0.9fr minmax(0, 1fr);
+          gap: 9px 8px;
+          padding: 11px 12px;
+        }
+
+        .table-row .desc {
+          grid-column: 1 / -1;
+        }
+
+        .cell {
+          display: grid;
+          gap: 3px;
+          align-content: start;
+        }
+
+        .cell::before {
+          content: attr(data-label);
+          display: block;
+          color: var(--muted);
+          font-size: 0.58rem;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+
+        .amount strong,
+        .total-band strong {
+          text-align: left;
+        }
+
+        .cell > strong {
+          margin-top: 0;
+          font-size: 0.86rem;
+          line-height: 1.18;
+        }
+
+        .desc strong {
+          font-size: 0.95rem;
+        }
+
+        .desc span {
+          margin-top: 3px;
+          font-size: 0.8rem;
+          line-height: 1.35;
+        }
+
+        .amount strong {
+          font-size: 0.92rem;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .brand-copy h1 {
+          font-size: 1.9rem;
+        }
+
+        .doc-hero,
+        .sheet-section {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="doc-hero">
+        <div class="brand-row">
+          <div class="brand-copy">
+            <p class="eyebrow">Eternalgy Quotation</p>
+            <h1>Quotation</h1>
+          </div>
+          <div class="invoice-chip">
+            <span>Invoice No.</span>
+            <strong id="invoice-number">INV-1009339</strong>
+          </div>
+        </div>
+
+        <p class="hero-copy" id="hero-copy">
+          Prepared for MX FRESH MART (M) SDN BHD (SHOP-LOT)
+          21, JALAN SAGU 15, TAMAN DAYA, 81100, JB
+        </p>
+
+        <div class="invoice-metrics">
+          <div class="metric">
+            <span>Date</span>
+            <strong id="invoice-date">30 Apr 2026</strong>
+          </div>
+          <div class="metric">
+            <span>System</span>
+            <strong id="system-size">15.60 kWp</strong>
+          </div>
+          <div class="metric">
+            <span>Panels</span>
+            <strong id="panel-config">24 x 650 W</strong>
+          </div>
+          <div class="metric">
+            <span>Source</span>
+            <strong id="source-label">Direct Postgres invoice UID</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="invoice-sheet">
+        <section class="sheet-section">
+          <div class="section-title">
+            <h2>Customer & Site</h2>
+            <span>Bill to</span>
+          </div>
+          <div class="doc-grid">
+            <div class="doc-panel">
+              <span>Customer</span>
+              <strong id="bill-name">MX FRESH MART (M) SDN BHD (SHOP-LOT)</strong>
+              <p id="bill-note">Quotation for commercial rooftop PV</p>
+            </div>
+            <div class="doc-panel">
+              <span>Site Address</span>
+              <strong id="site-address">21, JALAN SAGU 15, TAMAN DAYA, 81100, JB</strong>
+              <p id="site-note">Installation address from invoice snapshot</p>
+            </div>
+            <div class="doc-panel">
+              <span>Reference</span>
+              <strong id="quote-date">30 Apr 2026</strong>
+              <p id="invoice-source">Source Direct Postgres invoice UID</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="sheet-section">
+          <div class="section-title">
+            <h2>Invoice Lines</h2>
+            <span>Commercial bundle</span>
+          </div>
+          <div class="invoice-table">
+            <div class="table-head" aria-hidden="true">
+              <span>Description</span>
+              <span>Qty</span>
+              <span>Type</span>
+              <span>Amount</span>
+            </div>
+
+            <div class="table-row" data-row="package">
+              <div class="cell desc" data-label="Description">
+                <strong id="package-label">Solar PV System Package</strong>
+                <span id="package-subtext">Commercial rooftop PV delivery and install</span>
+              </div>
+              <div class="cell" data-label="Qty">
+                <strong id="package-qty">1 lot</strong>
+              </div>
+              <div class="cell" data-label="Type">
+                <strong>Quoted</strong>
+              </div>
+              <div class="cell amount" data-label="Amount">
+                <strong id="package-amount">Pending final pricing</strong>
+              </div>
+            </div>
+
+            <div class="table-row included" data-row="modules">
+              <div class="cell desc" data-label="Description">
+                <strong>Jinko Solar PV Modules</strong>
+                <span id="panel-model">650W JinkoSolar Panel N-Type TOPCon</span>
+              </div>
+              <div class="cell" data-label="Qty">
+                <strong id="panel-count">24 pcs</strong>
+              </div>
+              <div class="cell" data-label="Type">
+                <strong>Included</strong>
+              </div>
+              <div class="cell amount" data-label="Amount">
+                <strong>Included</strong>
+              </div>
+            </div>
+
+            <div class="table-row included" data-row="inverter">
+              <div class="cell desc" data-label="Description">
+                <strong>SAJ String Inverter</strong>
+                <span id="inverter-model">[3P] SAJ R6 12KW String Inverter</span>
+              </div>
+              <div class="cell" data-label="Qty">
+                <strong>1 unit</strong>
+              </div>
+              <div class="cell" data-label="Type">
+                <strong>Included</strong>
+              </div>
+              <div class="cell amount" data-label="Amount">
+                <strong>Included</strong>
+              </div>
+            </div>
+
+            <div class="table-row included" data-row="install">
+              <div class="cell desc" data-label="Description">
+                <strong>Installation & Commissioning</strong>
+                <span>Commercial rooftop PV works</span>
+              </div>
+              <div class="cell" data-label="Qty">
+                <strong>1 lot</strong>
+              </div>
+              <div class="cell" data-label="Type">
+                <strong>Included</strong>
+              </div>
+              <div class="cell amount" data-label="Amount">
+                <strong>Included</strong>
+              </div>
+            </div>
+          </div>
+          <p class="table-note" id="summary-note">
+            This quotation snapshot is rendered from the selected invoice UID and the commercial Jinko plus SAJ bundle.
+          </p>
+        </section>
+
+        <section class="sheet-section">
+          <div class="section-title">
+            <h2>Total Due</h2>
+            <span>Quoted amount</span>
+          </div>
+          <div class="total-band">
+            <div>
+              <span>Amount</span>
+              <strong>Quotation Total</strong>
+            </div>
+            <strong id="quoted-total">Pending final pricing</strong>
+          </div>
+          <div class="summary-grid">
+            <div class="detail-card">
+              <span>Panel Warranty</span>
+              <strong id="panel-warranty">12 years product, 30 years linear power</strong>
+            </div>
+            <div class="detail-card">
+              <span>Inverter Warranty</span>
+              <strong id="inverter-warranty">10 years product</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="sheet-section tnc-section" id="tnc-section" hidden>
+          <div class="section-title">
+            <h2>Terms & Conditions</h2>
+            <span>TNC</span>
+          </div>
+          <p class="tnc-copy" id="tnc-copy"></p>
+        </section>
+      </main>
+    </div>
+
+    <script src="./native-nav.js"></script>
+    <script src="./invoice-data.js"></script>
+    <script>
+      (() => {
+        const loader = window.EternalgyInvoiceData;
+
+        if (!loader?.getInvoiceUid?.()) {
+          return;
+        }
+
+        const nonEmpty = loader.helpers.nonEmpty;
+
+        const setText = (selector, value) => {
+          const target = document.querySelector(selector);
+
+          if (target) {
+            target.textContent = value;
+          }
+        };
+
+        const renderTermsAndConditions = (value) => {
+          const section = document.querySelector("#tnc-section");
+          const copy = document.querySelector("#tnc-copy");
+          const text = nonEmpty(value, "");
+
+          if (!section || !copy || !text) {
+            return;
+          }
+
+          copy.textContent = text;
+          section.hidden = false;
+        };
+
+        async function loadQuotation() {
+          const bundle = await loader.fetchInvoiceBundle();
+          const invoice = bundle.invoice;
+          const pkg = bundle.package;
+          const panelQty = Number(pkg.panel_qty) || 0;
+          const panelRating = Number(pkg.panel_rating) || 0;
+          const systemSize = ((panelQty * panelRating) / 1000).toFixed(2);
+          const invoiceNumber = nonEmpty(invoice.invoice_number, `Invoice ${invoice.id}`);
+          const totalText = loader.formatCurrency(invoice.total_amount);
+
+          document.title = `${invoiceNumber} | Quotation | Eternalgy`;
+          setText("#hero-copy", `Prepared for ${invoice.customer_name}\n${invoice.customer_address}`);
+          setText("#invoice-number", invoiceNumber);
+          setText("#invoice-date", loader.formatDate(invoice.invoice_date));
+          setText("#system-size", `${systemSize} kWp`);
+          setText("#panel-config", `${panelQty} x ${panelRating} W`);
+          setText("#source-label", bundle.sourceLabel);
+          setText("#bill-name", invoice.customer_name);
+          setText("#bill-note", `Quotation for ${pkg.package_name}`);
+          setText("#site-address", invoice.customer_address);
+          setText("#site-note", "Installation address from invoice snapshot");
+          setText("#quote-date", loader.formatDate(invoice.invoice_date));
+          setText("#invoice-source", `Source ${bundle.sourceLabel} · UID ${invoice.uid}`);
+          setText("#package-label", pkg.package_name);
+          setText("#package-subtext", `${pkg.panel_qty} panels x ${panelRating} W = ${systemSize} kWp`);
+          setText("#package-qty", "1 lot");
+          setText("#package-amount", totalText);
+          setText("#panel-count", `${panelQty} pcs`);
+          setText("#panel-model", pkg.panel_model);
+          setText("#inverter-model", pkg.inverter_1_model);
+          setText("#panel-warranty", pkg.panel_warranty.replace(/\n/g, ", "));
+          setText("#inverter-warranty", pkg.inverter_1_warranty.replace(/\n/g, ", "));
+          setText("#quoted-total", totalText);
+          setText(
+            "#summary-note",
+            `This quotation snapshot is rendered from invoice UID ${invoice.uid}. The amount, package, panel quantity, panel rating and warranty fields are loaded from the selected record.`,
+          );
+          renderTermsAndConditions(invoice.terms_and_conditions);
+        }
+
+        loadQuotation().catch((error) => {
+          setText("#hero-copy", `${error.message || "Invoice UID unavailable"}. Showing demo quotation snapshot.`);
+        });
+      })();
+    </script>
+  </body>
+</html>

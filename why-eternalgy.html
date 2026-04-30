@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Why Eternalgy</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #EEEEEC;
+        --surface: #FFFFFF;
+        --surface-inset: #F5F5F3;
+        --border: rgba(0, 0, 0, 0.08);
+        --text: #0C0C0C;
+        --muted: #6B6B6B;
+        --faint: #B0B0B0;
+        --accent: #1050D0;
+        --accent-dim: rgba(16, 80, 208, 0.07);
+        --accent-border: rgba(16, 80, 208, 0.22);
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 18px rgba(0, 0, 0, 0.06);
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--bg);
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Inter", ui-sans-serif, system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.45;
+      }
+
+      /* ── SHELL ── */
+      .mobile-shell {
+        width: min(100%, 430px);
+        margin: 0 auto;
+        padding:
+          max(20px, env(safe-area-inset-top))
+          12px
+          max(36px, env(safe-area-inset-bottom));
+      }
+
+      /* ── HERO ── */
+      .hero {
+        padding: 24px 20px 20px;
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border-top: 3px solid var(--accent);
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--accent);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        margin: 10px 0 0;
+        font-size: clamp(2.4rem, 11vw, 3.2rem);
+        font-weight: 900;
+        line-height: 0.97;
+        letter-spacing: -0.025em;
+        color: var(--text);
+      }
+
+      .hero-copy {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.6;
+        max-width: 30ch;
+      }
+
+      /* ── BLOCKS ── */
+      .blocks {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .block {
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      /* ── IMAGE ── */
+      .block-image {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: var(--surface-inset);
+        display: block;
+        overflow: hidden;
+      }
+
+      .block-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      /* ── CONTENT ── */
+      .block-content {
+        padding: 18px 20px 20px;
+        border-top: 3px solid var(--accent);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      /* ── BLOCK TAG ── */
+      .block-tag {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .block-num {
+        display: inline-flex;
+        align-items: center;
+        height: 20px;
+        padding: 0 7px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--faint);
+        background: var(--surface-inset);
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .block-label {
+        display: inline-flex;
+        align-items: center;
+        height: 20px;
+        padding: 0 8px;
+        border: 1px solid var(--accent-border);
+        border-radius: 4px;
+        color: var(--accent);
+        background: var(--accent-dim);
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* ── HEADING ── */
+      .block-content h2 {
+        font-size: clamp(1.65rem, 7vw, 2rem);
+        font-weight: 900;
+        line-height: 1.0;
+        letter-spacing: -0.025em;
+        color: var(--text);
+      }
+
+      /* ── BODY TEXT ── */
+      .block-content p {
+        font-size: 0.875rem;
+        line-height: 1.65;
+        color: var(--muted);
+      }
+
+      .block-content p strong {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      /* ── QUOTE BOX ── */
+      .quote-box {
+        border-left: 3px solid var(--accent);
+        padding: 10px 14px;
+        background: var(--surface-inset);
+        border-radius: 0 6px 6px 0;
+        font-size: 0.875rem;
+        font-style: italic;
+        color: var(--accent);
+        font-weight: 600;
+        line-height: 1.55;
+      }
+
+      /* ── CERT BADGES ── */
+      .cert-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .cert-badge {
+        display: inline-flex;
+        align-items: center;
+        height: 26px;
+        padding: 0 10px;
+        border: 1px solid var(--accent-border);
+        border-radius: 4px;
+        color: var(--accent);
+        background: var(--accent-dim);
+        font-size: 0.72rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      /* ── CTA ── */
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        align-self: flex-start;
+        height: 44px;
+        padding: 0 24px;
+        border: none;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #ffffff;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        margin-top: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mobile-shell">
+
+      <header class="hero">
+        <p class="eyebrow">Eternalgy</p>
+        <h1>为什么选择我们</h1>
+        <p class="hero-copy">五大核心优势，为您的光伏投资保驾护航。</p>
+      </header>
+
+      <main class="blocks">
+
+        <!-- 01 极致高效 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="./image/installtion.png" alt="Eternalgy installation team at work" decoding="async" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">01</span>
+              <span class="block-label">Efficiency</span>
+            </div>
+            <h2>极致高效</h2>
+            <p><strong>系统化运转与态度的最佳印证。</strong></p>
+            <p>我们的高效率绝非流于表面的赶工，而是全自营团队默契协作的真实折射。我们创下了<strong>单月 140 项工程圆满交付</strong>的纪录。</p>
+            <p>服务效率是我们最直接的承诺：交付得越快，您就能越早、最大化地享受光伏带来的绿色回报。</p>
+          </div>
+        </article>
+
+        <!-- 02 淬炼与沉淀 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="./image/processed/all-roof-type.webp" alt="Eternalgy works across all roof types" loading="lazy" decoding="async" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">02</span>
+              <span class="block-label">Experience</span>
+            </div>
+            <h2>淬炼与沉淀</h2>
+            <p><strong>经验是超越产品本身的宝贵资产。</strong></p>
+            <p>从温馨排屋、洋房，到广袤农场与重型工厂，Eternalgy 的设计与安装团队早已在无数真实场景中历经严苛磨练。</p>
+            <p>我们交付的不只是设备，更是不断迭代而出的<strong>工程规范与系统化设计</strong>，这是您选择我们所获得的额外价值。</p>
+          </div>
+        </article>
+
+        <!-- 03 坚守底线 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="./image/processed/quality-component.webp" alt="Quality solar components used by Eternalgy" loading="lazy" decoding="async" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">03</span>
+              <span class="block-label">No Compromise</span>
+            </div>
+            <h2>坚守底线</h2>
+            <div class="quote-box">"真正的划算是安全，真正的昂贵是风险。"</div>
+            <p>光伏是一项长达 20 年以上的长跑项目，安全与稳定性凌驾于一切。</p>
+            <p>低价妥协换来的一定是更沉重的代价。因此，我们坚持采用具备<strong>超长耐久度和额外安全冗余</strong>的顶级零件。我们不卖低价，我们提供贯穿生命周期的绝对安全。</p>
+          </div>
+        </article>
+
+        <!-- 04 护航本源 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="./image/processed/roof-specialist.webp" alt="Eternalgy dedicated roof specialist team" loading="lazy" decoding="async" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">04</span>
+              <span class="block-label">Roof Expertise</span>
+            </div>
+            <h2>护航本源</h2>
+            <p><strong>专属的自营屋顶专家团队。</strong></p>
+            <p>光伏的根基在于建筑本身。我们不仅懂光伏，更懂屋顶。</p>
+            <p>我们配备专属的自营屋顶专家团队，在安装中将损坏几率降至极低，并具备<strong>专业的屋顶修复与加固能力</strong>，让光伏系统与您的建筑完美共生。</p>
+          </div>
+        </article>
+
+        <!-- 05 权威背书 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="./image/certification.png" alt="Eternalgy industry certifications and awards" loading="lazy" decoding="async" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">05</span>
+              <span class="block-label">Authority</span>
+            </div>
+            <h2>权威背书</h2>
+            <p><strong>国家级认证与行业巨头之选。</strong></p>
+            <p>秉持合规与卓越，Eternalgy 用硬实力打造最坚实的品牌信任。从政府认证到行业大奖，实力屡获业界顶级认可。</p>
+            <div class="cert-container">
+              <span class="cert-badge">SEDA 认证</span>
+              <span class="cert-badge">CIDB 认证</span>
+              <span class="cert-badge">Maybank 独家伙伴</span>
+              <span class="cert-badge">SAJ 大马独家总代</span>
+              <span class="cert-badge">SHRDC CoE 伙伴</span>
+              <span class="cert-badge">大马金牛奖得主</span>
+            </div>
+          </div>
+        </article>
+
+      </main>
+    </div>
+    <script src="./native-nav.js"></script>
+    <script src="./page-i18n.js"></script>
+  </body>
+</html>

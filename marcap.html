@@ -1,0 +1,1636 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>JinkoSolar Market Cap and Global Shipments</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" defer></script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #EEEEEC;
+        --surface: #FFFFFF;
+        --surface-inset: #F5F5F3;
+        --border: rgba(0, 0, 0, 0.08);
+        --text: #0C0C0C;
+        --muted: #6B6B6B;
+        --faint: #B0B0B0;
+        --accent: #1050D0;
+        --accent-dim: rgba(16, 80, 208, 0.07);
+        --accent-border: rgba(16, 80, 208, 0.22);
+        --positive: #15803D;
+        --negative: #DC2626;
+        --amber: #B45309;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 18px rgba(0, 0, 0, 0.06);
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--bg);
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family:
+          "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.5;
+        background: var(--bg);
+      }
+
+      button {
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .page-shell {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 32px 0 56px;
+      }
+
+      /* ── Shared card surface ── */
+      .hero,
+      .stat-board,
+      .finance-card,
+      .shipment-card,
+      .table-card,
+      .analysis-card,
+      .observations {
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.82fr);
+        gap: 24px;
+        align-items: end;
+        padding: 32px;
+        margin-bottom: 12px;
+        border-top: 3px solid var(--accent);
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 0.65rem;
+        font-weight: 700;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+      }
+
+      h1 {
+        max-width: 15ch;
+        margin-bottom: 0;
+        font-size: clamp(2.4rem, 5vw, 4.8rem);
+        font-weight: 900;
+      }
+
+      .hero-copy,
+      .status-text,
+      .chart-meta,
+      .summary-copy,
+      .company-meta,
+      th,
+      .analysis-card p,
+      .observations li {
+        color: var(--muted);
+      }
+
+      .hero-copy {
+        margin: 0;
+        font-size: 0.92rem;
+        line-height: 1.65;
+      }
+
+      /* ── STAT BOARD ── */
+      .stat-board {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        padding: 18px;
+        margin-bottom: 12px;
+      }
+
+      .metric {
+        min-width: 0;
+        padding: 14px 16px;
+        border-radius: 8px;
+        background: var(--surface-inset);
+      }
+
+      .metric span {
+        display: block;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-size: 0.62rem;
+        font-weight: 700;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 5px;
+        overflow-wrap: anywhere;
+        font-size: clamp(1.4rem, 2.8vw, 2.3rem);
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ── TOOLBAR ── */
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 12px;
+        padding: 6px 0;
+      }
+
+      .status-text {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .refresh-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        border: 1px solid var(--accent-border);
+        border-radius: 999px;
+        padding: 0 18px;
+        color: var(--accent);
+        background: var(--accent-dim);
+        font-weight: 700;
+        font-size: 0.82rem;
+        transition: background 0.15s;
+      }
+
+      .refresh-button:hover {
+        background: rgba(16, 80, 208, 0.12);
+      }
+
+      .refresh-button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .refresh-button:disabled {
+        cursor: wait;
+        opacity: 0.5;
+      }
+
+      @keyframes live-pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.38);
+        }
+        70% {
+          box-shadow: 0 0 0 12px rgba(21, 128, 61, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(21, 128, 61, 0);
+        }
+      }
+
+      @keyframes live-sweep {
+        from {
+          transform: translateX(-120%);
+        }
+        to {
+          transform: translateX(120%);
+        }
+      }
+
+      /* ── FINANCE CARD ── */
+      .finance-card {
+        padding: 28px 30px 24px;
+        margin-bottom: 12px;
+      }
+
+      .quote-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 22px;
+      }
+
+      .market-cap-value {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 4px;
+        font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .market-cap-value span {
+        color: var(--muted);
+        font-size: clamp(1rem, 2vw, 1.35rem);
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
+      .market-label {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .quote-body {
+        display: grid;
+        grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+        gap: 26px;
+        padding-top: 24px;
+      }
+
+      .quote-body > * {
+        min-width: 0;
+      }
+
+      .price-value {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 4px;
+        font-size: clamp(2.4rem, 5.5vw, 4.1rem);
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .price-value span {
+        color: var(--muted);
+        font-size: clamp(1rem, 2vw, 1.35rem);
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
+      .change-line {
+        margin: 0 0 12px;
+        font-size: clamp(1.05rem, 2.4vw, 1.45rem);
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      .positive { color: var(--positive); }
+      .negative { color: var(--negative); }
+      .neutral  { color: var(--muted); }
+
+      .detail-meta {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      /* ── CHARTS ── */
+      .chart-shell,
+      .shipment-chart-shell {
+        position: relative;
+        overflow: hidden;
+        min-width: 0;
+      }
+
+      .chart-shell {
+        height: 320px;
+      }
+
+      .chart-shell.is-live::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          118deg,
+          transparent 0%,
+          transparent 46%,
+          rgba(21, 128, 61, 0.12) 49%,
+          rgba(21, 128, 61, 0.2) 50%,
+          rgba(21, 128, 61, 0.12) 51%,
+          transparent 54%,
+          transparent 100%
+        );
+        transform: translateX(-120%);
+        animation: live-sweep 3.2s linear infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .shipment-chart-shell {
+        height: 400px;
+      }
+
+      .chart-shell canvas,
+      .shipment-chart-shell canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .chart-meta {
+        margin: 10px 0 0;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .live-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 30px;
+        padding: 0 12px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(10px);
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        pointer-events: none;
+      }
+
+      .live-badge .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--faint);
+      }
+
+      .live-badge.is-live {
+        color: var(--positive);
+        border-color: rgba(21, 128, 61, 0.2);
+        background: rgba(21, 128, 61, 0.08);
+      }
+
+      .live-badge.is-live .live-dot {
+        background: var(--positive);
+        animation: live-pulse 1.6s ease-out infinite;
+      }
+
+      .fallback-note {
+        display: none;
+        margin: 10px 0 0;
+        color: var(--amber);
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+
+      .fallback-note.is-visible {
+        display: block;
+      }
+
+      /* ── SHIPMENT CARD ── */
+      .shipment-card {
+        padding: 26px 28px;
+        margin-bottom: 12px;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 0.7fr);
+        gap: 20px;
+        align-items: end;
+        margin-bottom: 20px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(1.55rem, 2.8vw, 2.3rem);
+      }
+
+      .summary-copy {
+        margin: 0;
+        font-size: 0.88rem;
+        line-height: 1.65;
+      }
+
+      /* ── TABLE CARD ── */
+      .table-card {
+        overflow: hidden;
+        margin-bottom: 12px;
+      }
+
+      .table-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 22px 24px 16px;
+      }
+
+      .table-title h2 {
+        margin: 0;
+        font-size: clamp(1.25rem, 2.3vw, 1.9rem);
+      }
+
+      .asof-pill {
+        flex: none;
+        border: 1px solid var(--accent-border);
+        border-radius: 4px;
+        padding: 5px 12px;
+        color: var(--accent);
+        background: var(--accent-dim);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .table-wrap {
+        max-width: 100%;
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        min-width: 740px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 24px;
+        text-align: left;
+        border-top: 1px solid var(--border);
+      }
+
+      th {
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-size: 0.62rem;
+        font-weight: 700;
+      }
+
+      td {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      tbody tr:nth-child(odd) {
+        background: var(--surface-inset);
+      }
+
+      .rank-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        min-height: 32px;
+        border-radius: 6px;
+        color: var(--accent);
+        background: var(--accent-dim);
+        border: 1px solid var(--accent-border);
+        font-size: 0.78rem;
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .company-name {
+        display: block;
+        margin-bottom: 2px;
+        font-weight: 800;
+      }
+
+      .company-meta {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      /* ── ANALYSIS GRID ── */
+      .analysis-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .analysis-card {
+        padding: 18px;
+      }
+
+      .analysis-card h3 {
+        margin-bottom: 10px;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: -0.015em;
+        color: var(--text);
+      }
+
+      .analysis-card p {
+        margin: 0 0 9px;
+        font-size: 0.83rem;
+        line-height: 1.6;
+      }
+
+      .analysis-card p:last-child {
+        margin-bottom: 0;
+      }
+
+      .analysis-card strong,
+      .observations strong {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      /* ── OBSERVATIONS ── */
+      .observations {
+        padding: 24px 28px;
+      }
+
+      .observations h2 {
+        margin-bottom: 14px;
+        font-size: clamp(1.25rem, 2.3vw, 1.9rem);
+      }
+
+      .observations ul {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .observations li {
+        font-size: 0.88rem;
+        line-height: 1.65;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 1060px) {
+        .analysis-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 900px) {
+        .hero,
+        .quote-body,
+        .section-head {
+          grid-template-columns: 1fr;
+        }
+
+        .stat-board {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      /* ── MOBILE ── */
+      @media (max-width: 640px) {
+        .page-shell {
+          width: 100%;
+          padding: max(14px, env(safe-area-inset-top)) 12px max(36px, env(safe-area-inset-bottom));
+        }
+
+        /* hero */
+        .hero {
+          padding: 20px;
+          gap: 14px;
+          border-radius: 10px;
+        }
+
+        .hero h1 {
+          font-size: clamp(2rem, 10vw, 2.8rem);
+          max-width: 14ch;
+        }
+
+        .hero-copy {
+          font-size: 0.86rem;
+        }
+
+        /* stats */
+        .stat-board {
+          padding: 12px;
+          gap: 8px;
+          border-radius: 10px;
+        }
+
+        .metric {
+          padding: 12px;
+        }
+
+        .metric span {
+          font-size: 0.6rem;
+        }
+
+        .metric strong {
+          font-size: clamp(1.2rem, 6.5vw, 1.65rem);
+        }
+
+        /* toolbar */
+        .toolbar {
+          padding: 4px 0;
+        }
+
+        /* finance */
+        .finance-card {
+          padding: 20px 16px 18px;
+          border-radius: 10px;
+        }
+
+        .quote-top {
+          display: grid;
+          gap: 12px;
+          padding-bottom: 18px;
+        }
+
+        .market-cap-value {
+          font-size: clamp(2.2rem, 11.5vw, 3.2rem);
+        }
+
+        .quote-body {
+          gap: 20px;
+          padding-top: 20px;
+        }
+
+        .price-value {
+          font-size: clamp(2.1rem, 11vw, 3rem);
+        }
+
+        .change-line {
+          font-size: clamp(1rem, 5vw, 1.3rem);
+        }
+
+        /* range tabs — scrollable strip */
+        .chart-shell {
+          height: 240px;
+        }
+
+        /* shipment */
+        .shipment-card {
+          padding: 20px 16px;
+          border-radius: 10px;
+        }
+
+        .shipment-chart-shell {
+          height: 280px;
+        }
+
+        .summary-copy {
+          font-size: 0.86rem;
+        }
+
+        .section-head {
+          gap: 10px;
+          margin-bottom: 16px;
+        }
+
+        .section-head h2 {
+          font-size: clamp(1.3rem, 6.5vw, 1.8rem);
+        }
+
+        /* table */
+        .table-card {
+          border-radius: 10px;
+        }
+
+        .table-title {
+          padding: 16px 16px 12px;
+          align-items: flex-start;
+        }
+
+        table {
+          min-width: 0;
+        }
+
+        thead {
+          display: none;
+        }
+
+        tbody {
+          display: grid;
+          gap: 8px;
+          padding: 0 12px 14px;
+        }
+
+        tbody tr,
+        tbody tr:nth-child(odd) {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 8px 12px;
+          align-items: center;
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          padding: 14px;
+          background: var(--surface-inset);
+        }
+
+        td {
+          border-top: 0;
+          padding: 0;
+        }
+
+        td:first-child {
+          grid-row: span 4;
+          align-self: start;
+        }
+
+        td:not(:first-child) {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+          min-width: 0;
+          color: var(--text);
+          font-size: 0.88rem;
+        }
+
+        td:not(:first-child)::before {
+          content: attr(data-label);
+          flex: none;
+          max-width: 45%;
+          color: var(--muted);
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-size: 0.6rem;
+          font-weight: 700;
+        }
+
+        td:nth-child(2) {
+          display: block;
+        }
+
+        td:nth-child(2)::before {
+          display: none;
+        }
+
+        .company-name,
+        .company-meta {
+          overflow-wrap: anywhere;
+        }
+
+        /* analysis */
+        .analysis-grid {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .analysis-card {
+          padding: 16px;
+          border-radius: 10px;
+        }
+
+        /* observations */
+        .observations {
+          padding: 20px 16px;
+          border-radius: 10px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .page-shell {
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+
+        .metric strong {
+          font-size: 1.15rem;
+        }
+
+        .market-cap-value {
+          font-size: 2rem;
+        }
+
+        .price-value {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">JinkoSolar Market View</p>
+          <h1>Jinko market cap and global shipment leadership.</h1>
+        </div>
+        <p class="hero-copy">
+          A live NYSE:JKS market-cap and stock chart paired with the 2024-2025
+          global Top 5 solar module shipment comparison.
+        </p>
+      </header>
+
+      <section class="stat-board" aria-label="Shipment and market highlights">
+        <div class="metric">
+          <span>Jinko Combined Shipments</span>
+          <strong>168.5 GW</strong>
+        </div>
+        <div class="metric">
+          <span>Jinko 2025 Shipments</span>
+          <strong>~90.0 GW</strong>
+        </div>
+        <div class="metric">
+          <span>Top 5 Combined</span>
+          <strong>681.5 GW</strong>
+        </div>
+        <div class="metric">
+          <span>Top 5 Global Share</span>
+          <strong>~60%</strong>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <p class="status-text" data-status>Loading live NYSE:JKS data...</p>
+        <button class="refresh-button" type="button" data-refresh>Refresh</button>
+      </div>
+
+      <main>
+        <section class="finance-card" aria-labelledby="stock-title">
+          <div class="quote-top">
+            <div>
+              <div class="market-cap-value">
+                <strong data-market-cap>0</strong>
+                <span>USD</span>
+              </div>
+              <p class="market-label">JinkoSolar market capitalization</p>
+            </div>
+          </div>
+
+          <div class="quote-body">
+            <div>
+              <h2 id="stock-title">JinkoSolar Holding Co.</h2>
+              <div class="price-value">
+                <strong data-price>0</strong>
+                <span>USD</span>
+              </div>
+              <p class="change-line" data-change>0.00% today</p>
+              <p class="detail-meta" data-meta>NYSE:JKS</p>
+            </div>
+
+            <div>
+              <div class="chart-shell">
+                <canvas data-stock-chart aria-label="NYSE JKS stock chart"></canvas>
+                <div class="live-badge" data-live-badge aria-live="polite">
+                  <span class="live-dot" aria-hidden="true"></span>
+                  <span data-live-label>NYSE closed</span>
+                </div>
+              </div>
+              <p class="chart-meta" data-chart-meta>
+                One-day line generated from live open, high, low, and latest price.
+              </p>
+              <p class="fallback-note" data-fallback-note>
+                Showing cached fallback values because live NYSE data could not be loaded.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="shipment-card" aria-labelledby="shipment-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">2024-2025 Combined Shipments</p>
+              <h2 id="shipment-title">Global Top 5 solar module manufacturers</h2>
+            </div>
+            <p class="summary-copy">
+              The top five manufacturers accounted for approximately 60% of
+              total global shipments. The transition from P-type to N-type cell
+              technology was the primary driver of market share shifts during
+              these 24 months.
+            </p>
+          </div>
+          <div class="shipment-chart-shell">
+            <canvas data-shipment-chart aria-label="2024 to 2025 combined solar shipment comparison chart"></canvas>
+          </div>
+        </section>
+
+        <section class="table-card" aria-labelledby="shipment-table-title">
+          <div class="table-title">
+            <h2 id="shipment-table-title">Shipment Ranking</h2>
+            <span class="asof-pill">2024-2025</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Manufacturer</th>
+                  <th>2024 Shipments</th>
+                  <th>2025 Shipments</th>
+                  <th>Combined Total</th>
+                </tr>
+              </thead>
+              <tbody data-shipment-table></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section aria-labelledby="analysis-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Detailed Manufacturer Analysis</p>
+              <h2 id="analysis-title">Why the leaders moved</h2>
+            </div>
+          </div>
+
+          <div class="analysis-grid" data-analysis-grid></div>
+        </section>
+
+        <section class="observations" aria-labelledby="observations-title">
+          <h2 id="observations-title">Critical Market Observations</h2>
+          <ul>
+            <li>
+              <strong>Price erosion:</strong> Module prices hit record lows
+              under $0.10/watt in some regions, forcing smaller Tier 2
+              manufacturers out of the market.
+            </li>
+            <li>
+              <strong>N-type dominance:</strong> By the end of 2025, N-type
+              modules including TOPCon, HJT, and BC became the industry
+              standard, making up over 85% of these shipments.
+            </li>
+            <li>
+              <strong>The gap:</strong> A significant volume gap remains between
+              JA Solar at #4 and Tongwei at #5, separating the established Big
+              Four from the rest of the industry.
+            </li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="./native-nav.js"></script>
+    <script src="./page-i18n.js"></script>
+    <script>
+      (() => {
+        const jinkoFallback = {
+          marketCap: 1082073730,
+          open: 22,
+          high: 22.1,
+          low: 20.81,
+          close: 21.53,
+          change: -3.6689,
+          volume: 734961,
+          exchange: "NYSE",
+          currency: "USD",
+        };
+
+        const shipmentRows = [
+          {
+            rank: 1,
+            manufacturer: "JinkoSolar",
+            meta: "Volume leader",
+            shipments2024: 78.5,
+            shipments2025: 90,
+            total: 168.5,
+            analysis: [
+              ["Strategy", "Early and aggressive adoption of N-type TOPCon technology."],
+              ["Key factor", "Leveraged a large Southeast Asia manufacturing base to maintain U.S. access while dominating China and Europe."],
+              ["Milestone", "Became the first company to cross the 200 GW cumulative shipment mark during this period."],
+            ],
+          },
+          {
+            rank: 2,
+            manufacturer: "LONGi Solar",
+            meta: "Tech pivot",
+            shipments2024: 67,
+            shipments2025: 85,
+            total: 152,
+            analysis: [
+              ["Strategy", "A mid-period shift from TOPCon to BC Back Contact technology."],
+              ["Key factor", "Trailed Jinko in 2024 during the transition, then 2025 volumes surged as HPBC 2.0 lines reached full capacity."],
+              ["Status", "Remains the world's most valuable solar company by market capitalization."],
+            ],
+          },
+          {
+            rank: 3,
+            manufacturer: "Trina Solar",
+            meta: "Utility heavyweight",
+            shipments2024: 70,
+            shipments2025: 75,
+            total: 145,
+            analysis: [
+              ["Strategy", "Championing the 210mm large-wafer standard."],
+              ["Key factor", "Highly successful in Middle East and Latin America utility-scale markets."],
+              ["Innovation", "Integrated Trina Storage into module sales, increasing contract value even as panel prices fell."],
+            ],
+          },
+          {
+            rank: 4,
+            manufacturer: "JA Solar",
+            meta: "Stability specialist",
+            shipments2024: 63,
+            shipments2025: 72,
+            total: 135,
+            analysis: [
+              ["Strategy", "Balanced geographic distribution and conservative financial management."],
+              ["Key factor", "Maintained consistent vertical integration, producing nearly 80% of components internally."],
+              ["Advantage", "Supply-chain control helped shield the company against price volatility."],
+            ],
+          },
+          {
+            rank: 5,
+            manufacturer: "Tongwei Solar",
+            meta: "Vertical disruptor",
+            shipments2024: 33,
+            shipments2025: 48,
+            total: 81,
+            analysis: [
+              ["Strategy", "Moving from cell supplier to module brand."],
+              ["Key factor", "Used polysilicon and cell dominance to undercut competitors on finished module pricing."],
+              ["Growth", "Highest year-over-year growth rate among the top five."],
+            ],
+          },
+        ];
+
+        const state = {
+          chart: null,
+          shipmentChart: null,
+          refreshTimer: null,
+          marketCap: document.querySelector("[data-market-cap]"),
+          price: document.querySelector("[data-price]"),
+          change: document.querySelector("[data-change]"),
+          meta: document.querySelector("[data-meta]"),
+          status: document.querySelector("[data-status]"),
+          refresh: document.querySelector("[data-refresh]"),
+          fallbackNote: document.querySelector("[data-fallback-note]"),
+          chartMeta: document.querySelector("[data-chart-meta]"),
+          stockCanvas: document.querySelector("[data-stock-chart]"),
+          chartShell: document.querySelector(".chart-shell"),
+          liveBadge: document.querySelector("[data-live-badge]"),
+          liveLabel: document.querySelector("[data-live-label]"),
+          shipmentCanvas: document.querySelector("[data-shipment-chart]"),
+          shipmentTable: document.querySelector("[data-shipment-table]"),
+          analysisGrid: document.querySelector("[data-analysis-grid]"),
+        };
+
+        const compactUsd = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          notation: "compact",
+          maximumFractionDigits: 2,
+        });
+        const priceFormatter = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+        const numberFormatter = new Intl.NumberFormat("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+        const wholeFormatter = new Intl.NumberFormat("en-US", {
+          maximumFractionDigits: 0,
+        });
+        const gwFormatter = new Intl.NumberFormat("en-US", {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        });
+        const isChinesePage = document.documentElement.lang.startsWith("zh");
+        const LIVE_REFRESH_MS = 3000;
+        const CLOSED_REFRESH_MS = 60000;
+
+        function toFiniteNumber(value, fallback = 0) {
+          const number = Number(value);
+          return Number.isFinite(number) ? number : fallback;
+        }
+
+        function previousClose(row) {
+          return row.close / (1 + row.change / 100);
+        }
+
+        function getNewYorkTimeParts(now = new Date()) {
+          const parts = new Intl.DateTimeFormat("en-US", {
+            timeZone: "America/New_York",
+            weekday: "short",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          }).formatToParts(now);
+
+          return parts.reduce((acc, part) => {
+            if (part.type !== "literal") {
+              acc[part.type] = part.value;
+            }
+            return acc;
+          }, {});
+        }
+
+        function isNyseLive(now = new Date()) {
+          const parts = getNewYorkTimeParts(now);
+          const weekday = parts.weekday;
+          const hour = Number(parts.hour);
+          const minute = Number(parts.minute);
+
+          if (!Number.isFinite(hour) || !Number.isFinite(minute)) {
+            return false;
+          }
+
+          if (weekday === "Sat" || weekday === "Sun") {
+            return false;
+          }
+
+          const currentMinutes = hour * 60 + minute;
+          return currentMinutes >= 9 * 60 + 30 && currentMinutes < 16 * 60;
+        }
+
+        function getRefreshDelayMs(isLive) {
+          return isLive ? LIVE_REFRESH_MS : CLOSED_REFRESH_MS;
+        }
+
+        function liveBadgeLabel(isLive) {
+          if (isChinesePage) {
+            return isLive ? "NYSE 开盘 · 3 秒刷新" : "NYSE 已收盘 · 60 秒刷新";
+          }
+
+          return isLive ? "NYSE open · 3s refresh" : "NYSE closed · 60s refresh";
+        }
+
+        function liveStatusMessage(isLive, usedFallback) {
+          if (isChinesePage) {
+            if (usedFallback) {
+              return isLive
+                ? "NYSE 正在交易，但实时数据暂不可用。正在显示备用快照。"
+                : "NYSE 已收盘，正在显示备用快照。";
+            }
+
+            return isLive
+              ? "NYSE:JKS 实时数据已从 TradingView 载入。3 秒自动刷新。"
+              : "NYSE 已收盘。60 秒自动刷新。";
+          }
+
+          if (usedFallback) {
+            return isLive
+              ? "NYSE is open, but live data is unavailable. Showing the fallback snapshot."
+              : "NYSE is closed. Showing the fallback snapshot.";
+          }
+
+          return isLive
+            ? "Live NYSE:JKS data loaded from TradingView. Refreshing every 3 seconds."
+            : "NYSE closed. Refreshing every 60 seconds.";
+        }
+
+        function liveChartMeta(isLive) {
+          if (isChinesePage) {
+            return isLive
+              ? "盘中线条基于开盘价、最高价、最低价与最新价生成，NYSE 交易时段每 3 秒刷新。"
+              : "一日线条基于最新可用的开盘价、最高价、最低价与收盘价生成。";
+          }
+
+          return isLive
+            ? "Live intraday line generated from open, high, low, and the latest price. Auto-refreshing every 3 seconds."
+            : "One-day line generated from the latest available open, high, low, and close.";
+        }
+
+        function updateLiveState(isLive) {
+          state.chartShell?.classList.toggle("is-live", isLive);
+          state.liveBadge?.classList.toggle("is-live", isLive);
+          if (state.liveLabel) {
+            state.liveLabel.textContent = liveBadgeLabel(isLive);
+          }
+        }
+
+        async function fetchJinkoQuote() {
+          const response = await fetch("https://scanner.tradingview.com/america/scan", {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain;charset=UTF-8",
+            },
+            body: JSON.stringify({
+              symbols: {
+                tickers: ["NYSE:JKS"],
+                query: {
+                  types: [],
+                },
+              },
+              columns: [
+                "name",
+                "market_cap_basic",
+                "open",
+                "high",
+                "low",
+                "close",
+                "change",
+                "volume",
+                "exchange",
+                "currency",
+              ],
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`NYSE:JKS request failed: ${response.status}`);
+          }
+
+          const payload = await response.json();
+          const data = payload.data?.[0]?.d || [];
+
+          return {
+            marketCap: toFiniteNumber(data[1], jinkoFallback.marketCap),
+            open: toFiniteNumber(data[2], jinkoFallback.open),
+            high: toFiniteNumber(data[3], jinkoFallback.high),
+            low: toFiniteNumber(data[4], jinkoFallback.low),
+            close: toFiniteNumber(data[5], jinkoFallback.close),
+            change: toFiniteNumber(data[6], jinkoFallback.change),
+            volume: toFiniteNumber(data[7], jinkoFallback.volume),
+            exchange: data[8] || jinkoFallback.exchange,
+            currency: data[9] || jinkoFallback.currency,
+          };
+        }
+
+        function buildIntradaySeries(row) {
+          const previous = previousClose(row);
+          const isPositive = row.close >= previous;
+          const low = Math.min(row.low, row.open, row.close, previous);
+          const high = Math.max(row.high, row.open, row.close, previous);
+          const swing = Math.max(high - low, row.close * 0.012, 0.05);
+          const pattern = isPositive
+            ? [0.2, 0.16, 0.28, 0.24, 0.42, 0.36, 0.54, 0.5, 0.66, 0.58, 0.76, 0.7]
+            : [0.8, 0.73, 0.68, 0.71, 0.58, 0.62, 0.49, 0.52, 0.34, 0.42, 0.3, 0.37];
+
+          return pattern.map((point, index) => {
+            const drift = (row.close - row.open) * (index / (pattern.length - 1));
+            const wave = (point - 0.5) * swing * 0.65;
+            const value = row.open + drift + wave;
+
+            if (index === 0) {
+              return row.open;
+            }
+
+            if (index === pattern.length - 1) {
+              return row.close;
+            }
+
+            return Math.min(high, Math.max(low, value));
+          });
+        }
+
+        function changeClass(value) {
+          if (value > 0) {
+            return "positive";
+          }
+          if (value < 0) {
+            return "negative";
+          }
+          return "neutral";
+        }
+
+        function renderQuote(row, usedFallback, isLive) {
+          const previous = previousClose(row);
+          const direction = row.change >= 0 ? "+" : "";
+
+          state.marketCap.textContent = compactUsd.format(row.marketCap);
+          state.price.textContent = priceFormatter.format(row.close);
+          state.change.className = `change-line ${changeClass(row.change)}`;
+          state.change.textContent = `${direction}${numberFormatter.format(row.close - previous)} (${direction}${numberFormatter.format(row.change)}%) today`;
+          state.meta.textContent = `${row.exchange}:JKS • Volume ${wholeFormatter.format(row.volume)} • ADS market cap basis`;
+          state.chartMeta.textContent = liveChartMeta(isLive);
+          state.fallbackNote.classList.toggle("is-visible", usedFallback);
+          updateLiveState(isLive);
+        }
+
+        function renderStockChart(row, isLive) {
+          if (typeof window.Chart !== "function") {
+            return;
+          }
+
+          if (state.chart) {
+            state.chart.destroy();
+          }
+
+          const series = buildIntradaySeries(row);
+          const positive = row.change >= 0;
+          const lineColor = positive ? "#15803D" : "#DC2626";
+          const fillColor = positive ? "rgba(21, 128, 61, 0.09)" : "rgba(220, 38, 38, 0.08)";
+
+          state.chart = new window.Chart(state.stockCanvas, {
+            type: "line",
+            data: {
+              labels: [
+                "9:30 am",
+                "10:00 am",
+                "10:30 am",
+                "11:00 am",
+                "11:30 am",
+                "12:00 pm",
+                "12:30 pm",
+                "1:00 pm",
+                "1:30 pm",
+                "2:00 pm",
+                "2:30 pm",
+                "Close",
+              ],
+              datasets: [
+                {
+                  label: "JKS",
+                  data: series,
+                  borderColor: lineColor,
+                  backgroundColor: fillColor,
+                  borderWidth: 3,
+                  pointRadius: series.map((_, index) => (index === series.length - 1 ? 5 : 0)),
+                  pointHoverRadius: 6,
+                  pointBackgroundColor: lineColor,
+                  pointBorderColor: lineColor,
+                  fill: true,
+                  tension: 0.28,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              animation: {
+                duration: isLive ? 900 : 500,
+                easing: "easeOutQuart",
+              },
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                tooltip: {
+                  backgroundColor: "#FFFFFF",
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 1,
+                  titleColor: "#0C0C0C",
+                  bodyColor: "#6B6B6B",
+                  padding: 12,
+                  callbacks: {
+                    label(context) {
+                      return `JKS: ${priceFormatter.format(context.parsed.y)}`;
+                    },
+                  },
+                },
+              },
+              scales: {
+                x: {
+                  grid: {
+                    color: "rgba(0, 0, 0, 0.05)",
+                    drawTicks: false,
+                  },
+                  ticks: {
+                    color: "#6B6B6B",
+                    maxRotation: 0,
+                    autoSkip: true,
+                    maxTicksLimit: 6,
+                    font: {
+                      size: 12,
+                      weight: 700,
+                    },
+                  },
+                  border: {
+                    display: false,
+                  },
+                },
+                y: {
+                  grid: {
+                    color: "rgba(0, 0, 0, 0.07)",
+                    drawTicks: false,
+                  },
+                  ticks: {
+                    color: "#6B6B6B",
+                    padding: 10,
+                    font: {
+                      size: 13,
+                      weight: 700,
+                    },
+                    callback(value) {
+                      return numberFormatter.format(value);
+                    },
+                  },
+                  border: {
+                    display: false,
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        function renderShipmentTable() {
+          state.shipmentTable.innerHTML = shipmentRows
+            .map(
+              (row) => `
+                <tr>
+                  <td><span class="rank-pill">${row.rank}</span></td>
+                  <td data-label="Manufacturer">
+                    <span class="company-name">${row.manufacturer}</span>
+                    <span class="company-meta">${row.meta}</span>
+                  </td>
+                  <td data-label="2024">~${gwFormatter.format(row.shipments2024)} GW</td>
+                  <td data-label="2025">~${gwFormatter.format(row.shipments2025)} GW</td>
+                  <td data-label="Combined">${gwFormatter.format(row.total)} GW</td>
+                </tr>
+              `
+            )
+            .join("");
+        }
+
+        function renderShipmentChart() {
+          if (typeof window.Chart !== "function") {
+            return;
+          }
+
+          if (state.shipmentChart) {
+            state.shipmentChart.destroy();
+          }
+
+          state.shipmentChart = new window.Chart(state.shipmentCanvas, {
+            type: "bar",
+            data: {
+              labels: shipmentRows.map((row) => row.manufacturer),
+              datasets: [
+                {
+                  label: "2024-2025 Combined",
+                  data: shipmentRows.map((row) => row.total),
+                  backgroundColor: "rgba(16, 80, 208, 0.75)",
+                  borderColor: "#1050D0",
+                  borderWidth: 1,
+                  borderRadius: 6,
+                },
+              ],
+            },
+            options: {
+              indexAxis: "y",
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "#0C0C0C",
+                    boxWidth: 14,
+                    boxHeight: 14,
+                    font: {
+                      size: 13,
+                      weight: 700,
+                    },
+                  },
+                },
+                tooltip: {
+                  backgroundColor: "#FFFFFF",
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 1,
+                  titleColor: "#0C0C0C",
+                  bodyColor: "#6B6B6B",
+                  padding: 12,
+                  callbacks: {
+                    label(context) {
+                      return `Combined: ${gwFormatter.format(context.parsed.x)} GW`;
+                    },
+                    afterBody(context) {
+                      const row = shipmentRows[context[0].dataIndex];
+                      return [
+                        `2024: ${gwFormatter.format(row.shipments2024)} GW`,
+                        `2025: ${gwFormatter.format(row.shipments2025)} GW`,
+                      ];
+                    },
+                  },
+                },
+              },
+              scales: {
+                x: {
+                  grid: {
+                    color: "rgba(0, 0, 0, 0.07)",
+                    drawTicks: false,
+                  },
+                  ticks: {
+                    color: "#6B6B6B",
+                    font: {
+                      size: 12,
+                      weight: 700,
+                    },
+                    callback(value) {
+                      return `${value} GW`;
+                    },
+                  },
+                  border: {
+                    display: false,
+                  },
+                },
+                y: {
+                  grid: {
+                    display: false,
+                  },
+                  ticks: {
+                    color: "#0C0C0C",
+                    font: {
+                      size: 13,
+                      weight: 800,
+                    },
+                  },
+                  border: {
+                    display: false,
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        function renderAnalysis() {
+          state.analysisGrid.innerHTML = shipmentRows
+            .map(
+              (row) => `
+                <article class="analysis-card">
+                  <p class="eyebrow">#${row.rank}</p>
+                  <h3>${row.manufacturer}</h3>
+                  ${row.analysis
+                    .map(
+                      ([label, value]) => `
+                        <p><strong>${label}:</strong> ${value}</p>
+                      `
+                    )
+                    .join("")}
+                </article>
+              `
+            )
+            .join("");
+        }
+
+        function setStatus(message) {
+          state.status.textContent = message;
+        }
+
+        function scheduleNextRefresh(isLive) {
+          window.clearTimeout(state.refreshTimer);
+          state.refreshTimer = window.setTimeout(refresh, getRefreshDelayMs(isLive));
+        }
+
+        async function refresh() {
+          window.clearTimeout(state.refreshTimer);
+          state.refresh.disabled = true;
+          const marketLive = isNyseLive();
+          setStatus(isChinesePage ? "正在刷新 NYSE:JKS 数据..." : "Refreshing NYSE:JKS data...");
+
+          try {
+            const quote = await fetchJinkoQuote();
+            renderQuote(quote, false, marketLive);
+            renderStockChart(quote, marketLive);
+            setStatus(liveStatusMessage(marketLive, false));
+            window.JinkoMarketCap = {
+              quote,
+              usedFallback: false,
+              refreshedAt: new Date().toISOString(),
+              marketLive,
+              refresh,
+            };
+          } catch (error) {
+            console.warn("NYSE:JKS live refresh failed", error);
+            renderQuote(jinkoFallback, true, marketLive);
+            renderStockChart(jinkoFallback, marketLive);
+            setStatus(liveStatusMessage(marketLive, true));
+            window.JinkoMarketCap = {
+              quote: jinkoFallback,
+              usedFallback: true,
+              refreshedAt: new Date().toISOString(),
+              marketLive,
+              refresh,
+            };
+          } finally {
+            state.refresh.disabled = false;
+            scheduleNextRefresh(isNyseLive());
+          }
+        }
+
+        state.refresh.addEventListener("click", refresh);
+        window.addEventListener("load", () => {
+          renderShipmentTable();
+          renderAnalysis();
+          renderShipmentChart();
+          refresh();
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Eternalgy Solar Proposal</title>
+    <link rel="icon" href="data:," />
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const hashPage = window.location.hash.replace(/^#/, "");
+        const pages = {
+          proposal: "proposal.html",
+          "why-jinko": "tiger-neo3.html",
+          "jinko-leadership": "marcap.html",
+          "why-eternalgy": "why-eternalgy.html",
+          quotation: "quotation.html",
+        };
+        const target = pages[hashPage] || "proposal.html";
+        const query = params.toString();
+        window.location.replace(query ? `${target}?${query}` : target);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
