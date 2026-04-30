@@ -41,38 +41,46 @@
       z-index: 1000;
       width: min(100%, 430px);
       margin: 0 auto;
-      padding: 8px 8px max(8px, env(safe-area-inset-bottom));
-      background: rgba(20, 24, 33, 0.96);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
+      padding: 0 10px max(10px, env(safe-area-inset-bottom));
+      background: transparent;
+    }
+
+    .native-site-nav__chrome {
+      display: grid;
+      gap: 8px;
+      padding: 8px;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 12px 28px rgba(17, 24, 39, 0.08);
     }
 
     .native-site-nav__row {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 4px;
+      gap: 6px;
       width: 100%;
     }
 
     .native-site-nav__language {
       display: flex;
       justify-content: flex-end;
-      gap: 3px;
-      margin-bottom: 6px;
+      gap: 4px;
     }
 
     .native-site-nav__language a {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 26px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      min-height: 24px;
+      border: 1px solid rgba(17, 24, 39, 0.08);
       padding: 0 10px;
-      color: rgba(255, 255, 255, 0.66);
-      background: rgba(255, 255, 255, 0.07);
+      color: rgba(17, 24, 39, 0.62);
+      background: rgba(17, 24, 39, 0.03);
       font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 0.7rem;
-      font-weight: 800;
+      font-size: 0.64rem;
+      font-weight: 700;
       line-height: 1;
       text-decoration: none;
     }
@@ -87,8 +95,8 @@
 
     .native-site-nav__language a.is-active {
       color: #ffffff;
-      background: rgba(16, 80, 208, 0.95);
-      border-color: rgba(16, 80, 208, 0.95);
+      background: #1050d0;
+      border-color: #1050d0;
     }
 
     .native-site-nav__button {
@@ -96,16 +104,16 @@
       align-items: center;
       justify-content: center;
       min-width: 0;
-      min-height: 48px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      border-radius: 10px;
-      padding: 4px 3px;
-      color: rgba(255, 255, 255, 0.68);
-      background: rgba(255, 255, 255, 0.08);
+      min-height: 42px;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 9px;
+      padding: 4px 4px;
+      color: rgba(17, 24, 39, 0.68);
+      background: rgba(17, 24, 39, 0.03);
       box-shadow: none;
       font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 0.57rem;
-      font-weight: 800;
+      font-size: 0.54rem;
+      font-weight: 700;
       letter-spacing: 0;
       line-height: 1.05;
       text-decoration: none;
@@ -116,7 +124,7 @@
     }
 
     .native-site-nav__button.is-active {
-      border-color: rgba(16, 80, 208, 0.24);
+      border-color: rgba(16, 80, 208, 0.22);
       color: #ffffff;
       background: #1050d0;
     }
@@ -128,15 +136,15 @@
 
     @media (max-width: 360px) {
       .native-site-nav {
-        padding-left: 6px;
-        padding-right: 6px;
+        padding-left: 8px;
+        padding-right: 8px;
       }
 
       .native-site-nav__button {
-        min-height: 46px;
-        padding-left: 2px;
-        padding-right: 2px;
-        font-size: 0.52rem;
+        min-height: 40px;
+        padding-left: 3px;
+        padding-right: 3px;
+        font-size: 0.5rem;
       }
     }
   `;
@@ -145,6 +153,9 @@
   nav.className = "native-site-nav";
   nav.dataset.nativeSiteNav = "";
   nav.setAttribute("aria-label", "Proposal site navigation");
+
+  const chrome = document.createElement("div");
+  chrome.className = "native-site-nav__chrome";
 
   const row = document.createElement("div");
   row.className = "native-site-nav__row";
@@ -183,7 +194,8 @@
     row.append(link);
   });
 
-  nav.append(language, row);
+  chrome.append(language, row);
+  nav.append(chrome);
   document.head.append(style);
   document.body.prepend(nav);
 
