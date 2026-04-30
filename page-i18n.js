@@ -123,7 +123,7 @@
 
     document.title = document.title.replace("Solar Proposal", "太阳能光伏方案");
     set(".hero .eyebrow", "太阳能光伏方案");
-    set("[data-customer-name]", "太阳能光伏方案");
+    set(".proposal-callout-label", "客户：");
 
     const address = $("[data-installation-address]");
     if (address?.textContent.startsWith("Prepared for ")) {
