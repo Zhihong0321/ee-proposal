@@ -40,59 +40,24 @@
       "Trusted by Leading Institutions",
     ]);
     const blocks = $$(".block-content");
-    const paragraphs = [
-      [
-        ["Systemized operations and service attitude, proven by results.", true],
-        ["Our efficiency is not about rushing through work. It reflects a highly organized operation and a team that works with discipline, precision, and accountability. With a fully in-house team, we have completed 140 projects in a single month."],
-        ["We see service speed as a direct promise to our clients: the faster we deliver, the sooner you can maximize the green returns from solar."],
-      ],
-      [
-        ["Experience is a valuable asset that goes beyond the product itself.", true],
-        ["From terrace houses and bungalows to large farms and heavy industrial facilities, Eternalgy's installation and design teams have been tested across countless real-world scenarios."],
-        ["What we deliver is more than a solar system. It is the result of hands-on work, continuous refinement, and proven engineering standards. That depth of experience is one of the most valuable hidden assets you gain when choosing Eternalgy."],
-      ],
-      [
-        ["True value is safety. The real cost is risk."],
-        ["A solar project is a long-term investment that can last 20 years or more. Over that lifespan, safety and reliability matter more than cutting corners on price."],
-        ["Choosing the cheapest option often leads to greater costs later. That is why we use premium components designed for long-term durability and extra safety margins. We do not compete on low price alone. We deliver peace of mind throughout the entire system lifecycle."],
-      ],
-      [
-        ["Dedicated in-house roofing specialists.", true],
-        ["Solar begins with the building itself. At Eternalgy, we understand both solar and roofing."],
-        ["Our in-house roof specialists minimize installation risk and provide roof repair and reinforcement capability, helping the system work naturally with your building."],
-      ],
-      [
-        ["National certifications and industry leaders' choice.", true],
-        ["Our commitment to quality and compliance has earned recognition from respected organizations and industry leaders."],
-        ["From government certifications to major industry awards, we build trust through proven capability and consistent standards."],
-      ],
+    const quote = blocks[2]?.querySelector(".quote-box");
+    if (quote) {
+      quote.textContent = "True value is safety. The real cost is risk.";
+    }
+
+    const englishBodies = [
+      "<strong>Systemized operations and service attitude, proven by results.</strong> Our efficiency is not about rushing through work. It reflects a highly organized operation and a team that works with discipline, precision, and accountability. With a fully in-house team, we have completed 140 projects in a single month. We see service speed as a direct promise to our clients: the faster we deliver, the sooner you can maximize the green returns from solar.",
+      "<strong>Experience is a valuable asset that goes beyond the product itself.</strong> From terrace houses and bungalows to large farms and heavy industrial facilities, Eternalgy's installation and design teams have been tested across countless real-world scenarios. What we deliver is more than a solar system. It is the result of hands-on work, continuous refinement, and proven engineering standards. That depth of experience is one of the most valuable hidden assets you gain when choosing Eternalgy.",
+      "A solar project is a long-term investment that can last 20 years or more. Over that lifespan, safety and reliability matter more than cutting corners on price. Choosing the cheapest option often leads to greater costs later. That is why we use premium components designed for long-term durability and extra safety margins. We do not compete on low price alone. We deliver peace of mind throughout the entire system lifecycle.",
+      "<strong>Dedicated in-house roofing specialists.</strong> Solar begins with the building itself. At Eternalgy, we understand both solar and roofing. Our in-house roof specialists minimize installation risk and provide roof repair and reinforcement capability, helping the system work naturally with your building.",
+      "<strong>National certifications and industry leaders' choice.</strong> Our commitment to quality and compliance has earned recognition from respected organizations and industry leaders. From government certifications to major industry awards, we build trust through proven capability and consistent standards.",
     ];
 
     blocks.forEach((block, index) => {
-      const textRows = paragraphs[index] || [];
-      const blockParagraphs = Array.from(block.querySelectorAll("p"));
-      const quote = block.querySelector(".quote-box");
-
-      if (quote && textRows[0]) {
-        quote.textContent = textRows[0][0];
-        textRows.slice(1).forEach((row, rowIndex) => {
-          if (blockParagraphs[rowIndex]) {
-          if (blockParagraphs[rowIndex].textContent !== row[0]) {
-            blockParagraphs[rowIndex].textContent = row[0];
-          }
-          }
-        });
-        return;
+      const paragraph = block.querySelector("p");
+      if (paragraph && englishBodies[index] && paragraph.innerHTML !== englishBodies[index]) {
+        paragraph.innerHTML = englishBodies[index];
       }
-
-      textRows.forEach((row, rowIndex) => {
-        if (blockParagraphs[rowIndex]) {
-          const html = row[1] ? `<strong>${row[0]}</strong>` : row[0];
-          if (blockParagraphs[rowIndex].innerHTML !== html) {
-            blockParagraphs[rowIndex].innerHTML = html;
-          }
-        }
-      });
     });
 
     setAll(".cert-badge", [
