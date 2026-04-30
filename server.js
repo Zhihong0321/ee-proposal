@@ -5,6 +5,7 @@ const { Pool } = require("pg");
 
 const root = __dirname;
 const port = Number(process.env.PORT || 4175);
+const host = process.env.HOST || "0.0.0.0";
 const databaseUrl = process.env.DATABASE_URL;
 
 const pool = databaseUrl
@@ -120,6 +121,6 @@ const server = http.createServer((req, res) => {
   res.end("Method not allowed");
 });
 
-server.listen(port, "127.0.0.1", () => {
-  console.log(`Eternalgy mobile site running at http://127.0.0.1:${port}/index.html`);
+server.listen(port, host, () => {
+  console.log(`Eternalgy mobile site running at http://${host}:${port}/index.html`);
 });
