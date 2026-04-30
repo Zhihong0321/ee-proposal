@@ -82,7 +82,7 @@ async function handleSql(req, res) {
 
 function serveStatic(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`);
-  const requested = url.pathname === "/" ? "/index.html" : decodeURIComponent(url.pathname);
+  const requested = url.pathname === "/" ? "/proposal.html" : decodeURIComponent(url.pathname);
   const resolved = path.resolve(root, `.${requested}`);
 
   if (!resolved.startsWith(root)) {
