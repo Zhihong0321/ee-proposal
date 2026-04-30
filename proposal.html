@@ -86,9 +86,10 @@
       .proposal-logo {
         display: inline-flex;
         align-items: center;
-        width: min(280px, 82vw);
+        justify-content: center;
+        width: min(240px, 70vw);
         min-height: 64px;
-        margin: 0 0 8px;
+        margin: 0 auto 10px;
       }
 
       .proposal-logo img {
@@ -96,7 +97,54 @@
         width: 100%;
         max-height: 70px;
         object-fit: contain;
-        object-position: left center;
+        object-position: center;
+      }
+
+      .proposal-header {
+        display: grid;
+        gap: 10px;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .proposal-title {
+        max-width: none;
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(1.35rem, 6vw, 1.9rem);
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        line-height: 1.08;
+        text-transform: uppercase;
+      }
+
+      .proposal-callout {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: center;
+        gap: 0.45em;
+        margin: 2px 0 0;
+        padding: 10px 14px;
+        border: 1px solid var(--accent-border);
+        border-radius: 999px;
+        background: rgba(16, 80, 208, 0.06);
+      }
+
+      .proposal-callout-label {
+        color: var(--muted);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .proposal-callout-name {
+        color: var(--accent);
+        font-size: clamp(1.7rem, 8vw, 2.6rem);
+        font-weight: 900;
+        line-height: 1;
+        text-wrap: balance;
       }
 
       .eyebrow {
@@ -671,14 +719,17 @@
   <body>
     <main class="page-shell">
       <section class="hero" aria-labelledby="proposal-title">
-        <div>
-          <div class="proposal-logo" aria-label="Eternalgy">
-            <img src="./logo/eternalgy.png" alt="Eternalgy" />
-          </div>
-          <p class="eyebrow">Solar PV Proposal</p>
-          <h1 id="proposal-title" data-customer-name>Solar PV Proposal</h1>
-          <p class="address" data-installation-address>Fetching customer and installation address.</p>
-          <div class="brand-strip" aria-label="Proposed system brands">
+          <div class="proposal-header">
+            <div class="proposal-logo" aria-label="Eternalgy">
+              <img src="./logo/eternalgy.png" alt="Eternalgy" />
+            </div>
+            <h1 id="proposal-title" class="proposal-title">SOLAR PV Proposal</h1>
+            <p class="proposal-callout">
+              <span class="proposal-callout-label">Propose to:</span>
+              <span class="proposal-callout-name" data-customer-name>Customer Name Pending</span>
+            </p>
+            <p class="address" data-installation-address>Fetching customer and installation address.</p>
+            <div class="brand-strip" aria-label="Proposed system brands">
             <div class="brand-card">
               <span>Jinko Panel</span>
               <div class="brand-logo">
@@ -1047,8 +1098,8 @@
           const customerName = nonEmpty(invoiceChoice.customer_name, "Customer Name Pending");
           const customerAddress = nonEmpty(invoiceChoice.customer_address, "Installation address pending");
 
-          byData("customer-name").textContent = "Solar PV Proposal";
-          byData("installation-address").textContent = `Prepared for ${customerName}\n${customerAddress}`;
+          byData("customer-name").textContent = customerName;
+          byData("installation-address").textContent = customerAddress;
           byData("invoice-number").textContent = nonEmpty(invoiceChoice.invoice_number, `Invoice #${invoiceChoice.id}`);
           byData("package-name").textContent = nonEmpty(packageChoice.package_name, `Package #${packageChoice.id}`);
           byData("proposal-date").textContent = new Intl.DateTimeFormat("en-MY", {
