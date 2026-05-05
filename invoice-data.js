@@ -65,12 +65,12 @@
   const numberValue = (...values) => {
     for (const value of values) {
       const number = Number(value);
-      if (Number.isFinite(number) && number > 0) {
+      if (Number.isFinite(number) && number >= 0) {
         return number;
       }
     }
 
-    return 0;
+    return null;
   };
 
   const arrayValue = (value) => (Array.isArray(value) ? value.filter(Boolean) : []);
@@ -228,7 +228,17 @@
     const panelQty = numberValue(row.panel_qty, row.package_panel_qty, matchNumber(packageName, /(\d+)\s*(?:pcs|pieces|panel)/i));
     const panelRating = numberValue(row.panel_rating, panelProduct?.solar_output_rating, matchNumber(packageName, /(\d{3,4})\s*w/i), 650);
     const packagePrice = numberValue(row.package_price);
-    const totalAmount = numberValue(row.total_amount, row.amount, packagePrice);
+    const totalAmount = numberValue(
+      row.total_amount,
+      row.amount,
+      row.grand_total,
+      row.final_amount,
+      row.invoice_amount,
+      row.total_price,
+      row.quote_amount,
+      row.subtotal,
+      packagePrice,
+    );
     const invoiceDate = row.invoice_date || row.created_date || row.created_at || row.updated_at;
     const termsAndConditions = nonEmpty(
       row.template_terms_and_conditions,
@@ -381,7 +391,10 @@
     getInvoiceUid,
     fetchInvoiceBundle,
     formatDate,
-    formatCurrency: (value) => (numberValue(value) ? currency.format(Number(value)) : "Pending final pricing"),
+    formatCurrency: (value) => {
+      const num = numberValue(value);
+      return num !== null ? currency.format(num) : "Pending final pricing";
+    },
     helpers: {
       arrayValue,
       nonEmpty,
