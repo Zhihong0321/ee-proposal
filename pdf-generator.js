@@ -387,19 +387,36 @@ async function buildCombinedHtml(uid, lang) {
   const whyEternalgyHtml = fillTemplate(whyEternalgyTemplate, {});
   const quotationHtml = fillTemplate(quotationTemplate, quotationData);
 
-  // Convert relative image paths to absolute file:// URLs for puppeteer
+  // Convert relative image paths to base64 data URIs for puppeteer (works on Railway/server)
+  const mimeTypes = {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".svg": "image/svg+xml",
+    ".webp": "image/webp",
+    ".gif": "image/gif",
+  };
+
+  function toDataUri(relativePath) {
+    const absolutePath = path.resolve(root, relativePath);
+    if (!fs.existsSync(absolutePath)) return null;
+    const ext = path.extname(absolutePath).toLowerCase();
+    const mime = mimeTypes[ext] || "application/octet-stream";
+    const data = fs.readFileSync(absolutePath).toString("base64");
+    return `data:${mime};base64,${data}`;
+  }
+
   function resolveImagePaths(html) {
     return html.replace(/src="\.\.\/([^"]+)"/g, (match, relativePath) => {
-      const absolutePath = path.resolve(root, relativePath);
-      return `src="file://${absolutePath.replace(/\\/g, "/")}"`;
+      const dataUri = toDataUri(relativePath);
+      return dataUri ? `src="${dataUri}"` : match;
     });
   }
 
-  // Also resolve paths in inline styles (url())
   function resolveStylePaths(html) {
     return html.replace(/url\(["']?\.\.\/([^"')]+)["']?\)/g, (match, relativePath) => {
-      const absolutePath = path.resolve(root, relativePath);
-      return `url("file://${absolutePath.replace(/\\/g, "/")}")`;
+      const dataUri = toDataUri(relativePath);
+      return dataUri ? `url("${dataUri}")` : match;
     });
   }
 
