@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Why Eternalgy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      :root {
+        --gp: #16a34a;
+        --gl: #22c55e;
+        --gb: #dcfce7;
+        --gbd: #86efac;
+        --gd: #14532d;
+        --header-bg: #0d1f0f;
+        --gray-50: #fafafa;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-700: #374151;
+        --gray-900: #111827;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html, body {
+        width: 210mm;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: var(--gray-900);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 10px;
+        line-height: 1.45;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 0;
+        background: #ffffff;
+        position: relative;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* ── Header ── */
+      .header {
+        background: var(--header-bg);
+        padding: 18mm 18mm 14mm;
+      }
+
+      .eyebrow {
+        margin: 0 0 6px;
+        color: var(--gl);
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+      }
+
+      .header-copy {
+        color: var(--gray-400);
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      /* ── Page body ── */
+      .page-body {
+        padding: 10mm 18mm;
+      }
+
+      /* ── Page strip (page 2) ── */
+      .page-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8mm 18mm 5mm;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .page-strip .brand {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--gray-900);
+      }
+
+      .page-strip .brand .dot {
+        width: 16px;
+        height: 16px;
+        background: var(--gp);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 8px;
+        font-weight: 800;
+      }
+
+      .page-strip .page-label {
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      /* ── Block Card ── */
+      .block {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 14px;
+        align-items: start;
+        padding: 14px;
+        border: 1px solid var(--gray-200);
+        border-radius: 8px;
+        background: #ffffff;
+        margin-bottom: 12px;
+      }
+
+      .block:last-child {
+        margin-bottom: 0;
+      }
+
+      .block-image {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        border-radius: 6px;
+        overflow: hidden;
+        background: var(--gray-100);
+      }
+
+      .block-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .block-content {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      /* ── Block Tag ── */
+      .block-tag {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .block-num {
+        display: inline-flex;
+        align-items: center;
+        height: 18px;
+        padding: 0 6px;
+        border: 1px solid var(--gray-200);
+        border-radius: 4px;
+        color: var(--gray-400);
+        background: var(--gray-100);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .block-label {
+        display: inline-flex;
+        align-items: center;
+        height: 18px;
+        padding: 0 8px;
+        border-radius: 12px;
+        color: var(--gp);
+        background: var(--gb);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .block-content h2 {
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        color: var(--gray-900);
+      }
+
+      .block-content p {
+        font-size: 9px;
+        line-height: 1.6;
+        color: var(--gray-700);
+      }
+
+      .block-content p strong {
+        color: var(--gray-900);
+        font-weight: 700;
+      }
+
+      /* ── Quote Box ── */
+      .quote-box {
+        border-left: 3px solid var(--gp);
+        padding: 6px 10px;
+        background: var(--gb);
+        border-radius: 0 6px 6px 0;
+        font-size: 9.5px;
+        font-style: italic;
+        color: var(--gd);
+        font-weight: 600;
+        line-height: 1.45;
+      }
+
+      /* ── Cert Badges ── */
+      .cert-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 2px;
+      }
+
+      .cert-badge {
+        display: inline-flex;
+        align-items: center;
+        height: 20px;
+        padding: 0 8px;
+        border-radius: 12px;
+        color: var(--gp);
+        background: var(--gb);
+        font-size: 8px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      /* ── Footer ── */
+      .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 5mm 18mm;
+        text-align: center;
+        font-size: 7px;
+        color: var(--gray-400);
+        border-top: 1px solid var(--gray-100);
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ════════════════ PAGE 1 ════════════════ -->
+    <div class="page">
+      <div class="header">
+        <p class="eyebrow">Eternalgy</p>
+        <h1>Why Eternalgy</h1>
+        <p class="header-copy">Five core strengths that protect your solar investment.</p>
+      </div>
+
+      <div class="page-body">
+
+        <!-- 01 极致高效 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="../image/installtion.png" alt="Eternalgy installation team at work" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">01</span>
+              <span class="block-label">Efficiency</span>
+            </div>
+            <h2>Exceptional Efficiency</h2>
+            <p><strong>Systemized operations and service attitude, proven by results.</strong> Our efficiency is not about rushing through work. It reflects a highly organized operation and a team that works with discipline, precision, and accountability. With a fully in-house team, we have completed 140 projects in a single month. We see service speed as a direct promise to our clients: the faster we deliver, the sooner you can maximize the green returns from solar.</p>
+          </div>
+        </article>
+
+        <!-- 02 淬炼与沉淀 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="../image/processed/all-roof-type.webp" alt="Eternalgy works across all roof types" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">02</span>
+              <span class="block-label">Experience</span>
+            </div>
+            <h2>Proven Experience</h2>
+            <p><strong>Experience is a valuable asset that goes beyond the product itself.</strong> From terrace houses and bungalows to large farms and heavy industrial facilities, Eternalgy’s installation and design teams have been tested across countless real-world scenarios. What we deliver is more than a solar system. It is the result of hands-on work, continuous refinement, and proven engineering standards. That depth of experience is one of the most valuable hidden assets you gain when choosing Eternalgy.</p>
+          </div>
+        </article>
+
+        <!-- 03 坚守底线 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="../image/processed/quality-component.webp" alt="Quality solar components used by Eternalgy" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">03</span>
+              <span class="block-label">No Compromise</span>
+            </div>
+            <h2>No Compromise</h2>
+            <div class="quote-box">True value is safety. The real cost is risk.</div>
+            <p>A solar project is a long-term investment that can last 20 years or more. Over that lifespan, safety and reliability matter more than cutting corners on price. Choosing the cheapest option often leads to greater costs later. That is why we use premium components designed for long-term durability and extra safety margins. We do not compete on low price alone. We deliver peace of mind throughout the entire system lifecycle.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="footer">
+        Eternalgy Sdn Bhd &middot; Why Eternalgy &middot; Page 1 of 2
+      </div>
+    </div>
+
+    <!-- ════════════════ PAGE 2 ════════════════ -->
+    <div class="page">
+      <div class="page-strip">
+        <div class="brand">
+          <span class="dot">E</span>
+          ETERNALGY &mdash; Why Eternalgy
+        </div>
+        <span class="page-label">Page 2 of 2</span>
+      </div>
+
+      <div class="page-body">
+
+        <!-- 04 护航本源 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="../image/processed/roof-specialist.webp" alt="Eternalgy dedicated roof specialist team" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">04</span>
+              <span class="block-label">Roof Expertise</span>
+            </div>
+            <h2>Roof Expertise</h2>
+            <p><strong>Dedicated in-house roofing specialists.</strong> Solar begins with the building itself. At Eternalgy, we understand both solar and roofing. Our in-house roof specialists minimize installation risk and provide roof repair and reinforcement capability, helping the system work naturally with your building.</p>
+          </div>
+        </article>
+
+        <!-- 05 权威背书 -->
+        <article class="block">
+          <div class="block-image">
+            <img src="../image/certification.png" alt="Eternalgy industry certifications and awards" />
+          </div>
+          <div class="block-content">
+            <div class="block-tag">
+              <span class="block-num">05</span>
+              <span class="block-label">Authority</span>
+            </div>
+            <h2>Trusted by Leading Institutions</h2>
+            <p><strong>National certifications and industry leaders’ choice.</strong> Our commitment to quality and compliance has earned recognition from respected organizations and industry leaders. From government certifications to major industry awards, we build trust through proven capability and consistent standards.</p>
+            <div class="cert-container">
+              <span class="cert-badge">SEDA</span>
+              <span class="cert-badge">CIDB</span>
+              <span class="cert-badge">Maybank Exclusive Partner</span>
+              <span class="cert-badge">SAJ Sole Distributor of Malaysia</span>
+              <span class="cert-badge">SHRDC CoE Partner</span>
+              <span class="cert-badge">Malaysia Golden Bull Award</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="footer">
+        Eternalgy Sdn Bhd &middot; Why Eternalgy &middot; Page 2 of 2
+      </div>
+    </div>
+
+  </body>
+</html>

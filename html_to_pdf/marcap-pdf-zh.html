@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>晋科市值与全球出货 | Eternalgy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      :root {
+        --gp: #16a34a;
+        --gl: #22c55e;
+        --gb: #dcfce7;
+        --gbd: #86efac;
+        --gd: #14532d;
+        --header-bg: #0d1f0f;
+        --dk: #091407;
+        --gray-50: #fafafa;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-700: #374151;
+        --gray-900: #111827;
+        --positive: #16a34a;
+        --negative: #DC2626;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html, body {
+        width: 210mm;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: var(--gray-900);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 10px;
+        line-height: 1.45;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 0;
+        background: #ffffff;
+        position: relative;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* ── Header Band ── */
+      .header {
+        background: var(--header-bg);
+        padding: 16mm 18mm 14mm;
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 20px;
+        align-items: end;
+      }
+
+      .eyebrow {
+        margin: 0 0 6px;
+        color: var(--gl);
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .header h1 {
+        font-size: 24px;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        margin: 0;
+        max-width: 18ch;
+      }
+
+      .header-copy {
+        color: var(--gray-400);
+        font-size: 9px;
+        line-height: 1.55;
+      }
+
+      /* ── Page body ── */
+      .page-body {
+        padding: 10mm 18mm;
+      }
+
+      /* ── Page strip (page 2+) ── */
+      .page-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8mm 18mm 5mm;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .page-strip .brand {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--gray-900);
+      }
+
+      .page-strip .brand .dot {
+        width: 16px;
+        height: 16px;
+        background: var(--gp);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 8px;
+        font-weight: 800;
+      }
+
+      .page-strip .page-label {
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      /* ── Stat Board ── */
+      .stat-board {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .stat {
+        padding: 10px 12px;
+        border-radius: 6px;
+        background: var(--gray-50);
+        border: 1px solid var(--gray-100);
+      }
+
+      .stat .label {
+        font-size: 7px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+      }
+
+      .stat .value {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--gray-900);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ── Finance Card ── */
+      .finance-card {
+        border: 1px solid var(--gray-200);
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+      }
+
+      .finance-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--gray-100);
+        margin-bottom: 12px;
+      }
+
+      .marcap-label {
+        font-size: 8px;
+        color: var(--gray-500);
+        margin-top: 2px;
+      }
+
+      .marcap-value {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .marcap-value .unit {
+        color: var(--gray-400);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
+      .finance-body {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 16px;
+      }
+
+      .stock-title {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--gray-900);
+        margin-bottom: 6px;
+      }
+
+      .price-value {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        font-size: 24px;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+        margin-bottom: 4px;
+      }
+
+      .price-value .unit {
+        color: var(--gray-400);
+        font-size: 11px;
+        font-weight: 400;
+      }
+
+      .change-line {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .positive { color: var(--positive); }
+      .negative { color: var(--negative); }
+
+      .detail-meta {
+        font-size: 8px;
+        color: var(--gray-500);
+      }
+
+      .chart-placeholder {
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-300);
+        font-size: 9px;
+        font-weight: 600;
+        border: 1px dashed var(--gray-200);
+        border-radius: 6px;
+        background: var(--gray-50);
+      }
+
+      .chart-placeholder.tall {
+        height: 160px;
+      }
+
+      .chart-meta {
+        margin-top: 5px;
+        font-size: 7.5px;
+        color: var(--gray-400);
+      }
+
+      /* ── Shipment Section ── */
+      .section-head {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: end;
+        margin-bottom: 12px;
+      }
+
+      .section-head h2 {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--gray-900);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+
+      .summary-copy {
+        font-size: 8.5px;
+        color: var(--gray-500);
+        line-height: 1.55;
+      }
+
+      .shipment-section {
+        margin-bottom: 14px;
+      }
+
+      /* ── Table ── */
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9px;
+        margin-bottom: 14px;
+      }
+
+      .data-table th {
+        text-align: left;
+        padding: 8px 10px;
+        font-size: 7px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--gray-200);
+        background: var(--gray-50);
+      }
+
+      .data-table td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--gray-100);
+        font-weight: 700;
+        color: var(--gray-900);
+        vertical-align: top;
+      }
+
+      .data-table tbody tr:nth-child(odd) {
+        background: var(--gray-50);
+      }
+
+      .rank-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 5px;
+        color: var(--gp);
+        background: var(--gb);
+        border: 1px solid var(--gbd);
+        font-size: 9px;
+        font-weight: 800;
+      }
+
+      .company-name {
+        font-weight: 800;
+        font-size: 9.5px;
+      }
+
+      .company-meta {
+        font-size: 7.5px;
+        color: var(--gray-400);
+        font-weight: 500;
+      }
+
+      /* ── Analysis Grid ── */
+      .analysis-title {
+        margin-bottom: 10px;
+      }
+
+      .analysis-title h2 {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--gray-900);
+        line-height: 1.1;
+      }
+
+      .analysis-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .analysis-grid.two-col {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .analysis-card {
+        padding: 10px 12px;
+        border: 1px solid var(--gray-200);
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      .analysis-card .eyebrow {
+        color: var(--gp);
+        font-size: 7px;
+        margin-bottom: 4px;
+      }
+
+      .analysis-card h3 {
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--gray-900);
+        margin-bottom: 6px;
+        line-height: 1.15;
+      }
+
+      .analysis-card p {
+        font-size: 8px;
+        color: var(--gray-500);
+        line-height: 1.5;
+        margin-bottom: 4px;
+      }
+
+      .analysis-card p:last-child {
+        margin-bottom: 0;
+      }
+
+      .analysis-card strong {
+        color: var(--gray-900);
+        font-weight: 700;
+      }
+
+      /* ── Observations ── */
+      .observations {
+        padding: 14px 16px;
+        border: 1px solid var(--gray-200);
+        border-radius: 8px;
+      }
+
+      .observations h2 {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--gray-900);
+        margin-bottom: 8px;
+      }
+
+      .observations ul {
+        padding-left: 16px;
+        display: grid;
+        gap: 6px;
+      }
+
+      .observations li {
+        font-size: 8.5px;
+        color: var(--gray-500);
+        line-height: 1.55;
+      }
+
+      .observations li strong {
+        color: var(--gray-900);
+        font-weight: 700;
+      }
+
+      /* ── Footer ── */
+      .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 5mm 18mm;
+        text-align: center;
+        font-size: 7px;
+        color: var(--gray-400);
+        border-top: 1px solid var(--gray-100);
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ════════════════ PAGE 1 ════════════════ -->
+    <div class="page">
+      <div class="header">
+        <div>
+          <p class="eyebrow">晋科市场视角</p>
+          <h1>晋科市值与全球出货领导力。</h1>
+        </div>
+        <p class="header-copy">
+          结合 NYSE:JKS 实时市值与股价图，以及 2024-2025 全球前五太阳能组件出货对比。
+        </p>
+      </div>
+
+      <div class="page-body">
+
+        <!-- Stat Board -->
+        <div class="stat-board">
+          <div class="stat">
+            <div class="label">晋科合计出货</div>
+            <div class="value">168.5 GW</div>
+          </div>
+          <div class="stat">
+            <div class="label">晋科 2025 出货</div>
+            <div class="value">~90.0 GW</div>
+          </div>
+          <div class="stat">
+            <div class="label">前五合计</div>
+            <div class="value">681.5 GW</div>
+          </div>
+          <div class="stat">
+            <div class="label">前五全球占比</div>
+            <div class="value">~60%</div>
+          </div>
+        </div>
+
+        <!-- Finance Card -->
+        <div class="finance-card">
+          <div class="finance-top">
+            <div>
+              <div class="marcap-value">
+                <strong>{{market_cap}}</strong>
+                <span class="unit">USD</span>
+              </div>
+              <p class="marcap-label">晋科能源市值</p>
+            </div>
+          </div>
+          <div class="finance-body">
+            <div>
+              <h2 class="stock-title">晋科能源控股有限公司</h2>
+              <div class="price-value">
+                <strong>{{stock_price}}</strong>
+                <span class="unit">USD</span>
+              </div>
+              <p class="change-line {{change_class}}">{{stock_change}}</p>
+              <p class="detail-meta">NYSE:JKS &middot; {{stock_meta}}</p>
+            </div>
+            <div>
+              <div class="chart-placeholder">
+                [Stock chart rendered at generation time]
+              </div>
+              <p class="chart-meta">一日线条基于最新可用的开盘价、最高价、最低价与收盘价生成。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipment Section -->
+        <div class="shipment-section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" style="color: var(--gp);">2024–2025 合计出货</p>
+              <h2>全球前五太阳能组件制造商</h2>
+            </div>
+            <p class="summary-copy">
+              排名结合 2024 年与 2025 年预估出货量。N 型技术是市场份额变化的主要推动力。
+            </p>
+          </div>
+          <div class="chart-placeholder tall">
+            [Shipment bar chart rendered at generation time]
+          </div>
+        </div>
+
+        <!-- Shipment Table -->
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>排名</th>
+              <th>制造商</th>
+              <th>2024 出货</th>
+              <th>2025 出货</th>
+              <th>合计</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="rank-pill">1</span></td>
+              <td>
+                <span class="company-name">JinkoSolar</span>
+                <span class="company-meta">出货领导者</span>
+              </td>
+              <td>78.5 GW</td>
+              <td>90.0 GW</td>
+              <td><strong>168.5 GW</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank-pill">2</span></td>
+              <td>
+                <span class="company-name">LONGi Solar</span>
+                <span class="company-meta">技术转型</span>
+              </td>
+              <td>67.0 GW</td>
+              <td>85.0 GW</td>
+              <td><strong>152.0 GW</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank-pill">3</span></td>
+              <td>
+                <span class="company-name">Trina Solar</span>
+                <span class="company-meta">大型电站强者</span>
+              </td>
+              <td>70.0 GW</td>
+              <td>75.0 GW</td>
+              <td><strong>145.0 GW</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank-pill">4</span></td>
+              <td>
+                <span class="company-name">JA Solar</span>
+                <span class="company-meta">稳健专家</span>
+              </td>
+              <td>63.0 GW</td>
+              <td>72.0 GW</td>
+              <td><strong>135.0 GW</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank-pill">5</span></td>
+              <td>
+                <span class="company-name">Tongwei Solar</span>
+                <span class="company-meta">垂直整合挑战者</span>
+              </td>
+              <td>33.0 GW</td>
+              <td>48.0 GW</td>
+              <td><strong>81.0 GW</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="footer">
+        Eternalgy Sdn Bhd &middot; 晋科市值与全球出货 &middot; 第 1 页，共 2 页
+      </div>
+    </div>
+
+    <!-- ════════════════ PAGE 2 ════════════════ -->
+    <div class="page">
+      <div class="page-strip">
+        <div class="brand">
+          <span class="dot">E</span>
+          ETERNALGY &mdash; 市场与出货报告
+        </div>
+        <span class="page-label">Page 2 of 2</span>
+      </div>
+
+      <div class="page-body">
+
+        <!-- Analysis Section -->
+        <div class="analysis-title">
+          <p class="eyebrow" style="color: var(--gp);">制造商详细分析</p>
+          <h2>领导者为何变化</h2>
+        </div>
+
+        <div class="analysis-grid">
+          <!-- Jinko -->
+          <div class="analysis-card">
+            <p class="eyebrow">Rank #1</p>
+            <h3>JinkoSolar</h3>
+            <p><strong>策略：</strong> 较早并积极采用 N 型 TOPCon 技术。</p>
+            <p><strong>关键因素：</strong> 依托东南亚大型制造基地，在保持美国市场准入的同时主导中国与欧洲市场。</p>
+            <p><strong>里程碑：</strong> 在此期间成为首家累计出货突破 200 GW 的企业。</p>
+          </div>
+          <!-- LONGi -->
+          <div class="analysis-card">
+            <p class="eyebrow">Rank #2</p>
+            <h3>LONGi Solar</h3>
+            <p><strong>策略：</strong> 期间从 TOPCon 转向 BC 背接触技术。</p>
+            <p><strong>关键因素：</strong> 2024 年转型期间落后晋科，随后 2025 年 HPBC 2.0 产线满产后出货快速提升。</p>
+            <p><strong>状态：</strong> 仍是全球市值最高的太阳能企业。</p>
+          </div>
+          <!-- Trina -->
+          <div class="analysis-card">
+            <p class="eyebrow">Rank #3</p>
+            <h3>Trina Solar</h3>
+            <p><strong>策略：</strong> 主推 210mm 大尺寸硅片标准。</p>
+            <p><strong>关键因素：</strong> 在中东与拉丁美洲大型地面电站市场表现突出。</p>
+            <p><strong>创新：</strong> 将天合储能纳入组件销售，即使组件价格下跌也提升了合同价值。</p>
+          </div>
+        </div>
+
+        <div class="analysis-grid two-col">
+          <!-- JA Solar -->
+          <div class="analysis-card">
+            <p class="eyebrow">Rank #4</p>
+            <h3>JA Solar</h3>
+            <p><strong>策略：</strong> 区域布局均衡，财务管理相对稳健。</p>
+            <p><strong>关键因素：</strong> 保持稳定垂直整合，近 80% 组件环节由内部生产。</p>
+            <p><strong>优势：</strong> 供应链控制能力帮助公司抵御价格波动。</p>
+          </div>
+          <!-- Tongwei -->
+          <div class="analysis-card">
+            <p class="eyebrow">Rank #5</p>
+            <h3>Tongwei Solar</h3>
+            <p><strong>策略：</strong> 从电池片供应商转型为组件品牌。</p>
+            <p><strong>关键因素：</strong> 利用多晶硅与电池片优势，在成品组件价格上压低竞争对手。</p>
+            <p><strong>增长：</strong> 在前五名中拥有最高同比增长率。</p>
+          </div>
+        </div>
+
+        <!-- Observations -->
+        <div class="observations">
+          <h2>关键市场观察</h2>
+          <ul>
+            <li>
+              <strong>价格压力：</strong> 部分地区组件价格跌破每瓦 0.10 美元，迫使部分二线制造商退出市场。
+            </li>
+            <li>
+              <strong>N 型主导：</strong> 到 2025 年底，TOPCon、HJT 与 BC 等 N 型组件成为行业标准，占这些出货量超过 85%。
+            </li>
+            <li>
+              <strong>差距：</strong> JA Solar 第四名与 Tongwei 第五名之间仍有明显出货差距，形成头部四强与其他厂商的分界。
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer">
+        Eternalgy Sdn Bhd &middot; 晋科市值与全球出货 &middot; 第 2 页，共 2 页
+      </div>
+    </div>
+
+  </body>
+</html>

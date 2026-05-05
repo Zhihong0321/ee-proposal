@@ -5,28 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>JinkoSolar Market Cap and Global Shipments</title>
     <link rel="icon" href="data:," />
+    <script>
+      // Redirect to shell if accessed directly (not in iframe)
+      if (window.parent === window) {
+        const params = new URLSearchParams(window.location.search);
+        const query = params.toString();
+        window.location.replace(query ? `shell.html#jinko-leadership?${query}` : 'shell.html#jinko-leadership');
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" defer></script>
     <style>
       :root {
         color-scheme: light;
-        --bg: #EEEEEC;
+        --gp: #16a34a;
+        --gl: #22c55e;
+        --gb: #dcfce7;
+        --gbd: #86efac;
+        --gd: #14532d;
+        --nb: #0d1f0f;
+        --dk: #1a2e1c;
+        --dkx: #091407;
+        --g50: #fafafa;
+        --g100: #f3f4f6;
+        --g200: #e5e7eb;
+        --g300: #d1d5db;
+        --g400: #9ca3af;
+        --g500: #6b7280;
+        --g700: #374151;
+        --g900: #111827;
+        --wb: #fffbeb;
+        --wbd: #fde68a;
+        --wt: #d97706;
+        --wdk: #92400e;
+        --eb: #fef2f2;
+        --ebd: #fecaca;
+        --et: #991b1b;
+        --ib: #eff6ff;
+        --it: #3b82f6;
+        --page-bg: #bbf7d0;
+        --app-bg: #f1f5f1;
+        --bg: var(--app-bg);
         --surface: #FFFFFF;
-        --surface-inset: #F5F5F3;
-        --border: rgba(0, 0, 0, 0.08);
-        --text: #0C0C0C;
-        --muted: #6B6B6B;
-        --faint: #B0B0B0;
-        --accent: #1050D0;
-        --accent-dim: rgba(16, 80, 208, 0.07);
-        --accent-border: rgba(16, 80, 208, 0.22);
-        --positive: #15803D;
+        --surface-inset: #f8faf8;
+        --border: var(--g200);
+        --text: var(--g900);
+        --muted: var(--g500);
+        --faint: var(--g400);
+        --accent: var(--gp);
+        --accent-dim: var(--gb);
+        --accent-border: var(--gbd);
+        --positive: var(--gp);
         --negative: #DC2626;
-        --amber: #B45309;
-        --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 18px rgba(0, 0, 0, 0.06);
-        --radius: 12px;
+        --amber: var(--wt);
+        --shadow: none;
+        --radius: 16px;
       }
 
       * {
@@ -41,11 +76,9 @@
         margin: 0;
         min-height: 100vh;
         color: var(--text);
-        font-family:
-          "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+        font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
         line-height: 1.5;
-        background: var(--bg);
+        background: var(--page-bg);
       }
 
       button {
@@ -58,6 +91,8 @@
         width: min(1120px, calc(100% - 32px));
         margin: 0 auto;
         padding: 32px 0 56px;
+        background: var(--app-bg);
+        border-radius: 36px;
       }
 
       /* ── Shared card surface ── */
@@ -70,7 +105,6 @@
       .observations {
         background: var(--surface);
         border-radius: var(--radius);
-        box-shadow: var(--shadow);
       }
 
       /* ── HERO ── */
@@ -81,14 +115,16 @@
         align-items: end;
         padding: 32px;
         margin-bottom: 12px;
-        border-top: 3px solid var(--accent);
+        background: var(--nb);
+        border-radius: 20px;
+        overflow: hidden;
       }
 
       .eyebrow {
         margin: 0 0 10px;
-        color: var(--accent);
+        color: var(--gl);
         text-transform: uppercase;
-        letter-spacing: 0.14em;
+        letter-spacing: 0.08em;
         font-size: 0.65rem;
         font-weight: 700;
       }
@@ -111,7 +147,8 @@
         max-width: 15ch;
         margin-bottom: 0;
         font-size: clamp(2.4rem, 5vw, 4.8rem);
-        font-weight: 900;
+        font-weight: 800;
+        color: #fff;
       }
 
       .hero-copy,
@@ -129,6 +166,7 @@
         margin: 0;
         font-size: 0.92rem;
         line-height: 1.65;
+        color: var(--g400);
       }
 
       /* ── STAT BOARD ── */
@@ -143,17 +181,17 @@
       .metric {
         min-width: 0;
         padding: 14px 16px;
-        border-radius: 8px;
+        border-radius: 12px;
         background: var(--surface-inset);
       }
 
       .metric span {
         display: block;
-        color: var(--muted);
+        color: var(--g400);
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-size: 0.62rem;
-        font-weight: 700;
+        letter-spacing: 0.05em;
+        font-size: 0.6rem;
+        font-weight: 600;
       }
 
       .metric strong {
@@ -162,7 +200,7 @@
         overflow-wrap: anywhere;
         font-size: clamp(1.4rem, 2.8vw, 2.3rem);
         line-height: 1;
-        font-weight: 900;
+        font-weight: 800;
         letter-spacing: -0.02em;
         font-variant-numeric: tabular-nums;
       }
@@ -189,8 +227,8 @@
         align-items: center;
         justify-content: center;
         min-height: 36px;
-        border: 1px solid var(--accent-border);
-        border-radius: 999px;
+        border: 2px solid var(--accent);
+        border-radius: 14px;
         padding: 0 18px;
         color: var(--accent);
         background: var(--accent-dim);
@@ -200,7 +238,7 @@
       }
 
       .refresh-button:hover {
-        background: rgba(16, 80, 208, 0.12);
+        background: var(--gbd);
       }
 
       .refresh-button:focus-visible {
@@ -215,13 +253,13 @@
 
       @keyframes live-pulse {
         0% {
-          box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.38);
+          box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.38);
         }
         70% {
-          box-shadow: 0 0 0 12px rgba(21, 128, 61, 0);
+          box-shadow: 0 0 0 12px rgba(22, 163, 74, 0);
         }
         100% {
-          box-shadow: 0 0 0 0 rgba(21, 128, 61, 0);
+          box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
         }
       }
 
@@ -341,9 +379,9 @@
           118deg,
           transparent 0%,
           transparent 46%,
-          rgba(21, 128, 61, 0.12) 49%,
-          rgba(21, 128, 61, 0.2) 50%,
-          rgba(21, 128, 61, 0.12) 51%,
+          rgba(22, 163, 74, 0.12) 49%,
+          rgba(22, 163, 74, 0.2) 50%,
+          rgba(22, 163, 74, 0.12) 51%,
           transparent 54%,
           transparent 100%
         );
@@ -380,14 +418,14 @@
         gap: 8px;
         min-height: 30px;
         padding: 0 12px;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        border-radius: 999px;
+        border: 1px solid var(--g200);
+        border-radius: 8px;
         color: var(--muted);
         background: rgba(255, 255, 255, 0.92);
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
         backdrop-filter: blur(10px);
         font-size: 0.62rem;
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: 0.12em;
         text-transform: uppercase;
         pointer-events: none;
@@ -401,13 +439,13 @@
       }
 
       .live-badge.is-live {
-        color: var(--positive);
-        border-color: rgba(21, 128, 61, 0.2);
-        background: rgba(21, 128, 61, 0.08);
+        color: var(--accent);
+        border-color: var(--accent-border);
+        background: var(--accent-dim);
       }
 
       .live-badge.is-live .live-dot {
-        background: var(--positive);
+        background: var(--accent);
         animation: live-pulse 1.6s ease-out infinite;
       }
 
@@ -470,7 +508,7 @@
       .asof-pill {
         flex: none;
         border: 1px solid var(--accent-border);
-        border-radius: 4px;
+        border-radius: 20px;
         padding: 5px 12px;
         color: var(--accent);
         background: var(--accent-dim);
@@ -520,7 +558,7 @@
         justify-content: center;
         min-width: 32px;
         min-height: 32px;
-        border-radius: 6px;
+        border-radius: 8px;
         color: var(--accent);
         background: var(--accent-dim);
         border: 1px solid var(--accent-border);
@@ -551,6 +589,11 @@
 
       .analysis-card {
         padding: 18px;
+        border: 1px solid var(--g200);
+      }
+
+      .analysis-card .eyebrow {
+        color: var(--accent);
       }
 
       .analysis-card h3 {
@@ -623,13 +666,14 @@
         .page-shell {
           width: 100%;
           padding: max(14px, env(safe-area-inset-top)) 12px max(36px, env(safe-area-inset-bottom));
+          border-radius: 0;
         }
 
         /* hero */
         .hero {
           padding: 20px;
           gap: 14px;
-          border-radius: 10px;
+          border-radius: 16px;
         }
 
         .hero h1 {
@@ -645,7 +689,7 @@
         .stat-board {
           padding: 12px;
           gap: 8px;
-          border-radius: 10px;
+          border-radius: 12px;
         }
 
         .metric {
@@ -668,7 +712,7 @@
         /* finance */
         .finance-card {
           padding: 20px 16px 18px;
-          border-radius: 10px;
+          border-radius: 12px;
         }
 
         .quote-top {
@@ -702,7 +746,7 @@
         /* shipment */
         .shipment-card {
           padding: 20px 16px;
-          border-radius: 10px;
+          border-radius: 12px;
         }
 
         .shipment-chart-shell {
@@ -724,7 +768,7 @@
 
         /* table */
         .table-card {
-          border-radius: 10px;
+          border-radius: 12px;
         }
 
         .table-title {
@@ -809,13 +853,13 @@
 
         .analysis-card {
           padding: 16px;
-          border-radius: 10px;
+          border-radius: 12px;
         }
 
         /* observations */
         .observations {
           padding: 20px 16px;
-          border-radius: 10px;
+          border-radius: 12px;
         }
       }
 
@@ -990,7 +1034,6 @@
       </main>
     </div>
 
-    <script src="./native-nav.js"></script>
     <script src="./page-i18n.js"></script>
     <script>
       (() => {
@@ -1332,8 +1375,8 @@
 
           const series = buildIntradaySeries(row);
           const positive = row.change >= 0;
-          const lineColor = positive ? "#15803D" : "#DC2626";
-          const fillColor = positive ? "rgba(21, 128, 61, 0.09)" : "rgba(220, 38, 38, 0.08)";
+          const lineColor = positive ? "#16a34a" : "#DC2626";
+          const fillColor = positive ? "rgba(22, 163, 74, 0.09)" : "rgba(220, 38, 38, 0.08)";
 
           state.chart = new window.Chart(state.stockCanvas, {
             type: "line",
@@ -1381,10 +1424,10 @@
                 },
                 tooltip: {
                   backgroundColor: "#FFFFFF",
-                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderColor: "#e5e7eb",
                   borderWidth: 1,
-                  titleColor: "#0C0C0C",
-                  bodyColor: "#6B6B6B",
+                  titleColor: "#111827",
+                  bodyColor: "#6b7280",
                   padding: 12,
                   callbacks: {
                     label(context) {
@@ -1396,11 +1439,11 @@
               scales: {
                 x: {
                   grid: {
-                    color: "rgba(0, 0, 0, 0.05)",
+                    color: "#e5e7eb",
                     drawTicks: false,
                   },
                   ticks: {
-                    color: "#6B6B6B",
+                    color: "#6b7280",
                     maxRotation: 0,
                     autoSkip: true,
                     maxTicksLimit: 6,
@@ -1415,11 +1458,11 @@
                 },
                 y: {
                   grid: {
-                    color: "rgba(0, 0, 0, 0.07)",
+                    color: "#e5e7eb",
                     drawTicks: false,
                   },
                   ticks: {
-                    color: "#6B6B6B",
+                    color: "#6b7280",
                     padding: 10,
                     font: {
                       size: 13,
@@ -1474,8 +1517,8 @@
                 {
                   label: "2024-2025 Combined",
                   data: shipmentRows.map((row) => row.total),
-                  backgroundColor: "rgba(16, 80, 208, 0.75)",
-                  borderColor: "#1050D0",
+                  backgroundColor: "rgba(22, 163, 74, 0.75)",
+                  borderColor: "#16a34a",
                   borderWidth: 1,
                   borderRadius: 6,
                 },
@@ -1488,7 +1531,7 @@
               plugins: {
                 legend: {
                   labels: {
-                    color: "#0C0C0C",
+                    color: "#111827",
                     boxWidth: 14,
                     boxHeight: 14,
                     font: {
@@ -1499,10 +1542,10 @@
                 },
                 tooltip: {
                   backgroundColor: "#FFFFFF",
-                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderColor: "#e5e7eb",
                   borderWidth: 1,
-                  titleColor: "#0C0C0C",
-                  bodyColor: "#6B6B6B",
+                  titleColor: "#111827",
+                  bodyColor: "#6b7280",
                   padding: 12,
                   callbacks: {
                     label(context) {
@@ -1521,11 +1564,11 @@
               scales: {
                 x: {
                   grid: {
-                    color: "rgba(0, 0, 0, 0.07)",
+                    color: "#e5e7eb",
                     drawTicks: false,
                   },
                   ticks: {
-                    color: "#6B6B6B",
+                    color: "#6b7280",
                     font: {
                       size: 12,
                       weight: 700,
@@ -1543,7 +1586,7 @@
                     display: false,
                   },
                   ticks: {
-                    color: "#0C0C0C",
+                    color: "#111827",
                     font: {
                       size: 13,
                       weight: 800,

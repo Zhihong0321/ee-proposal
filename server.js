@@ -2,6 +2,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const { Pool } = require("pg");
+const { generatePdf } = require("./pdf-generator");
 
 const root = __dirname;
 const port = Number(process.env.PORT || 4175);
@@ -80,6 +81,32 @@ async function handleSql(req, res) {
   }
 }
 
+async function handleGeneratePdf(req, res) {
+  try {
+    const body = await readBody(req);
+    const payload = JSON.parse(body || "{}");
+    const uid = typeof payload.uid === "string" ? payload.uid.trim() : "";
+    const lang = payload.lang === "zh" ? "zh" : "en";
+
+    if (!uid) {
+      sendJson(res, 400, { error: "Invoice UID is required" });
+      return;
+    }
+
+    const pdf = await generatePdf(uid, lang);
+
+    res.writeHead(200, {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="eternalgy-proposal-${uid}.pdf"`,
+      "Content-Length": pdf.length,
+      "Cache-Control": "no-store",
+    });
+    res.end(pdf);
+  } catch (error) {
+    sendJson(res, 500, { error: error.message || "PDF generation failed" });
+  }
+}
+
 function serveStatic(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const requested = url.pathname === "/" ? "/proposal.html" : decodeURIComponent(url.pathname);
@@ -107,6 +134,11 @@ function serveStatic(req, res) {
 }
 
 const server = http.createServer((req, res) => {
+  if (req.method === "POST" && req.url === "/api/generate-pdf") {
+    handleGeneratePdf(req, res);
+    return;
+  }
+
   if (req.method === "POST" && req.url.startsWith("/api/sql")) {
     handleSql(req, res);
     return;

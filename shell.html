@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Eternalgy Solar Proposal</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html, body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #bbf7d0;
+      }
+
+      #content-frame {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        z-index: 1;
+      }
+
+      /* Nav container - sits above iframe */
+      #nav-container {
+        position: fixed;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        z-index: 1000;
+        width: min(100%, 430px);
+        pointer-events: none;
+      }
+
+      #nav-container > * {
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe id="content-frame" name="content-frame"></iframe>
+    <div id="nav-container"></div>
+
+    <script>
+      (() => {
+        const frame = document.getElementById('content-frame');
+        const navContainer = document.getElementById('nav-container');
+        const params = new URLSearchParams(window.location.search);
+        const hashPage = window.location.hash.replace(/^#/, '');
+
+        const pages = {
+          proposal: 'proposal.html',
+          'why-jinko': 'tiger-neo3.html',
+          'jinko-leadership': 'marcap.html',
+          'why-eternalgy': 'why-eternalgy.html',
+          quotation: 'quotation.html',
+        };
+
+        // Get current page from hash or default
+        const currentPage = pages[hashPage] || 'proposal.html';
+
+        // Build iframe src with query params
+        const buildSrc = (pageFile) => {
+          const query = params.toString();
+          return query ? `${pageFile}?${query}` : pageFile;
+        };
+
+        // Set initial iframe src
+        frame.src = buildSrc(currentPage);
+
+        // Language handling
+        const currentLang = params.get('lang') === 'zh' ? 'zh' : 'en';
+        const pageLabels = {
+          en: [
+            ['proposal.html', 'PROPOSAL'],
+            ['tiger-neo3.html', 'WHY JINKO'],
+            ['marcap.html', 'JINKO LEADERSHIP'],
+            ['why-eternalgy.html', 'WHY ETERNALGY'],
+            ['quotation.html', 'QUOTATION'],
+          ],
+          zh: [
+            ['proposal.html', '方案'],
+            ['tiger-neo3.html', '晶科 NEO3'],
+            ['marcap.html', '晶科领先'],
+            ['why-eternalgy.html', '为什么我们'],
+            ['quotation.html', '报价'],
+          ],
+        };
+        const pagesConfig = pageLabels[currentLang];
+
+        // Reverse lookup: file -> hash key
+        const fileToHash = Object.entries(pages).reduce((acc, [key, file]) => {
+          acc[file] = key;
+          return acc;
+        }, {});
+
+        // Create nav styles
+        const style = document.createElement('style');
+        style.textContent = `
+          .native-site-nav {
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 10px max(10px, env(safe-area-inset-bottom));
+            background: transparent;
+          }
+
+          .native-site-nav__chrome {
+            display: grid;
+            gap: 8px;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            background:
+              linear-gradient(180deg, rgba(19, 23, 32, 0.98), rgba(10, 12, 18, 0.96));
+            backdrop-filter: blur(18px);
+            box-shadow: 0 16px 34px rgba(10, 12, 18, 0.34);
+          }
+
+          .native-site-nav__row {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 6px;
+            width: 100%;
+          }
+
+          .native-site-nav__language {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 4px;
+          }
+
+          .native-site-nav__lang-group {
+            display: flex;
+            gap: 4px;
+          }
+
+          .native-site-nav__pdf-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            width: 100%;
+          }
+
+          .native-site-nav__gen-pdf {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            border: 1px solid rgba(22, 163, 74, 0.4);
+            border-radius: 10px;
+            padding: 8px 16px;
+            color: #ffffff;
+            background: linear-gradient(180deg, #22c55e, #16a34a);
+            font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 12px rgba(22, 163, 74, 0.3);
+          }
+
+          .native-site-nav__gen-pdf:hover {
+            background: linear-gradient(180deg, #4ade80, #22c55e);
+            border-color: rgba(22, 163, 74, 0.6);
+            box-shadow: 0 4px 18px rgba(22, 163, 74, 0.45);
+          }
+
+          .native-site-nav__gen-pdf:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+          }
+
+          .native-site-nav__lang-group a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0 10px;
+            color: rgba(255, 255, 255, 0.66);
+            background: rgba(255, 255, 255, 0.05);
+            font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 0.64rem;
+            font-weight: 700;
+            line-height: 1;
+            text-decoration: none;
+            cursor: pointer;
+          }
+
+          .native-site-nav__lang-group a:first-child {
+            border-radius: 999px 0 0 999px;
+          }
+
+          .native-site-nav__lang-group a:last-child {
+            border-radius: 0 999px 999px 0;
+          }
+
+          .native-site-nav__lang-group a.is-active {
+            color: #ffffff;
+            background: #1050d0;
+            border-color: #1050d0;
+          }
+
+          .native-site-nav__button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            min-height: 42px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 9px;
+            padding: 4px 4px;
+            color: rgba(255, 255, 255, 0.68);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+            font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 0.54rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            line-height: 1.05;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            cursor: pointer;
+            transition: all 0.15s ease;
+          }
+
+          .native-site-nav__button.is-active {
+            border-color: rgba(48, 116, 255, 0.45);
+            color: #ffffff;
+            background: linear-gradient(180deg, #2f67f4, #1149ce);
+          }
+
+          .native-site-nav__button:hover:not(.is-active) {
+            background: rgba(255, 255, 255, 0.1);
+          }
+
+          .native-site-nav__button:focus-visible {
+            outline: 2px solid #3b73ff;
+            outline-offset: 2px;
+          }
+
+          @media (max-width: 360px) {
+            .native-site-nav {
+              padding-left: 8px;
+              padding-right: 8px;
+            }
+
+            .native-site-nav__button {
+              min-height: 40px;
+              padding-left: 3px;
+              padding-right: 3px;
+              font-size: 0.5rem;
+            }
+          }
+
+          /* Ensure iframe content has bottom padding for nav */
+          #content-frame {
+            padding-bottom: 80px;
+          }
+        `;
+        document.head.append(style);
+
+        // Build nav
+        const nav = document.createElement('nav');
+        nav.className = 'native-site-nav';
+        nav.setAttribute('aria-label', 'Proposal site navigation');
+
+        const chrome = document.createElement('div');
+        chrome.className = 'native-site-nav__chrome';
+
+        const row = document.createElement('div');
+        row.className = 'native-site-nav__row';
+
+        const language = document.createElement('div');
+        language.className = 'native-site-nav__language';
+        language.setAttribute('aria-label', 'Language');
+
+        // Lang group
+        const langGroup = document.createElement('div');
+        langGroup.className = 'native-site-nav__lang-group';
+
+        // Language switcher
+        [
+          ['en', 'EN'],
+          ['zh', '中文'],
+        ].forEach(([lang, label]) => {
+          const link = document.createElement('a');
+          link.textContent = label;
+
+          if (lang === currentLang) {
+            link.classList.add('is-active');
+            link.setAttribute('aria-current', 'true');
+          }
+
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (lang === currentLang) return;
+
+            // Update params
+            const newParams = new URLSearchParams(params);
+            newParams.set('lang', lang);
+            const newQuery = newParams.toString();
+
+            // Update URL without reload
+            const currentHash = window.location.hash || '#proposal';
+            const newUrl = newQuery ? `shell.html${currentHash}?${newQuery}` : `shell.html${currentHash}`;
+            history.pushState({}, '', newUrl);
+
+            // Reload iframe with new language
+            const currentSrc = frame.src.split('?')[0];
+            frame.src = newQuery ? `${currentSrc}?${newQuery}` : currentSrc;
+
+            // Reload page to update nav labels
+            window.location.reload();
+          });
+
+          langGroup.append(link);
+        });
+
+        language.append(langGroup);
+
+        // Page buttons
+        pagesConfig.forEach(([file, label]) => {
+          const btn = document.createElement('a');
+          btn.className = 'native-site-nav__button';
+          btn.textContent = label;
+
+          const hashKey = fileToHash[file];
+          const isActive = file === currentPage || (currentPage === 'index.html' && file === 'proposal.html');
+
+          if (isActive) {
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-current', 'page');
+          }
+
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (btn.classList.contains('is-active')) return;
+
+            // Update iframe
+            frame.src = buildSrc(file);
+
+            // Update URL hash
+            const newHash = `#${hashKey}`;
+            const newUrl = params.toString() ? `shell.html${newHash}?${params.toString()}` : `shell.html${newHash}`;
+            history.pushState({}, '', newUrl);
+
+            // Update active states
+            row.querySelectorAll('.native-site-nav__button').forEach(b => {
+              b.classList.remove('is-active');
+              b.removeAttribute('aria-current');
+            });
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-current', 'page');
+          });
+
+          row.append(btn);
+        });
+
+        // GEN PDF row
+        const pdfRow = document.createElement('div');
+        pdfRow.className = 'native-site-nav__pdf-row';
+
+        const genPdfBtn = document.createElement('a');
+        genPdfBtn.className = 'native-site-nav__gen-pdf';
+        genPdfBtn.textContent = currentLang === 'zh' ? '📄 生成 PDF' : '📄 GEN PDF';
+        genPdfBtn.title = currentLang === 'zh' ? '生成并下载完整方案 PDF' : 'Generate and download full proposal PDF';
+        genPdfBtn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          if (genPdfBtn.disabled) return;
+
+          const uid = params.get('uid') || params.get('invoice_uid') || params.get('invoice') || '';
+          if (!uid) {
+            alert(currentLang === 'zh' ? '缺少发票 UID 参数' : 'Missing invoice UID parameter');
+            return;
+          }
+
+          genPdfBtn.disabled = true;
+          genPdfBtn.textContent = currentLang === 'zh' ? '⏳ 正在生成...' : '⏳ GENERATING...';
+
+          try {
+            const response = await fetch('/api/generate-pdf', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ uid, lang: currentLang }),
+            });
+
+            if (!response.ok) {
+              const err = await response.json().catch(() => ({}));
+              throw new Error(err.error || `HTTP ${response.status}`);
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+          } catch (err) {
+            alert((currentLang === 'zh' ? 'PDF 生成失败: ' : 'PDF generation failed: ') + err.message);
+          } finally {
+            genPdfBtn.disabled = false;
+            genPdfBtn.textContent = currentLang === 'zh' ? '📄 生成 PDF' : '📄 GEN PDF';
+          }
+        });
+
+        pdfRow.append(genPdfBtn);
+
+        chrome.append(language, row, pdfRow);
+        nav.append(chrome);
+        navContainer.append(nav);
+
+        // Handle iframe load to sync URL if redirected
+        frame.addEventListener('load', () => {
+          try {
+            const frameUrl = new URL(frame.contentWindow.location.href);
+            const frameFile = frameUrl.pathname.split('/').pop();
+            const frameParams = new URLSearchParams(frameUrl.search);
+
+            // If iframe loaded a different page (e.g., redirect), update our URL
+            if (frameFile !== currentPage) {
+              const newHashKey = Object.entries(pages).find(([k, v]) => v === frameFile)?.[0] || 'proposal';
+              const newUrl = frameParams.toString()
+                ? `shell.html#${newHashKey}?${frameParams.toString()}`
+                : `shell.html#${newHashKey}`;
+              history.replaceState({}, '', newUrl);
+            }
+          } catch (e) {
+            // Cross-origin restrictions may prevent this
+          }
+        });
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', () => {
+          const newHashPage = window.location.hash.replace(/^#/, '');
+          const newPage = pages[newHashPage] || 'proposal.html';
+          frame.src = buildSrc(newPage);
+
+          // Update active button
+          row.querySelectorAll('.native-site-nav__button').forEach((btn, idx) => {
+            const [file] = pagesConfig[idx];
+            btn.classList.toggle('is-active', file === newPage);
+            if (file === newPage) {
+              btn.setAttribute('aria-current', 'page');
+            } else {
+              btn.removeAttribute('aria-current');
+            }
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

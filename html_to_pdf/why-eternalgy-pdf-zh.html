@@ -2,142 +2,165 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>为什么选择 Eternalgy</title>
-    <link rel="icon" href="data:," />
-    <script>
-      // Redirect to shell if accessed directly (not in iframe)
-      if (window.parent === window) {
-        const params = new URLSearchParams(window.location.search);
-        const query = params.toString();
-        window.location.replace(query ? `shell.html#why-eternalgy?${query}` : 'shell.html#why-eternalgy');
-      }
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
       :root {
-        color-scheme: light;
         --gp: #16a34a;
         --gl: #22c55e;
         --gb: #dcfce7;
         --gbd: #86efac;
         --gd: #14532d;
-        --nb: #0d1f0f;
-        --dk: #1a2e1c;
-        --dkx: #091407;
-        --g50: #fafafa;
-        --g100: #f3f4f6;
-        --g200: #e5e7eb;
-        --g300: #d1d5db;
-        --g400: #9ca3af;
-        --g500: #6b7280;
-        --g700: #374151;
-        --g900: #111827;
-        --page-bg: #bbf7d0;
-        --app-bg: #f1f5f1;
-        --f: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        --header-bg: #0d1f0f;
+        --gray-50: #fafafa;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-700: #374151;
+        --gray-900: #111827;
       }
 
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        -webkit-tap-highlight-color: transparent;
       }
 
-      html {
-        min-height: 100%;
-        background: var(--page-bg);
-        scroll-behavior: smooth;
-      }
-
-      body {
-        min-height: 100vh;
-        background: var(--page-bg);
-        color: var(--g900);
-        font-family: var(--f);
+      html, body {
+        width: 210mm;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: var(--gray-900);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 10px;
         line-height: 1.45;
-        display: flex;
-        justify-content: center;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
 
-      /* ── SHELL ── */
-      .mobile-shell {
-        width: min(100%, 430px);
-        min-height: 100vh;
-        background: var(--app-bg);
-        padding:
-          max(20px, env(safe-area-inset-top))
-          14px
-          max(36px, env(safe-area-inset-bottom));
+      img {
+        display: block;
+        max-width: 100%;
       }
 
-      @media (min-width: 500px) {
-        body {
-          padding: 28px 0;
-        }
-        .mobile-shell {
-          border-radius: 36px;
-          box-shadow: 0 32px 80px rgba(0,0,0,0.22);
-        }
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 0;
+        background: #ffffff;
+        position: relative;
+        page-break-after: always;
       }
 
-      /* ── HERO ── */
-      .hero {
-        padding: 24px 18px 20px;
-        background: var(--nb);
-        border-radius: 20px;
-        overflow: hidden;
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* ── Header ── */
+      .header {
+        background: var(--header-bg);
+        padding: 18mm 18mm 14mm;
       }
 
       .eyebrow {
-        margin: 0;
+        margin: 0 0 6px;
         color: var(--gl);
-        font-size: 10px;
+        font-size: 8px;
         font-weight: 700;
-        letter-spacing: 0.08em;
         text-transform: uppercase;
+        letter-spacing: 0.08em;
       }
 
-      .hero h1 {
-        margin: 8px 0 0;
-        font-size: clamp(2rem, 10vw, 2.8rem);
+      .header h1 {
+        font-size: 28px;
         font-weight: 800;
-        line-height: 1.05;
-        letter-spacing: -0.025em;
+        color: #ffffff;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+      }
+
+      .header-copy {
+        color: var(--gray-400);
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      /* ── Page body ── */
+      .page-body {
+        padding: 10mm 18mm;
+      }
+
+      /* ── Page strip (page 2) ── */
+      .page-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8mm 18mm 5mm;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .page-strip .brand {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--gray-900);
+      }
+
+      .page-strip .brand .dot {
+        width: 16px;
+        height: 16px;
+        background: var(--gp);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: #fff;
+        font-size: 8px;
+        font-weight: 800;
       }
 
-      .hero-copy {
-        margin: 10px 0 0;
-        color: var(--g400);
-        font-size: 13px;
-        line-height: 1.6;
-        max-width: 32ch;
+      .page-strip .page-label {
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
       }
 
-      /* ── BLOCKS ── */
-      .blocks {
-        display: grid;
-        gap: 10px;
-        margin-top: 10px;
-      }
-
+      /* ── Block Card ── */
       .block {
-        background: #fff;
-        border-radius: 16px;
-        overflow: hidden;
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 14px;
+        align-items: start;
+        padding: 14px;
+        border: 1px solid var(--gray-200);
+        border-radius: 8px;
+        background: #ffffff;
+        margin-bottom: 12px;
       }
 
-      /* ── IMAGE ── */
+      .block:last-child {
+        margin-bottom: 0;
+      }
+
       .block-image {
         width: 100%;
-        aspect-ratio: 16 / 9;
-        background: var(--g100);
-        display: block;
+        aspect-ratio: 4 / 3;
+        border-radius: 6px;
         overflow: hidden;
+        background: var(--gray-100);
       }
 
       .block-image img {
@@ -145,34 +168,31 @@
         height: 100%;
         object-fit: cover;
         object-position: center;
-        display: block;
       }
 
-      /* ── CONTENT ── */
       .block-content {
-        padding: 18px 16px 20px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 6px;
       }
 
-      /* ── BLOCK TAG ── */
+      /* ── Block Tag ── */
       .block-tag {
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 6px;
       }
 
       .block-num {
         display: inline-flex;
         align-items: center;
-        height: 22px;
-        padding: 0 8px;
-        border: 1px solid var(--g200);
-        border-radius: 6px;
-        color: var(--g400);
-        background: var(--g100);
-        font-size: 10px;
+        height: 18px;
+        padding: 0 6px;
+        border: 1px solid var(--gray-200);
+        border-radius: 4px;
+        color: var(--gray-400);
+        background: var(--gray-100);
+        font-size: 8px;
         font-weight: 700;
         letter-spacing: 0.06em;
         font-variant-numeric: tabular-nums;
@@ -181,108 +201,100 @@
       .block-label {
         display: inline-flex;
         align-items: center;
-        height: 22px;
-        padding: 0 10px;
-        border: none;
-        border-radius: 20px;
+        height: 18px;
+        padding: 0 8px;
+        border-radius: 12px;
         color: var(--gp);
         background: var(--gb);
-        font-size: 10px;
+        font-size: 8px;
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
       }
 
-      /* ── HEADING ── */
       .block-content h2 {
-        font-size: clamp(1.5rem, 6.5vw, 1.8rem);
+        font-size: 13px;
         font-weight: 800;
-        line-height: 1.1;
-        letter-spacing: -0.02em;
-        color: var(--g900);
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        color: var(--gray-900);
       }
 
-      /* ── BODY TEXT ── */
       .block-content p {
-        font-size: 13px;
-        line-height: 1.65;
-        color: var(--g700);
+        font-size: 9px;
+        line-height: 1.6;
+        color: var(--gray-700);
       }
 
       .block-content p strong {
-        color: var(--g900);
+        color: var(--gray-900);
         font-weight: 700;
       }
 
-      /* ── QUOTE BOX ── */
+      /* ── Quote Box ── */
       .quote-box {
         border-left: 3px solid var(--gp);
-        padding: 10px 14px;
+        padding: 6px 10px;
         background: var(--gb);
-        border-radius: 0 8px 8px 0;
-        font-size: 13px;
+        border-radius: 0 6px 6px 0;
+        font-size: 9.5px;
         font-style: italic;
         color: var(--gd);
         font-weight: 600;
-        line-height: 1.55;
+        line-height: 1.45;
       }
 
-      /* ── CERT BADGES ── */
+      /* ── Cert Badges ── */
       .cert-container {
         display: flex;
         flex-wrap: wrap;
-        gap: 6px;
+        gap: 4px;
+        margin-top: 2px;
       }
 
       .cert-badge {
         display: inline-flex;
         align-items: center;
-        height: 26px;
-        padding: 0 10px;
-        border: none;
-        border-radius: 20px;
+        height: 20px;
+        padding: 0 8px;
+        border-radius: 12px;
         color: var(--gp);
         background: var(--gb);
-        font-size: 11px;
+        font-size: 8px;
         font-weight: 600;
         white-space: nowrap;
       }
 
-      /* ── CTA ── */
-      .cta-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        align-self: flex-start;
-        height: 44px;
-        padding: 0 24px;
-        border: none;
-        border-radius: 14px;
-        background: var(--g900);
-        color: #fff;
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        text-decoration: none;
-        margin-top: 2px;
+      /* ── Footer ── */
+      .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 5mm 18mm;
+        text-align: center;
+        font-size: 7px;
+        color: var(--gray-400);
+        border-top: 1px solid var(--gray-100);
       }
     </style>
   </head>
   <body>
-    <div class="mobile-shell">
 
-      <header class="hero">
+    <!-- ════════════════ PAGE 1 ════════════════ -->
+    <div class="page">
+      <div class="header">
         <p class="eyebrow">Eternalgy</p>
         <h1>为什么选择 Eternalgy</h1>
-        <p class="hero-copy">五大核心优势，为您的光伏投资保驾护航。</p>
-      </header>
+        <p class="header-copy">五大核心优势，为您的光伏投资保驾护航。</p>
+      </div>
 
-      <main class="blocks">
+      <div class="page-body">
 
         <!-- 01 极致高效 -->
         <article class="block">
           <div class="block-image">
-            <img src="./image/installtion.png" alt="Eternalgy installation team at work" decoding="async" />
+            <img src="../image/installtion.png" alt="Eternalgy installation team at work" />
           </div>
           <div class="block-content">
             <div class="block-tag">
@@ -297,7 +309,7 @@
         <!-- 02 淬炼与沉淀 -->
         <article class="block">
           <div class="block-image">
-            <img src="./image/processed/all-roof-type.webp" alt="Eternalgy works across all roof types" loading="lazy" decoding="async" />
+            <img src="../image/processed/all-roof-type.webp" alt="Eternalgy works across all roof types" />
           </div>
           <div class="block-content">
             <div class="block-tag">
@@ -312,7 +324,7 @@
         <!-- 03 坚守底线 -->
         <article class="block">
           <div class="block-image">
-            <img src="./image/processed/quality-component.webp" alt="Quality solar components used by Eternalgy" loading="lazy" decoding="async" />
+            <img src="../image/processed/quality-component.webp" alt="Quality solar components used by Eternalgy" />
           </div>
           <div class="block-content">
             <div class="block-tag">
@@ -325,10 +337,29 @@
           </div>
         </article>
 
+      </div>
+
+      <div class="footer">
+        Eternalgy Sdn Bhd &middot; 为什么选择 Eternalgy &middot; Page 1 of 2
+      </div>
+    </div>
+
+    <!-- ════════════════ PAGE 2 ════════════════ -->
+    <div class="page">
+      <div class="page-strip">
+        <div class="brand">
+          <span class="dot">E</span>
+          ETERNALGY &mdash; 为什么选择 Eternalgy
+        </div>
+        <span class="page-label">Page 2 of 2</span>
+      </div>
+
+      <div class="page-body">
+
         <!-- 04 护航本源 -->
         <article class="block">
           <div class="block-image">
-            <img src="./image/processed/roof-specialist.webp" alt="Eternalgy dedicated roof specialist team" loading="lazy" decoding="async" />
+            <img src="../image/processed/roof-specialist.webp" alt="Eternalgy dedicated roof specialist team" />
           </div>
           <div class="block-content">
             <div class="block-tag">
@@ -343,7 +374,7 @@
         <!-- 05 权威背书 -->
         <article class="block">
           <div class="block-image">
-            <img src="./image/certification.png" alt="Eternalgy industry certifications and awards" loading="lazy" decoding="async" />
+            <img src="../image/certification.png" alt="Eternalgy industry certifications and awards" />
           </div>
           <div class="block-content">
             <div class="block-tag">
@@ -363,8 +394,12 @@
           </div>
         </article>
 
-      </main>
+      </div>
+
+      <div class="footer">
+        Eternalgy Sdn Bhd &middot; 为什么选择 Eternalgy &middot; Page 2 of 2
+      </div>
     </div>
-    <script src="./page-i18n.js"></script>
+
   </body>
 </html>

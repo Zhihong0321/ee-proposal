@@ -1,0 +1,822 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jinko Tiger Neo 3.0 对比报告 | Eternalgy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      :root {
+        --gp: #16a34a;
+        --gl: #22c55e;
+        --gb: #dcfce7;
+        --gbd: #86efac;
+        --gd: #14532d;
+        --header-bg: #0d1f0f;
+        --dk: #091407;
+        --gray-50: #fafafa;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-700: #374151;
+        --gray-900: #111827;
+        --warn-bg: #fffbeb;
+        --warn-border: #fde68a;
+        --warn-text: #92400e;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html, body {
+        width: 210mm;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: var(--gray-900);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 10px;
+        line-height: 1.45;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      /* ── Page container ── */
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 0;
+        background: #ffffff;
+        position: relative;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* ── Header Band (page 1 only) ── */
+      .header {
+        background: var(--header-bg);
+        padding: 18mm 18mm 14mm;
+      }
+
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+
+      .header-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .header-logo-box {
+        width: 22px;
+        height: 22px;
+        background: var(--gp);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+
+      .header-brand-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0.04em;
+      }
+
+      .header-badge {
+        background: #1e3a20;
+        color: var(--gl);
+        font-size: 9px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
+      }
+
+      .header h1 {
+        font-size: 26px;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+        max-width: 16ch;
+      }
+
+      .header-copy {
+        color: var(--gray-400);
+        font-size: 10px;
+        line-height: 1.5;
+        max-width: 50ch;
+        margin-bottom: 14px;
+      }
+
+      .header-stats {
+        display: flex;
+        background: var(--dk);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .header-stats > div {
+        flex: 1;
+        padding: 10px 8px;
+        text-align: center;
+        border-right: 1px solid #1a2e1a;
+      }
+
+      .header-stats > div:last-child {
+        border-right: none;
+      }
+
+      .header-stats span {
+        display: block;
+        color: var(--gl);
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .header-stats strong {
+        display: block;
+        margin-top: 3px;
+        font-size: 16px;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+      }
+
+      /* ── Assumptions Bar ── */
+      .assumptions-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 18mm;
+        background: var(--gray-50);
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .assumptions-bar .title {
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-right: 4px;
+        flex-shrink: 0;
+      }
+
+      .assumptions-bar .tag {
+        padding: 3px 8px;
+        background: #fff;
+        border: 1px solid var(--gray-200);
+        border-radius: 4px;
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--gray-700);
+      }
+
+      .assumptions-bar .tag span {
+        color: var(--gray-400);
+        font-weight: 600;
+      }
+
+      /* ── Page body ── */
+      .page-body {
+        padding: 10mm 18mm;
+      }
+
+      /* ── Page 2+ header strip ── */
+      .page-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8mm 18mm 5mm;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .page-strip .brand {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--gray-900);
+      }
+
+      .page-strip .brand .dot {
+        width: 16px;
+        height: 16px;
+        background: var(--gp);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 8px;
+        font-weight: 800;
+      }
+
+      .page-strip .page-label {
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      /* ── Comparison Card ── */
+      .comparison {
+        padding: 14px 0;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .comparison:last-child {
+        border-bottom: none;
+      }
+
+      .comp-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .comp-number {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 7px;
+        background: var(--gray-100);
+        color: var(--gray-400);
+        border-radius: 12px;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        flex-shrink: 0;
+      }
+
+      .comp-advantage {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        background: var(--gb);
+        color: var(--gp);
+        border-radius: 12px;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+      }
+
+      .comp-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--gray-900);
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        margin-bottom: 4px;
+      }
+
+      .comp-vs {
+        font-size: 9px;
+        color: var(--gray-400);
+      }
+
+      .comp-vs span {
+        display: inline;
+        padding: 1px 6px;
+        border-radius: 10px;
+        color: var(--warn-text);
+        background: var(--warn-bg);
+        border: 1px solid var(--warn-border);
+        font-weight: 600;
+        font-size: 8.5px;
+      }
+
+      .comp-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .comp-desc {
+        font-size: 9px;
+        color: var(--gray-500);
+        line-height: 1.55;
+      }
+
+      /* ── Metric pair ── */
+      .metric-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .metric-box {
+        padding: 8px;
+        background: var(--gray-50);
+        border: 1px solid var(--gray-100);
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .metric-box .label {
+        font-size: 7px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .metric-box .value {
+        display: block;
+        margin-top: 3px;
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--gp);
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ── Chart area ── */
+      .chart-area {
+        padding: 8px;
+        background: var(--gray-50);
+        border: 1px solid var(--gray-100);
+        border-radius: 6px;
+      }
+
+      .chart-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2px 5px;
+      }
+
+      .chart-head span {
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .chart-head strong {
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--gp);
+      }
+
+      .chart-basis {
+        margin: 0 2px 6px;
+        padding: 5px 8px;
+        border: 1px solid var(--gbd);
+        border-radius: 6px;
+        background: rgba(255,255,255,0.7);
+      }
+
+      .chart-basis span {
+        display: block;
+        font-size: 7px;
+        font-weight: 700;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .chart-basis strong {
+        display: block;
+        margin-top: 1px;
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--gray-900);
+      }
+
+      .chart-placeholder {
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-300);
+        font-size: 9px;
+        font-weight: 600;
+        border: 1px dashed var(--gray-200);
+        border-radius: 4px;
+        background: #fff;
+      }
+
+      .chart-legend {
+        display: flex;
+        gap: 12px;
+        padding: 5px 2px 0;
+        font-size: 8px;
+        font-weight: 600;
+        color: var(--gray-500);
+      }
+
+      .chart-legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .chart-legend i {
+        width: 14px;
+        height: 0;
+        display: inline-block;
+      }
+
+      .dot-jinko {
+        border-top: 2.5px solid var(--gp);
+      }
+
+      .dot-baseline {
+        border-top: 2.5px dashed var(--gray-400);
+      }
+
+      /* ── Summary Box ── */
+      .summary-box {
+        padding: 16px 18px;
+        background: var(--gb);
+        border: 1px solid var(--gbd);
+        border-radius: 10px;
+        margin-top: 12px;
+      }
+
+      .summary-box .eyebrow {
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 4px;
+      }
+
+      .summary-box h2 {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--gray-900);
+        line-height: 1.1;
+        margin-bottom: 8px;
+      }
+
+      .summary-box .copy {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--gray-900);
+        line-height: 1.55;
+      }
+
+      .summary-box .copy strong {
+        color: var(--gp);
+        font-weight: 800;
+      }
+
+      .summary-box .note {
+        margin-top: 6px;
+        font-size: 8px;
+        font-weight: 600;
+        color: var(--gray-500);
+        line-height: 1.4;
+      }
+
+      /* ── Footer ── */
+      .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 5mm 18mm;
+        text-align: center;
+        font-size: 7px;
+        color: var(--gray-400);
+        border-top: 1px solid var(--gray-100);
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ════════════════ PAGE 1 ════════════════ -->
+    <div class="page">
+      <div class="header">
+        <div class="header-top">
+          <div class="header-brand">
+            <div class="header-logo-box">E</div>
+            <span class="header-brand-name">ETERNALGY</span>
+          </div>
+          <div class="header-badge">对比实验室</div>
+        </div>
+        <h1>Tiger Neo 3.0 年年赢更多。</h1>
+        <p class="header-copy">
+          以真实系统容量计算，比较 10 年累计发电差异与电费节省。
+        </p>
+        <div class="header-stats">
+          <div>
+            <span>系统容量</span>
+            <strong>{{system_size}}</strong>
+          </div>
+          <div>
+            <span>基础年发电</span>
+            <strong>{{base_annual_kwh}}</strong>
+          </div>
+          <div>
+            <span>10年额外节省</span>
+            <strong>{{total_extra_savings}}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="assumptions-bar">
+        <span class="title">假设参数</span>
+        <span class="tag"><span>片数：</span> {{panel_qty}}</span>
+        <span class="tag"><span>瓦数：</span> {{panel_wattage}}W</span>
+        <span class="tag"><span>日照小时：</span> {{peak_sun_hours}}</span>
+        <span class="tag"><span>电费：</span> RM {{electricity_rate}}/kWh</span>
+      </div>
+
+      <div class="page-body">
+
+        <!-- ── 01 Heat Co-efficiency ── -->
+        <div class="comparison">
+          <div class="comp-header">
+            <span class="comp-number">01</span>
+            <span class="comp-advantage">80°C 屋顶模型</span>
+          </div>
+          <h2 class="comp-title">高温系数</h2>
+          <p class="comp-vs">vs <span>Canadian Solar TOPHiKu6</span></p>
+
+          <div class="comp-body">
+            <div>
+              <p class="comp-desc">
+                在马来西亚炎热屋顶温度下，Tiger Neo 3.0 功率损失更少，优势逐年扩大。
+              </p>
+              <div class="metric-pair">
+                <div class="metric-box">
+                  <span class="label">10年额外发电</span>
+                  <strong class="value">{{heat_extra_kwh}}</strong>
+                </div>
+                <div class="metric-box">
+                  <span class="label">额外节省</span>
+                  <strong class="value">{{heat_extra_rm}}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="chart-area">
+              <div class="chart-head">
+                <span>累计差异</span>
+                <strong>kWh 优势</strong>
+              </div>
+              <div class="chart-basis">
+                <span>基于系统容量：</span>
+                <strong>{{system_basis}}</strong>
+              </div>
+              <div class="chart-placeholder">[Chart rendered at generation time]</div>
+              <div class="chart-legend">
+                <span><i class="dot-jinko"></i> 晋科优势</span>
+                <span><i class="dot-baseline"></i> 基准线</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 02 Low Light Response ── -->
+        <div class="comparison">
+          <div class="comp-header">
+            <span class="comp-number">02</span>
+            <span class="comp-advantage">2.5% 发电提升</span>
+          </div>
+          <h2 class="comp-title">弱光响应</h2>
+          <p class="comp-vs">vs <span>LONGi Hi-MO X6 Explorer (BC Tech)</span></p>
+
+          <div class="comp-body">
+            <div>
+              <p class="comp-desc">
+                N 型 TOPCon 电池在清晨、傍晚、烟霞和雨季阴天仍能保持更强发电能力。
+              </p>
+              <div class="metric-pair">
+                <div class="metric-box">
+                  <span class="label">10年额外发电</span>
+                  <strong class="value">{{lowlight_extra_kwh}}</strong>
+                </div>
+                <div class="metric-box">
+                  <span class="label">额外节省</span>
+                  <strong class="value">{{lowlight_extra_rm}}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="chart-area">
+              <div class="chart-head">
+                <span>累计差异</span>
+                <strong>kWh 优势</strong>
+              </div>
+              <div class="chart-basis">
+                <span>基于系统容量：</span>
+                <strong>{{system_basis}}</strong>
+              </div>
+              <div class="chart-placeholder">[Chart rendered at generation time]</div>
+              <div class="chart-legend">
+                <span><i class="dot-jinko"></i> 晋科优势</span>
+                <span><i class="dot-baseline"></i> 基准线</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 03 Bi-Facial Gain ── -->
+        <div class="comparison">
+          <div class="comp-header">
+            <span class="comp-number">03</span>
+            <span class="comp-advantage">10% 屋顶反照率</span>
+          </div>
+          <h2 class="comp-title">双面增益</h2>
+          <p class="comp-vs">vs <span>LONGi Hi-MO X6 Guardian Bifacial</span></p>
+
+          <div class="comp-body">
+            <div>
+              <p class="comp-desc">
+                透明背面可吸收更多屋顶反射光，把反照率转化为长期发电收益。
+              </p>
+              <div class="metric-pair">
+                <div class="metric-box">
+                  <span class="label">10年额外发电</span>
+                  <strong class="value">{{bifacial_extra_kwh}}</strong>
+                </div>
+                <div class="metric-box">
+                  <span class="label">额外节省</span>
+                  <strong class="value">{{bifacial_extra_rm}}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="chart-area">
+              <div class="chart-head">
+                <span>累计差异</span>
+                <strong>kWh 优势</strong>
+              </div>
+              <div class="chart-basis">
+                <span>基于系统容量：</span>
+                <strong>{{system_basis}}</strong>
+              </div>
+              <div class="chart-placeholder">[Chart rendered at generation time]</div>
+              <div class="chart-legend">
+                <span><i class="dot-jinko"></i> 晋科优势</span>
+                <span><i class="dot-baseline"></i> 基准线</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer">
+        Eternalgy Sdn Bhd &middot; Tiger Neo 3.0 对比报告 &middot; 第 1 页，共 2 页
+      </div>
+    </div>
+
+    <!-- ════════════════ PAGE 2 ════════════════ -->
+    <div class="page">
+      <div class="page-strip">
+        <div class="brand">
+          <span class="dot">E</span>
+          ETERNALGY &mdash; Tiger Neo 3.0 对比报告
+        </div>
+        <span class="page-label">Page 2 of 2</span>
+      </div>
+
+      <div class="page-body">
+
+        <!-- ── 04 Anti-Shading ── -->
+        <div class="comparison">
+          <div class="comp-header">
+            <span class="comp-number">04</span>
+            <span class="comp-advantage">局部阴影模型</span>
+          </div>
+          <h2 class="comp-title">抗遮挡</h2>
+          <p class="comp-vs">vs <span>Trina Solar Vertex (Standard Half-Cut)</span></p>
+
+          <div class="comp-body">
+            <div>
+              <p class="comp-desc">
+                优化电池结构在局部阴影下减少输出损失，提升真实屋顶表现。
+              </p>
+              <div class="metric-pair">
+                <div class="metric-box">
+                  <span class="label">10年额外发电</span>
+                  <strong class="value">{{shading_extra_kwh}}</strong>
+                </div>
+                <div class="metric-box">
+                  <span class="label">额外节省</span>
+                  <strong class="value">{{shading_extra_rm}}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="chart-area">
+              <div class="chart-head">
+                <span>累计差异</span>
+                <strong>kWh 优势</strong>
+              </div>
+              <div class="chart-basis">
+                <span>基于系统容量：</span>
+                <strong>{{system_basis}}</strong>
+              </div>
+              <div class="chart-placeholder">[Chart rendered at generation time]</div>
+              <div class="chart-legend">
+                <span><i class="dot-jinko"></i> 晋科优势</span>
+                <span><i class="dot-baseline"></i> 基准线</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 05 Degradation Rate ── -->
+        <div class="comparison">
+          <div class="comp-header">
+            <span class="comp-number">05</span>
+            <span class="comp-advantage">30 年低衰减</span>
+          </div>
+          <h2 class="comp-title">衰减率</h2>
+          <p class="comp-vs">vs <span>JA Solar DeepBlue 3.0 (P-type PERC)</span></p>
+
+          <div class="comp-body">
+            <div>
+              <p class="comp-desc">
+                更低首年与年度衰减，让组件在长期严苛环境中保留更多额定输出。
+              </p>
+              <div class="metric-pair">
+                <div class="metric-box">
+                  <span class="label">10年额外发电</span>
+                  <strong class="value">{{degradation_extra_kwh}}</strong>
+                </div>
+                <div class="metric-box">
+                  <span class="label">额外节省</span>
+                  <strong class="value">{{degradation_extra_rm}}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="chart-area">
+              <div class="chart-head">
+                <span>累计差异</span>
+                <strong>kWh 优势</strong>
+              </div>
+              <div class="chart-basis">
+                <span>基于系统容量：</span>
+                <strong>{{system_basis}}</strong>
+              </div>
+              <div class="chart-placeholder">[Chart rendered at generation time]</div>
+              <div class="chart-legend">
+                <span><i class="dot-jinko"></i> 晋科优势</span>
+                <span><i class="dot-baseline"></i> 基准线</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Summary ── -->
+        <div class="summary-box">
+          <p class="eyebrow">底部总结</p>
+          <h2>10 年节省总览</h2>
+          <p class="copy">
+            10 年内，您的 <strong>{{system_size_kwp}}</strong> 系统总共可比其他一线组件多节省 <strong>{{total_extra_savings}}</strong>。
+          </p>
+          <p class="note">
+            以上五个基准比较的合计。
+          </p>
+        </div>
+
+      </div>
+
+      <div class="footer">
+        Eternalgy Sdn Bhd &middot; Tiger Neo 3.0 对比报告 &middot; 第 2 页，共 2 页
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -168,6 +168,29 @@
     }
   }
 
+  async function fetchOptionalAgent(reference) {
+    const ref = nonEmpty(reference);
+
+    if (!ref) {
+      return null;
+    }
+
+    try {
+      const rows = await runSql(
+        `
+          select name, contact, email, user_signature
+          from "user"
+          where linked_agent_profile = $1
+          limit 1
+        `,
+        [ref],
+      );
+      return rows[0] || null;
+    } catch (_error) {
+      return null;
+    }
+  }
+
   async function fetchOptionalCustomer(reference) {
     const ref = nonEmpty(reference);
 
@@ -192,7 +215,7 @@
     }
   }
 
-  function normalizeBundle(row, products, customer) {
+  function normalizeBundle(row, products, customer, agent) {
     const packageName = nonEmpty(row.package_name, row.package_name_snapshot || `Package ${row.linked_package || ""}`);
     const panelProduct = productByReference(products, row.package_panel);
     const inverterRefs = [
@@ -251,6 +274,12 @@
         inverter_1_rating: inverterRows[0]?.rating || "",
         inverter_1_warranty: inverterRows[0]?.warranty || DEFAULT_INVERTER_WARRANTY,
         price: totalAmount || packagePrice,
+      },
+      agent: {
+        name: nonEmpty(agent?.name, ""),
+        contact: nonEmpty(agent?.contact, ""),
+        email: nonEmpty(agent?.email, ""),
+        signature: nonEmpty(agent?.user_signature, ""),
       },
       inverters: inverterRows,
       products,
@@ -314,12 +343,13 @@
       row.package_inverter_3,
       row.package_inverter_4,
     ];
-    const [products, customer] = await Promise.all([
+    const [products, customer, agent] = await Promise.all([
       fetchOptionalProducts(productRefs),
       fetchOptionalCustomer(row.linked_customer),
+      fetchOptionalAgent(row.linked_agent),
     ]);
 
-    return normalizeBundle(row, products, customer);
+    return normalizeBundle(row, products, customer, agent);
   }
 
   function formatDate(value) {
