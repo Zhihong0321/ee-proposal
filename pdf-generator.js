@@ -516,7 +516,7 @@ async function generatePdf(uid, lang) {
     });
 
     // Additional wait to ensure fonts are fully rendered
-    await page.waitForTimeout(3000);
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     const pdf = await page.pdf({
       format: "A4",
