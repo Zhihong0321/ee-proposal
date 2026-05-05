@@ -78,6 +78,20 @@ async function fetchOptionalCustomer(reference) {
   }
 }
 
+async function fetchOptionalAgent(reference) {
+  const ref = nonEmpty(reference);
+  if (!ref) return null;
+  try {
+    const rows = await runSql(
+      `select name, contact, email, user_signature from "user" where linked_agent_profile = $1 limit 1`,
+      [ref]
+    );
+    return rows[0] || null;
+  } catch (_) {
+    return null;
+  }
+}
+
 function productByReference(products, reference) {
   const ref = nonEmpty(reference);
   if (!ref) return null;
@@ -122,9 +136,10 @@ async function fetchInvoiceBundle(uid) {
 
   const row = rows[0];
   const productRefs = [row.package_panel, row.package_inverter_1, row.package_inverter_2, row.package_inverter_3, row.package_inverter_4];
-  const [products, customer] = await Promise.all([
+  const [products, customer, agent] = await Promise.all([
     fetchOptionalProducts(productRefs),
     fetchOptionalCustomer(row.linked_customer),
+    fetchOptionalAgent(row.linked_agent),
   ]);
 
   const DEFAULT_PANEL_MODEL = "650W JinkoSolar Panel N-Type TOPCon";
@@ -184,6 +199,12 @@ async function fetchInvoiceBundle(uid) {
       inverter_rating: inverterRating,
       inverter_warranty: inverterWarranty,
       price: totalAmount || packagePrice,
+    },
+    agent: {
+      name: nonEmpty(agent?.name, ""),
+      contact: nonEmpty(agent?.contact, ""),
+      email: nonEmpty(agent?.email, ""),
+      signature: nonEmpty(agent?.user_signature, ""),
     },
     systemKw,
     systemSizeStr,
@@ -249,7 +270,15 @@ function computeTigerNeo3Data(bundle) {
     const extraKwh = last.jinko - last.competitor;
     const extraRm = extraKwh * rate;
     totalExtraRm += extraRm;
-    sections[def.id] = { extraKwh, extraRm };
+    
+    // Generate yearly breakdown table
+    const yearlyTable = series.map(s => ({
+      year: s.year,
+      advantage: Math.round(s.difference),
+      cumulative: Math.round(s.jinko - s.competitor)
+    })).map(row => `Y${row.year}: +${row.advantage}kWh`).join(' | ');
+    
+    sections[def.id] = { extraKwh, extraRm, yearlyTable };
   });
 
   const wholeFormatter = (v) => Math.round(v).toLocaleString("en-US");
@@ -265,14 +294,19 @@ function computeTigerNeo3Data(bundle) {
     electricity_rate: "0.55",
     heat_extra_kwh: `${wholeFormatter(sections.heat.extraKwh)} kWh`,
     heat_extra_rm: `RM ${wholeFormatter(sections.heat.extraRm)}`,
+    heat_yearly_table: sections.heat.yearlyTable,
     lowlight_extra_kwh: `${wholeFormatter(sections.lowLight.extraKwh)} kWh`,
     lowlight_extra_rm: `RM ${wholeFormatter(sections.lowLight.extraRm)}`,
+    lowlight_yearly_table: sections.lowLight.yearlyTable,
     bifacial_extra_kwh: `${wholeFormatter(sections.bifacial.extraKwh)} kWh`,
     bifacial_extra_rm: `RM ${wholeFormatter(sections.bifacial.extraRm)}`,
+    bifacial_yearly_table: sections.bifacial.yearlyTable,
     shading_extra_kwh: `${wholeFormatter(sections.shading.extraKwh)} kWh`,
     shading_extra_rm: `RM ${wholeFormatter(sections.shading.extraRm)}`,
+    shading_yearly_table: sections.shading.yearlyTable,
     degradation_extra_kwh: `${wholeFormatter(sections.degradation.extraKwh)} kWh`,
     degradation_extra_rm: `RM ${wholeFormatter(sections.degradation.extraRm)}`,
+    degradation_yearly_table: sections.degradation.yearlyTable,
     system_basis: `${decimalFormatter(systemKw)} kWp (${wholeFormatter(panelWattage)} W x ${wholeFormatter(panelQty)} panels)`,
     system_size_kwp: `${decimalFormatter(systemKw)} kWp`,
   };
@@ -355,6 +389,9 @@ async function buildCombinedHtml(uid, lang) {
     workmanship_warranty: "3 Years Workmanship\n1 Year Roof Leaking",
     terms_and_conditions: inv.terms_and_conditions || "Standard terms and conditions apply.",
     authorised_name: nonEmpty(inv.sales_person, "Eternalgy Sales Team"),
+    agent_name: bundle.agent.name,
+    agent_contact: bundle.agent.contact,
+    agent_signature: bundle.agent.signature,
   };
 
   // Tiger Neo 3 data
@@ -470,8 +507,16 @@ async function generatePdf(uid, lang) {
     const page = await browser.newPage();
     await page.setContent(html, {
       waitUntil: "networkidle0",
-      timeout: 30000,
+      timeout: 60000,
     });
+
+    // Wait for fonts to load
+    await page.evaluateHandle(() => {
+      return document.fonts.ready;
+    });
+
+    // Additional wait to ensure fonts are fully rendered
+    await page.waitForTimeout(3000);
 
     const pdf = await page.pdf({
       format: "A4",
