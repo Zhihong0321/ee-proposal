@@ -516,9 +516,14 @@
         gap: 40px;
         margin: 20px 18mm 0;
         padding-top: 10px;
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
 
-      .sig-block {}
+      .sig-block {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
 
       .sig-block .sig-lbl {
         font-size: 7px;
@@ -571,6 +576,8 @@
         align-items: center;
         font-size: 7px;
         color: var(--g400);
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
 
       .page-footer .left { }
@@ -580,6 +587,12 @@
       .accent-bar {
         height: 4px;
         background: linear-gradient(90deg, var(--gp), var(--gl));
+      }
+
+      /* ── Wrapper to keep signature and footer together ── */
+      .bottom-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
       }
     </style>
   </head>
@@ -803,33 +816,35 @@ Taman Sri Pulai Perdana,
       </div>
 
       <!-- ── SIGNATURE ── -->
-      <div class="signature-area">
-        <div class="sig-block">
-          <div class="sig-lbl">Authorised by (Eternalgy)</div>
-          <img class="sig-img" src="{{agent_signature}}" alt="Signature" />
-          <div class="sig-line">
-            <div class="sig-name">{{agent_name}}</div>
-            <div class="sig-role">Sales Consultant &middot; {{agent_contact}}</div>
-            <div class="sig-date">Date: _______________</div>
+      <div class="bottom-section">
+        <div class="signature-area">
+          <div class="sig-block">
+            <div class="sig-lbl">Authorised by (Eternalgy)</div>
+            <img class="sig-img" src="{{agent_signature}}" alt="Signature" />
+            <div class="sig-line">
+              <div class="sig-name">{{agent_name}}</div>
+              <div class="sig-role">Sales Consultant &middot; {{agent_contact}}</div>
+              <div class="sig-date">Date: _______________</div>
+            </div>
+          </div>
+          <div class="sig-block">
+            <div class="sig-lbl">Accepted by (Client)</div>
+            <div class="sig-line">
+              <div class="sig-name">{{customer_name}}</div>
+              <div class="sig-role">Authorised Signatory</div>
+              <div class="sig-date">Date: _______________</div>
+            </div>
           </div>
         </div>
-        <div class="sig-block">
-          <div class="sig-lbl">Accepted by (Client)</div>
-          <div class="sig-line">
-            <div class="sig-name">{{customer_name}}</div>
-            <div class="sig-role">Authorised Signatory</div>
-            <div class="sig-date">Date: _______________</div>
-          </div>
+
+        <!-- ── PAGE FOOTER ── -->
+        <div class="page-footer">
+          <div class="left">Eternalgy Sdn Bhd (202201018137) &middot; Quotation {{invoice_number}}</div>
+          <div class="right">Generated {{invoice_date}} &middot; Page 1 of 1</div>
         </div>
-      </div>
 
-      <!-- ── PAGE FOOTER ── -->
-      <div class="page-footer">
-        <div class="left">Eternalgy Sdn Bhd (202201018137) &middot; Quotation {{invoice_number}}</div>
-        <div class="right">Generated {{invoice_date}} &middot; Page 1 of 1</div>
+        <div class="accent-bar"></div>
       </div>
-
-      <div class="accent-bar"></div>
     </div>
   </body>
 </html>
