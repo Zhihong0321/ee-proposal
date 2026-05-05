@@ -64,6 +64,10 @@
 
   const numberValue = (...values) => {
     for (const value of values) {
+      if (value === null || value === undefined || String(value).trim() === "" || String(value).trim().toLowerCase() === "null") {
+        continue;
+      }
+
       const number = Number(value);
       if (Number.isFinite(number) && number >= 0) {
         return number;
