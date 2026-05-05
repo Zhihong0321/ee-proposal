@@ -59,8 +59,23 @@
       (() => {
         const frame = document.getElementById('content-frame');
         const navContainer = document.getElementById('nav-container');
+
+        // Parse params from search string first; fall back to hash if params ended up after #
+        const rawHash = window.location.hash.replace(/^#/, '');
+        let hashPage = rawHash;
         const params = new URLSearchParams(window.location.search);
-        const hashPage = window.location.hash.replace(/^#/, '');
+
+        if (rawHash.includes('?')) {
+          const [page, qs] = rawHash.split('?');
+          hashPage = page;
+          const hashParams = new URLSearchParams(qs);
+          hashParams.forEach((v, k) => { 
+            // Only set if not already present, and handle multiple lang params properly
+            if (!params.has(k)) {
+              params.set(k, v);
+            }
+          });
+        }
 
         const pages = {
           proposal: 'proposal.html',
@@ -139,7 +154,7 @@
 
           .native-site-nav__language {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             gap: 4px;
           }
@@ -149,44 +164,37 @@
             gap: 4px;
           }
 
-          .native-site-nav__pdf-row {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 6px;
-            width: 100%;
-          }
-
           .native-site-nav__gen-pdf {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            min-height: 44px;
-            border: 1px solid rgba(22, 163, 74, 0.4);
-            border-radius: 10px;
-            padding: 8px 16px;
+            gap: 5px;
+            min-height: 24px;
+            border: 1px solid rgba(22, 163, 74, 0.45);
+            border-radius: 999px;
+            padding: 0 11px;
             color: #ffffff;
             background: linear-gradient(180deg, #22c55e, #16a34a);
             font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            font-size: 0.72rem;
+            font-size: 0.6rem;
             font-weight: 800;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.05em;
             line-height: 1;
             text-decoration: none;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.15s ease;
-            box-shadow: 0 2px 12px rgba(22, 163, 74, 0.3);
+            box-shadow: 0 1px 8px rgba(22, 163, 74, 0.28);
+            white-space: nowrap;
           }
 
           .native-site-nav__gen-pdf:hover {
             background: linear-gradient(180deg, #4ade80, #22c55e);
-            border-color: rgba(22, 163, 74, 0.6);
-            box-shadow: 0 4px 18px rgba(22, 163, 74, 0.45);
+            box-shadow: 0 2px 12px rgba(22, 163, 74, 0.42);
           }
 
           .native-site-nav__gen-pdf:disabled {
-            opacity: 0.55;
+            opacity: 0.5;
             cursor: not-allowed;
             box-shadow: none;
           }
@@ -299,92 +307,7 @@
         language.className = 'native-site-nav__language';
         language.setAttribute('aria-label', 'Language');
 
-        // Lang group
-        const langGroup = document.createElement('div');
-        langGroup.className = 'native-site-nav__lang-group';
-
-        // Language switcher
-        [
-          ['en', 'EN'],
-          ['zh', '中文'],
-        ].forEach(([lang, label]) => {
-          const link = document.createElement('a');
-          link.textContent = label;
-
-          if (lang === currentLang) {
-            link.classList.add('is-active');
-            link.setAttribute('aria-current', 'true');
-          }
-
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (lang === currentLang) return;
-
-            // Update params
-            const newParams = new URLSearchParams(params);
-            newParams.set('lang', lang);
-            const newQuery = newParams.toString();
-
-            // Update URL without reload
-            const currentHash = window.location.hash || '#proposal';
-            const newUrl = newQuery ? `shell.html${currentHash}?${newQuery}` : `shell.html${currentHash}`;
-            history.pushState({}, '', newUrl);
-
-            // Reload iframe with new language
-            const currentSrc = frame.src.split('?')[0];
-            frame.src = newQuery ? `${currentSrc}?${newQuery}` : currentSrc;
-
-            // Reload page to update nav labels
-            window.location.reload();
-          });
-
-          langGroup.append(link);
-        });
-
-        language.append(langGroup);
-
-        // Page buttons
-        pagesConfig.forEach(([file, label]) => {
-          const btn = document.createElement('a');
-          btn.className = 'native-site-nav__button';
-          btn.textContent = label;
-
-          const hashKey = fileToHash[file];
-          const isActive = file === currentPage || (currentPage === 'index.html' && file === 'proposal.html');
-
-          if (isActive) {
-            btn.classList.add('is-active');
-            btn.setAttribute('aria-current', 'page');
-          }
-
-          btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (btn.classList.contains('is-active')) return;
-
-            // Update iframe
-            frame.src = buildSrc(file);
-
-            // Update URL hash
-            const newHash = `#${hashKey}`;
-            const newUrl = params.toString() ? `shell.html${newHash}?${params.toString()}` : `shell.html${newHash}`;
-            history.pushState({}, '', newUrl);
-
-            // Update active states
-            row.querySelectorAll('.native-site-nav__button').forEach(b => {
-              b.classList.remove('is-active');
-              b.removeAttribute('aria-current');
-            });
-            btn.classList.add('is-active');
-            btn.setAttribute('aria-current', 'page');
-          });
-
-          row.append(btn);
-        });
-
-        // GEN PDF row
-        const pdfRow = document.createElement('div');
-        pdfRow.className = 'native-site-nav__pdf-row';
-
+        // GEN PDF button
         const genPdfBtn = document.createElement('a');
         genPdfBtn.className = 'native-site-nav__gen-pdf';
         genPdfBtn.textContent = currentLang === 'zh' ? '📄 生成 PDF' : '📄 GEN PDF';
@@ -425,9 +348,96 @@
           }
         });
 
-        pdfRow.append(genPdfBtn);
+        // Lang group
+        const langGroup = document.createElement('div');
+        langGroup.className = 'native-site-nav__lang-group';
 
-        chrome.append(language, row, pdfRow);
+        // Language switcher
+        [
+          ['en', 'EN'],
+          ['zh', '中文'],
+        ].forEach(([lang, label]) => {
+          const link = document.createElement('a');
+          link.textContent = label;
+
+          if (lang === currentLang) {
+            link.classList.add('is-active');
+            link.setAttribute('aria-current', 'true');
+          }
+
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (lang === currentLang) return;
+
+            // Update params - create fresh params to avoid duplication
+            const newParams = new URLSearchParams();
+            // Copy all existing params except lang
+            params.forEach((v, k) => {
+              if (k !== 'lang') {
+                newParams.set(k, v);
+              }
+            });
+            // Set the new language
+            newParams.set('lang', lang);
+            const newQuery = newParams.toString();
+
+            // Update URL without reload
+            const currentHash = window.location.hash || '#proposal';
+            const newUrl = newQuery ? `shell.html?${newQuery}${currentHash}` : `shell.html${currentHash}`;
+            history.pushState({}, '', newUrl);
+
+            // Reload iframe with new language
+            const currentSrc = frame.src.split('?')[0];
+            frame.src = newQuery ? `${currentSrc}?${newQuery}` : currentSrc;
+
+            // Reload page to update nav labels
+            window.location.reload();
+          });
+
+          langGroup.append(link);
+        });
+
+        language.append(genPdfBtn, langGroup);
+
+        // Page buttons
+        pagesConfig.forEach(([file, label]) => {
+          const btn = document.createElement('a');
+          btn.className = 'native-site-nav__button';
+          btn.textContent = label;
+
+          const hashKey = fileToHash[file];
+          const isActive = file === currentPage || (currentPage === 'index.html' && file === 'proposal.html');
+
+          if (isActive) {
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-current', 'page');
+          }
+
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (btn.classList.contains('is-active')) return;
+
+            // Update iframe
+            frame.src = buildSrc(file);
+
+            // Update URL hash
+            const newHash = `#${hashKey}`;
+            const newUrl = params.toString() ? `shell.html?${params.toString()}${newHash}` : `shell.html${newHash}`;
+            history.pushState({}, '', newUrl);
+
+            // Update active states
+            row.querySelectorAll('.native-site-nav__button').forEach(b => {
+              b.classList.remove('is-active');
+              b.removeAttribute('aria-current');
+            });
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-current', 'page');
+          });
+
+          row.append(btn);
+        });
+
+        chrome.append(language, row);
         nav.append(chrome);
         navContainer.append(nav);
 
@@ -441,8 +451,8 @@
             // If iframe loaded a different page (e.g., redirect), update our URL
             if (frameFile !== currentPage) {
               const newHashKey = Object.entries(pages).find(([k, v]) => v === frameFile)?.[0] || 'proposal';
-              const newUrl = frameParams.toString()
-                ? `shell.html#${newHashKey}?${frameParams.toString()}`
+              const newUrl = params.toString()
+                ? `shell.html?${params.toString()}#${newHashKey}`
                 : `shell.html#${newHashKey}`;
               history.replaceState({}, '', newUrl);
             }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Language Switch Test</title>
+</head>
+<body>
+    <h1>Language Switch Test</h1>
+    <p>Open console to see URL parameter parsing results</p>
+    
+    <script>
+        // Test the same parsing logic as shell.html
+        const rawHash = window.location.hash.replace(/^#/, '');
+        let hashPage = rawHash;
+        const params = new URLSearchParams(window.location.search);
+
+        if (rawHash.includes('?')) {
+          const [page, qs] = rawHash.split('?');
+          hashPage = page;
+          const hashParams = new URLSearchParams(qs);
+          hashParams.forEach((v, k) => { 
+            // Only set if not already present, and handle multiple lang params properly
+            if (!params.has(k)) {
+              params.set(k, v);
+            }
+          });
+        }
+
+        console.log('Search params:', window.location.search);
+        console.log('Hash:', window.location.hash);
+        console.log('Raw hash:', rawHash);
+        console.log('Parsed params:', params.toString());
+        console.log('Current lang:', params.get('lang'));
+        
+        // Test language switching logic
+        function testLanguageSwitch(newLang) {
+            const newParams = new URLSearchParams();
+            // Copy all existing params except lang
+            params.forEach((v, k) => {
+              if (k !== 'lang') {
+                newParams.set(k, v);
+              }
+            });
+            // Set the new language
+            newParams.set('lang', newLang);
+            const newQuery = newParams.toString();
+            console.log(`Switch to ${newLang}:`, newQuery);
+        }
+        
+        testLanguageSwitch('zh');
+        testLanguageSwitch('en');
+    </script>
+</body>
+</html>
