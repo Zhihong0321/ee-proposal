@@ -22,7 +22,7 @@ const nonEmpty = (value, fallback = "") => {
   return text && text.toLowerCase() !== "null" ? text : fallback;
 };
 
-// Download font file and return as base64 data URI
+const numberValue = (...values) => {
   for (const value of values) {
     const number = Number(value);
     if (Number.isFinite(number) && number > 0) return number;
