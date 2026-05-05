@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { Pool } = require("pg");
+const https = require("https");
 
 const root = path.resolve(__dirname);
 const pdfDir = path.join(root, "html_to_pdf");
@@ -21,6 +22,28 @@ const nonEmpty = (value, fallback = "") => {
   const text = value === null || value === undefined ? "" : String(value).trim();
   return text && text.toLowerCase() !== "null" ? text : fallback;
 };
+
+// Download font file and return as base64 data URI
+function downloadFontAsBase64(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      if (res.statusCode !== 200) {
+        reject(new Error(`Failed to download font: ${res.statusCode}`));
+        return;
+      }
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () => {
+        const buffer = Buffer.concat(chunks);
+        const base64 = buffer.toString('base64');
+        resolve(`data:font/woff2;base64,${base64}`);
+      });
+    }).on('error', reject);
+  });
+}
+
+// Cache for downloaded fonts
+const fontCache = {};
 
 const numberValue = (...values) => {
   for (const value of values) {
