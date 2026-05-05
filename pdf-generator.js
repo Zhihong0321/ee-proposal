@@ -271,12 +271,13 @@ function computeTigerNeo3Data(bundle) {
     const extraRm = extraKwh * rate;
     totalExtraRm += extraRm;
     
-    // Generate yearly breakdown table
-    const yearlyTable = series.map(s => ({
-      year: s.year,
-      advantage: Math.round(s.difference),
-      cumulative: Math.round(s.jinko - s.competitor)
-    })).map(row => `Y${row.year}: +${row.advantage}kWh`).join(' | ');
+    // Generate yearly bar chart as pure HTML (no canvas/JS needed)
+    const maxDiff = Math.max(...series.map(s => Math.abs(s.difference)), 1);
+    const yearlyTable = series.map(s => {
+      const pct = Math.min((Math.abs(s.difference) / maxDiff) * 100, 100).toFixed(1);
+      const val = Math.round(s.difference).toLocaleString("en-US");
+      return `<div style="display:flex;align-items:center;gap:3px;margin-bottom:2px;"><span style="width:14px;font-size:6.5px;color:#9ca3af;flex-shrink:0;">Y${s.year}</span><div style="flex:1;background:#e5e7eb;border-radius:2px;height:7px;overflow:hidden;"><div style="width:${pct}%;background:#16a34a;height:100%;border-radius:2px;"></div></div><span style="min-width:42px;font-size:6.5px;color:#16a34a;text-align:right;flex-shrink:0;padding-left:3px;">+${val}</span></div>`;
+    }).join("");
     
     sections[def.id] = { extraKwh, extraRm, yearlyTable };
   });
