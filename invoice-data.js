@@ -225,7 +225,7 @@
       row.package_inverter_4,
     ].filter(Boolean);
     const inverters = inverterRefs.map((ref) => productByReference(products, ref)).filter(Boolean);
-    const panelQty = numberValue(row.panel_qty, row.package_panel_qty, matchNumber(packageName, /(\d+)\s*(?:pcs|pieces|panel)/i));
+    const panelQty = numberValue(row.package_panel_qty, row.panel_qty, matchNumber(packageName, /(\d+)\s*(?:pcs|pieces|panel)/i));
     const panelRating = numberValue(row.panel_rating, panelProduct?.solar_output_rating, matchNumber(packageName, /(\d{3,4})\s*w/i), 650);
     const packagePrice = numberValue(row.package_price);
     const totalAmount = numberValue(
