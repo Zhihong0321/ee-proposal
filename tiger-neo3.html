@@ -207,6 +207,7 @@
         padding: 10px 12px; color: var(--g900); background: #fff;
         font-size: 18px; font-weight: 700; letter-spacing: -0.01em;
         -moz-appearance: textfield;
+        appearance: textfield;
       }
       .control input::-webkit-inner-spin-button,
       .control input::-webkit-outer-spin-button { -webkit-appearance: none; }
@@ -255,6 +256,17 @@
         position: relative; overflow: hidden; margin: 12px 0 0;
         border: 1px solid var(--g200); border-radius: 10px;
         background: #0C0C0C; aspect-ratio: 16 / 9;
+      }
+      .video-header::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, transparent 45%, var(--gp) 45%, var(--gp) 50%, var(--nb) 50%);
+        pointer-events: none;
+        z-index: 2;
       }
       .video-header video { width: 100%; height: 100%; display: block; object-fit: cover; }
       .card-copy {

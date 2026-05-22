@@ -181,6 +181,19 @@
         border-radius: 6px;
         overflow: hidden;
         background: var(--gray-100);
+        position: relative;
+      }
+
+      .block-image::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, transparent 45%, var(--gp, #16a34a) 45%, var(--gp, #16a34a) 50%, var(--header-bg, #0d1f0f) 50%);
+        pointer-events: none;
+        z-index: 2;
       }
 
       .block-image img {
