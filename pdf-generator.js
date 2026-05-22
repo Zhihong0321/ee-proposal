@@ -533,4 +533,57 @@ async function generatePdf(uid, lang) {
   }
 }
 
-module.exports = { generatePdf, buildCombinedHtml };
+// ── generate standalone quotation HTML ──
+async function generateQuotationHtml(uid) {
+  const bundle = await fetchInvoiceBundle(uid);
+  const inv = bundle.invoice;
+  const pkg = bundle.package;
+
+  const invoiceDate  = formatDate(inv.invoice_date);
+  const validUntil   = addDays(inv.invoice_date, 30);
+
+  const quotationData = {
+    invoice_number:       inv.invoice_number,
+    invoice_date:         invoiceDate,
+    valid_until:          validUntil,
+    payment_terms:        "See schedule below",
+    customer_name:        inv.customer_name,
+    customer_address:     inv.customer_address,
+    system_size:          bundle.systemSizeStr,
+    panel_config:         `${pkg.panel_qty} × ${pkg.panel_rating}W`,
+    inverter_summary:     pkg.inverter_model,
+    roof_type:            nonEmpty(inv.roof_type, "Pitched / Flat"),
+    package_tag:          pkg.package_name,
+    package_label:        pkg.package_name,
+    package_subtext:      `Complete solar PV system with ${pkg.panel_qty} panels and ${pkg.inverter_model}`,
+    package_amount:       formatCurrency(pkg.price),
+    panel_model:          pkg.panel_model,
+    panel_count:          String(pkg.panel_qty),
+    inverter_model:       pkg.inverter_model,
+    subtotal:             formatCurrency(pkg.price),
+    discount:             "RM 0.00",
+    total_amount:         formatCurrency(inv.total_amount),
+    panel_product_warranty: "12 Years",
+    panel_power_warranty:   "30 Years Linear",
+    inverter_warranty:      pkg.inverter_warranty,
+    workmanship_warranty:   "3 Years Workmanship\n1 Year Roof Leaking",
+    terms_and_conditions:   inv.terms_and_conditions || "Standard terms and conditions apply.",
+    agent_name:           bundle.agent.name,
+    agent_contact:        bundle.agent.contact,
+    agent_signature:      bundle.agent.signature,
+  };
+
+  // Embed logo as base64 data URI
+  const logoPath = path.join(root, "logo", "eternalgy.png");
+  const logoDataUri = fs.existsSync(logoPath)
+    ? `data:image/png;base64,${fs.readFileSync(logoPath).toString("base64")}`
+    : "";
+  quotationData.logo_data_uri = logoDataUri;
+
+  const template = loadTemplate("quotation-standalone.html");
+  if (!template) throw new Error("quotation-standalone.html template not found");
+
+  return fillTemplate(template, quotationData);
+}
+
+module.exports = { generatePdf, buildCombinedHtml, generateQuotationHtml };

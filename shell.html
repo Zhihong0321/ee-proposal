@@ -304,11 +304,11 @@
         language.className = 'native-site-nav__language';
         language.setAttribute('aria-label', 'Language');
 
-        // GEN PDF button
+        // GEN HTML button
         const genPdfBtn = document.createElement('a');
         genPdfBtn.className = 'native-site-nav__gen-pdf';
-        genPdfBtn.textContent = currentLang === 'zh' ? '📄 生成 PDF' : '📄 GEN PDF';
-        genPdfBtn.title = currentLang === 'zh' ? '生成并下载完整方案 PDF' : 'Generate and download full proposal PDF';
+        genPdfBtn.textContent = currentLang === 'zh' ? '📄 生成 HTML' : '📄 GEN HTML';
+        genPdfBtn.title = currentLang === 'zh' ? '生成并下载报价单 HTML' : 'Generate and download quotation HTML';
         genPdfBtn.addEventListener('click', async (e) => {
           e.preventDefault();
           if (genPdfBtn.disabled) return;
@@ -323,10 +323,10 @@
           genPdfBtn.textContent = currentLang === 'zh' ? '⏳ 正在生成...' : '⏳ GENERATING...';
 
           try {
-            const response = await fetch('/api/generate-pdf', {
+            const response = await fetch('/api/generate-quotation-html', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ uid, lang: currentLang }),
+              body: JSON.stringify({ uid }),
             });
 
             if (!response.ok) {
@@ -336,12 +336,16 @@
 
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `quotation-${uid}.html`;
+            a.click();
+            URL.revokeObjectURL(url);
           } catch (err) {
-            alert((currentLang === 'zh' ? 'PDF 生成失败: ' : 'PDF generation failed: ') + err.message);
+            alert((currentLang === 'zh' ? 'HTML 生成失败: ' : 'HTML generation failed: ') + err.message);
           } finally {
             genPdfBtn.disabled = false;
-            genPdfBtn.textContent = currentLang === 'zh' ? '📄 生成 PDF' : '📄 GEN PDF';
+            genPdfBtn.textContent = currentLang === 'zh' ? '📄 生成 HTML' : '📄 GEN HTML';
           }
         });
 

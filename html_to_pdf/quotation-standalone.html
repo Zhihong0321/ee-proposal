@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quotation {{invoice_number}} | Eternalgy</title>
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      :root {
+        --green:        #16a34a;
+        --green-lt:     #22c55e;
+        --green-bg:     #f0fdf4;
+        --green-bd:     #bbf7d0;
+        --dark:         #111827;
+        --dark2:        #1f2937;
+        --text:         #374151;
+        --muted:        #6b7280;
+        --dim:          #9ca3af;
+        --border:       #e5e7eb;
+        --bg:           #f9fafb;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html, body {
+        width: 210mm;
+        background: #fff;
+        color: var(--dark);
+        font-family: 'Segoe UI', -apple-system, system-ui, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 10px;
+        line-height: 1.5;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      img { display: block; }
+
+      /* ─── PAGE SHELL ─── */
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ═══════════════════════════════════════
+         HEADER
+      ═══════════════════════════════════════ */
+      .hd {
+        background: var(--dark);
+        padding: 10mm 14mm 8mm;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .hd-brand {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+      }
+
+      .hd-logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 9px;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: var(--green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hd-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .hd-co-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+      }
+
+      .hd-co-tag {
+        font-size: 8px;
+        color: var(--green-lt);
+        font-weight: 500;
+        margin-top: 2px;
+      }
+
+      .hd-co-reg {
+        font-size: 7px;
+        color: #6b7280;
+        margin-top: 3px;
+      }
+
+      .hd-co-addr {
+        font-size: 7px;
+        color: #6b7280;
+        margin-top: 2px;
+        line-height: 1.65;
+      }
+
+      .hd-right {
+        text-align: right;
+        flex-shrink: 0;
+      }
+
+      .hd-doc-title {
+        font-size: 26px;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .hd-doc-badge {
+        display: inline-block;
+        margin-top: 5px;
+        padding: 3px 10px;
+        background: var(--green);
+        border-radius: 20px;
+        font-size: 7.5px;
+        font-weight: 700;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      /* ═══════════════════════════════════════
+         META BAND
+      ═══════════════════════════════════════ */
+      .meta-band {
+        background: var(--green-bg);
+        border-bottom: 2px solid var(--green-bd);
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .meta-cell {
+        padding: 8px 14mm;
+        border-right: 1px solid var(--green-bd);
+      }
+
+      .meta-cell:first-child { padding-left: 14mm; }
+      .meta-cell:last-child  { border-right: none; }
+
+      .meta-lbl {
+        font-size: 6.5px;
+        font-weight: 700;
+        color: var(--green);
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        margin-bottom: 2px;
+      }
+
+      .meta-val {
+        font-size: 10.5px;
+        font-weight: 700;
+        color: var(--dark);
+      }
+
+      .meta-val.accent { color: var(--green); }
+
+      /* ═══════════════════════════════════════
+         BODY (padded area)
+      ═══════════════════════════════════════ */
+      .body {
+        padding: 0 14mm;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── From / Bill To ── */
+      .parties {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 12px;
+      }
+
+      .pty-lbl {
+        font-size: 7px;
+        font-weight: 700;
+        color: var(--dim);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 3px;
+      }
+
+      .pty-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 2px;
+        line-height: 1.3;
+      }
+
+      .pty-addr {
+        font-size: 8.5px;
+        color: var(--muted);
+        line-height: 1.6;
+        white-space: pre-line;
+      }
+
+      .pty-agent {
+        margin-top: 5px;
+        padding-top: 4px;
+        border-top: 1px dashed var(--border);
+        font-size: 8px;
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      /* ── Spec Boxes ── */
+      .specs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .spec-box {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 10px;
+      }
+
+      .spec-lbl {
+        font-size: 6.5px;
+        font-weight: 700;
+        color: var(--dim);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        margin-bottom: 3px;
+      }
+
+      .spec-val {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--dark);
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+      }
+
+      /* ── Table header row ── */
+      .tbl-hd-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 7px;
+      }
+
+      .tbl-title {
+        font-size: 8.5px;
+        font-weight: 700;
+        color: var(--dark);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+
+      .tbl-tag {
+        background: var(--green-bg);
+        color: var(--green);
+        border: 1px solid var(--green-bd);
+        font-size: 7px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+
+      /* ── Invoice table ── */
+      .inv-tbl {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .inv-tbl thead th {
+        padding: 7px 9px;
+        background: var(--dark2);
+        color: #fff;
+        font-size: 6.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-align: left;
+      }
+
+      .inv-tbl thead th:nth-child(1) { width: 28px; text-align: center; }
+      .inv-tbl thead th:nth-child(3) { width: 52px; text-align: center; }
+      .inv-tbl thead th:nth-child(4) { width: 70px; text-align: right; }
+      .inv-tbl thead th:nth-child(5) { width: 82px; text-align: right; }
+
+      .inv-tbl tbody td {
+        padding: 8px 9px;
+        border-bottom: 1px solid var(--border);
+        font-size: 9px;
+        vertical-align: top;
+      }
+
+      .inv-tbl tbody tr:nth-child(even) td { background: var(--bg); }
+      .inv-tbl tbody td:nth-child(1) { text-align: center; color: var(--dim); font-weight: 600; }
+      .inv-tbl tbody td:nth-child(3) { text-align: center; }
+      .inv-tbl tbody td:nth-child(4) { text-align: right; }
+      .inv-tbl tbody td:nth-child(5) { text-align: right; font-weight: 700; }
+
+      .item-name { font-weight: 700; color: var(--dark); margin-bottom: 1px; }
+      .item-desc { font-size: 7.5px; color: var(--muted); line-height: 1.4; }
+      .amt     { font-weight: 700; color: var(--dark); }
+      .amt-inc { color: var(--dim); font-style: italic; }
+
+      /* ── Totals ── */
+      .totals-area {
+        display: flex;
+        justify-content: flex-end;
+        border-top: 2px solid var(--dark);
+        margin-bottom: 14px;
+      }
+
+      .totals-box { width: 218px; }
+
+      .tot-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 10px;
+        font-size: 9px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .tot-row .lbl { color: var(--muted); font-weight: 600; }
+      .tot-row .val { font-weight: 700; }
+
+      .tot-grand {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 9px 12px;
+        background: var(--dark);
+      }
+
+      .tot-grand .lbl {
+        color: var(--green-lt);
+        font-size: 7.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .tot-grand .val {
+        color: #fff;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      /* ── Warranty + Payment ── */
+      .lower-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 11px;
+        margin-bottom: 13px;
+      }
+
+      .lcard {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .lcard-hd {
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 5px 9px;
+        font-size: 7px;
+        font-weight: 700;
+        color: var(--dark);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+
+      .lcard-body { padding: 8px 9px; }
+
+      .wrow {
+        display: flex;
+        justify-content: space-between;
+        padding: 3.5px 0;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 8px;
+      }
+
+      .wrow:last-child { border-bottom: none; }
+      .wrow .lbl { color: var(--muted); font-weight: 600; width: 52%; }
+      .wrow .val { color: var(--green); font-weight: 700; text-align: right; }
+
+      .prow {
+        padding: 3.5px 0;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 8px;
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .prow:last-child { border-bottom: none; }
+      .prow strong { color: var(--dark); font-weight: 700; }
+
+      /* ── Terms & Conditions ── */
+      .tnc {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 13px;
+      }
+
+      .tnc-hd {
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 5px 9px;
+        font-size: 7px;
+        font-weight: 700;
+        color: var(--dark);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+
+      .tnc-body {
+        padding: 8px 9px;
+        font-size: 7.5px;
+        color: var(--muted);
+        line-height: 1.6;
+        white-space: pre-line;
+      }
+
+      /* ── Signatures ── */
+      .sig-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 12px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .sig-lbl {
+        font-size: 7px;
+        font-weight: 700;
+        color: var(--dim);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+
+      .sig-img {
+        display: block;
+        max-height: 52px;
+        margin-bottom: -16px;
+        object-fit: contain;
+      }
+
+      .sig-line {
+        border-top: 1px solid var(--dark);
+        padding-top: 5px;
+      }
+
+      .sig-name { font-size: 9px; font-weight: 700; color: var(--dark); }
+      .sig-role { font-size: 7.5px; color: var(--muted); margin-top: 1px; }
+      .sig-date { font-size: 7.5px; color: var(--dim); margin-top: 4px; }
+
+      /* ── Footer ── */
+      .pg-footer {
+        margin-top: auto;
+        padding: 6px 14mm;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        font-size: 7px;
+        color: var(--dim);
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .accent-bar {
+        height: 4px;
+        background: linear-gradient(90deg, var(--green), var(--green-lt));
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+
+      <!-- ── HEADER ── -->
+      <header class="hd">
+        <div class="hd-brand">
+          <div class="hd-logo">
+            <img src="{{logo_data_uri}}" alt="Eternalgy" />
+          </div>
+          <div>
+            <div class="hd-co-name">ETERNALGY SDN BHD</div>
+            <div class="hd-co-tag">Solar PV System Solutions</div>
+            <div class="hd-co-reg">202201018137 &nbsp;·&nbsp; info@eternalgy.com</div>
+            <div class="hd-co-addr">No. 8, Jalan Pulai Perdana 11, Taman Sri Pulai Perdana<br/>81300 Skudai, Johor, Malaysia</div>
+          </div>
+        </div>
+        <div class="hd-right">
+          <div class="hd-doc-title">Quotation</div>
+          <span class="hd-doc-badge">Solar PV System</span>
+        </div>
+      </header>
+
+      <!-- ── META BAND ── -->
+      <div class="meta-band">
+        <div class="meta-cell">
+          <div class="meta-lbl">Quotation No.</div>
+          <div class="meta-val accent">{{invoice_number}}</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-lbl">Date</div>
+          <div class="meta-val">{{invoice_date}}</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-lbl">Valid Until</div>
+          <div class="meta-val">{{valid_until}}</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-lbl">Payment Terms</div>
+          <div class="meta-val">{{payment_terms}}</div>
+        </div>
+      </div>
+
+      <div class="body">
+
+        <!-- ── FROM / BILL TO ── -->
+        <div class="parties">
+          <div>
+            <div class="pty-lbl">From</div>
+            <div class="pty-name">Eternalgy Sdn Bhd</div>
+            <div class="pty-addr">No. 8, Jalan Pulai Perdana 11,
+Taman Sri Pulai Perdana,
+81300 Skudai, Johor, Malaysia</div>
+            <div class="pty-agent">Sales Consultant: {{agent_name}} &middot; {{agent_contact}}</div>
+          </div>
+          <div>
+            <div class="pty-lbl">Bill To</div>
+            <div class="pty-name">{{customer_name}}</div>
+            <div class="pty-addr">{{customer_address}}</div>
+          </div>
+        </div>
+
+        <!-- ── SYSTEM SPECS ── -->
+        <div class="specs">
+          <div class="spec-box">
+            <div class="spec-lbl">System Size</div>
+            <div class="spec-val">{{system_size}}</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-lbl">Panel Config</div>
+            <div class="spec-val">{{panel_config}}</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-lbl">Inverter</div>
+            <div class="spec-val">{{inverter_summary}}</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-lbl">Roof Type</div>
+            <div class="spec-val">{{roof_type}}</div>
+          </div>
+        </div>
+
+        <!-- ── LINE ITEMS ── -->
+        <div class="tbl-hd-row">
+          <span class="tbl-title">Description of Works</span>
+          <span class="tbl-tag">{{package_tag}}</span>
+        </div>
+
+        <table class="inv-tbl">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>
+                <div class="item-name">{{package_label}}</div>
+                <div class="item-desc">{{package_subtext}}</div>
+              </td>
+              <td>1 lot</td>
+              <td class="amt">{{package_amount}}</td>
+              <td class="amt">{{package_amount}}</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>
+                <div class="item-name">Jinko Solar PV Modules</div>
+                <div class="item-desc">{{panel_model}}</div>
+              </td>
+              <td>{{panel_count}}</td>
+              <td class="amt-inc">Included</td>
+              <td class="amt-inc">Included</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>
+                <div class="item-name">SAJ String Inverter</div>
+                <div class="item-desc">{{inverter_model}}</div>
+              </td>
+              <td>1 unit</td>
+              <td class="amt-inc">Included</td>
+              <td class="amt-inc">Included</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>
+                <div class="item-name">Installation &amp; Commissioning</div>
+                <div class="item-desc">Full turnkey delivery, wiring, earthing, and TNB application</div>
+              </td>
+              <td>1 lot</td>
+              <td class="amt-inc">Included</td>
+              <td class="amt-inc">Included</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>
+                <div class="item-name">SEDA / NEM Application</div>
+                <div class="item-desc">Feed-in tariff application and meter setup</div>
+              </td>
+              <td>1 lot</td>
+              <td class="amt-inc">Included</td>
+              <td class="amt-inc">Included</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ── TOTALS ── -->
+        <div class="totals-area">
+          <div class="totals-box">
+            <div class="tot-row">
+              <span class="lbl">Subtotal</span>
+              <span class="val">{{subtotal}}</span>
+            </div>
+            <div class="tot-row">
+              <span class="lbl">SST (0%)</span>
+              <span class="val">RM 0.00</span>
+            </div>
+            <div class="tot-row">
+              <span class="lbl">Discount</span>
+              <span class="val">{{discount}}</span>
+            </div>
+            <div class="tot-grand">
+              <span class="lbl">Total Amount Due</span>
+              <span class="val">{{total_amount}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── WARRANTY + PAYMENT SCHEDULE ── -->
+        <div class="lower-grid">
+          <div class="lcard">
+            <div class="lcard-hd">Warranty Coverage</div>
+            <div class="lcard-body">
+              <div class="wrow">
+                <span class="lbl">Panel Product</span>
+                <span class="val">{{panel_product_warranty}}</span>
+              </div>
+              <div class="wrow">
+                <span class="lbl">Panel Power Output</span>
+                <span class="val">{{panel_power_warranty}}</span>
+              </div>
+              <div class="wrow">
+                <span class="lbl">Inverter</span>
+                <span class="val">{{inverter_warranty}}</span>
+              </div>
+              <div class="wrow">
+                <span class="lbl">Workmanship</span>
+                <span class="val">{{workmanship_warranty}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="lcard">
+            <div class="lcard-hd">Payment Schedule</div>
+            <div class="lcard-body">
+              <div class="prow"><strong>50%</strong> &mdash; Upon confirmation of order</div>
+              <div class="prow"><strong>40%</strong> &mdash; Upon delivery of materials to site</div>
+              <div class="prow"><strong>10%</strong> &mdash; Upon completion &amp; commissioning</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TERMS & CONDITIONS ── -->
+        <div class="tnc">
+          <div class="tnc-hd">Terms &amp; Conditions</div>
+          <div class="tnc-body">{{terms_and_conditions}}</div>
+        </div>
+
+        <!-- ── SIGNATURES ── -->
+        <div class="sig-grid">
+          <div>
+            <div class="sig-lbl">Authorised by (Eternalgy)</div>
+            <img class="sig-img" src="{{agent_signature}}" alt="Signature" />
+            <div class="sig-line">
+              <div class="sig-name">{{agent_name}}</div>
+              <div class="sig-role">Sales Consultant &middot; {{agent_contact}}</div>
+              <div class="sig-date">Date: _______________</div>
+            </div>
+          </div>
+          <div>
+            <div class="sig-lbl">Accepted by (Client)</div>
+            <div class="sig-line" style="margin-top: 56px;">
+              <div class="sig-name">{{customer_name}}</div>
+              <div class="sig-role">Authorised Signatory</div>
+              <div class="sig-date">Date: _______________</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.body -->
+
+      <!-- ── PAGE FOOTER ── -->
+      <footer class="pg-footer">
+        <span>Eternalgy Sdn Bhd (202201018137) &middot; Quotation {{invoice_number}}</span>
+        <span>Generated {{invoice_date}} &middot; Page 1 of 1</span>
+      </footer>
+      <div class="accent-bar"></div>
+
+    </div><!-- /.page -->
+  </body>
+</html>
