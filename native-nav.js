@@ -6,14 +6,12 @@
     en: [
       ["proposal.html", "PROPOSAL"],
       ["tiger-neo3.html", "WHY JINKO"],
-      ["marcap.html", "JINKO LEADERSHIP"],
       ["why-eternalgy.html", "WHY ETERNALGY"],
       ["quotation.html", "QUOTATION"],
     ],
     zh: [
       ["proposal.html", "方案"],
       ["tiger-neo3.html", "晶科 NEO3"],
-      ["marcap.html", "晶科领先"],
       ["why-eternalgy.html", "为什么我们"],
       ["quotation.html", "报价"],
     ],
@@ -59,7 +57,7 @@
 
     .native-site-nav__row {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 6px;
       width: 100%;
     }

@@ -10,7 +10,9 @@
       if (window.parent === window) {
         const params = new URLSearchParams(window.location.search);
         const query = params.toString();
-        window.location.replace(query ? `shell.html#jinko-leadership?${query}` : 'shell.html#jinko-leadership');
+        window.location.replace(query ? `shell.html#why-jinko?${query}` : 'shell.html#why-jinko');
+      } else {
+        document.documentElement.classList.add('is-embedded');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -880,6 +882,19 @@
         .price-value {
           font-size: 2rem;
         }
+      }
+
+      /* ── EMBEDDED STATE ── */
+      .is-embedded body {
+        background: transparent !important;
+        min-height: auto !important;
+      }
+      .is-embedded .page-shell {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        background: transparent !important;
       }
     </style>
   </head>

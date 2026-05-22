@@ -677,6 +677,11 @@
           </p>
         </section>
       </main>
+
+      <section class="leadership-section" style="margin-top: 24px; padding-top: 10px; border-top: 1px solid var(--g200);">
+        <iframe id="leadership-iframe" src="marcap.html" style="width: 100%; border: none; display: block; overflow: hidden; height: 1000px;" scrolling="no"></iframe>
+      </section>
+
       </div>
     </div>
 
@@ -1253,6 +1258,34 @@
             heroCopy.textContent = `${error.message || "Invoice UID unavailable"}. Showing default comparison inputs.`;
           }
         });
+
+        // Sync leadership iframe query params and auto-adjust its height
+        const iframe = document.getElementById("leadership-iframe");
+        if (iframe) {
+          // Carry over current query parameters (such as lang and uid) to the iframe
+          iframe.src = `marcap.html${window.location.search}`;
+
+          const syncHeight = () => {
+            try {
+              if (iframe.contentWindow && iframe.contentWindow.document.body) {
+                const pageShell = iframe.contentWindow.document.querySelector(".page-shell");
+                const height = pageShell ? pageShell.scrollHeight : iframe.contentWindow.document.body.scrollHeight;
+                if (height > 0 && iframe.style.height !== height + "px") {
+                  iframe.style.height = height + "px";
+                }
+              }
+            } catch (e) {
+              // Ignore cross-origin issues if any (should not happen on same origin)
+            }
+          };
+
+          iframe.addEventListener("load", () => {
+            syncHeight();
+            // Continuously monitor for height changes due to dynamic charts rendering
+            setInterval(syncHeight, 300);
+          });
+          window.addEventListener("resize", syncHeight);
+        }
       })();
     </script>
   </body>
