@@ -501,6 +501,14 @@
         max-height: 34px;
       }
 
+      .model-logo.msig {
+        width: 112px;
+      }
+
+      .model-logo.msig img {
+        max-height: 30px;
+      }
+
       .warranty-list {
         display: grid;
         gap: 10px;
@@ -1105,6 +1113,11 @@
               title: "Installation",
               text: "1 Year Roof Leaking Warranty\n3 Years Workmanship Warranty",
             },
+            {
+              brand: "msig",
+              title: "3 Years MSIG Solar Insurance",
+              text: "All-risk coverage for solar panel system",
+            },
           ];
 
           byData("warranty-list").innerHTML = rows
@@ -1123,6 +1136,14 @@
         }
 
         function brandLogoMarkup(brand) {
+          if (brand === "msig") {
+            return `
+              <div class="model-logo msig">
+                <img src="./msig_logo.png" alt="MSIG" />
+              </div>
+            `;
+          }
+
           if (brand === "eternalgy") {
             return `
               <div class="model-logo eternalgy">
