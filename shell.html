@@ -98,6 +98,77 @@
 
         // Language handling
         const currentLang = params.get('lang') === 'zh' ? 'zh' : 'en';
+        const proposalUid = (params.get('uid') || params.get('invoice_uid') || params.get('invoice') || '').trim();
+        let activeFrameView = null;
+
+        const getFramePage = () => {
+          try {
+            const file = new URL(frame.contentWindow.location.href).pathname.split('/').pop();
+            return Object.values(pages).includes(file) ? file : 'proposal.html';
+          } catch (_error) {
+            return 'proposal.html';
+          }
+        };
+
+        const recordProposalActivity = (event, details = {}) => {
+          const payload = {
+            event,
+            page: details.page || getFramePage(),
+            uid: proposalUid,
+            language: currentLang,
+            ...(details.interaction ? { interaction: details.interaction } : {}),
+            ...(Number.isFinite(details.durationSeconds) ? { duration_seconds: details.durationSeconds } : {}),
+          };
+
+          fetch('/api/activity/proposal', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            keepalive: true,
+          }).catch(() => {
+            // Analytics must never interrupt proposal viewing.
+          });
+        };
+
+        const leaveActiveFrame = () => {
+          if (!activeFrameView) return;
+          recordProposalActivity('interact', {
+            page: activeFrameView.page,
+            interaction: 'page:leave',
+            durationSeconds: Math.max(0, Math.round((Date.now() - activeFrameView.startedAt) / 1000)),
+          });
+          activeFrameView = null;
+        };
+
+        const interactionName = (target) => {
+          const tag = target.tagName.toLowerCase();
+          const key = String(target.dataset.activity || target.id || target.getAttribute('type') || 'unnamed')
+            .toLowerCase()
+            .replace(/[^a-z0-9_-]/g, '-');
+          return `${tag}:${key}`;
+        };
+
+        const trackFrameView = () => {
+          const page = getFramePage();
+          leaveActiveFrame();
+          activeFrameView = { page, startedAt: Date.now() };
+          recordProposalActivity('view', { page });
+
+          try {
+            const frameDocument = frame.contentDocument;
+            if (!frameDocument || frameDocument.documentElement.dataset.activityTrackingAttached === 'true') return;
+            frameDocument.documentElement.dataset.activityTrackingAttached = 'true';
+            frameDocument.addEventListener('click', (event) => {
+              const target = event.target.closest('a, button, [data-activity]');
+              if (target) recordProposalActivity('interact', { page: getFramePage(), interaction: interactionName(target) });
+            }, true);
+          } catch (_error) {
+            // The proposal pages are normally same-origin; a cross-origin page is simply not tracked.
+          }
+        };
+
+        window.addEventListener('pagehide', leaveActiveFrame);
+
         const pageLabels = {
           en: [
             ['proposal.html', 'PROPOSAL'],
@@ -319,6 +390,7 @@
             return;
           }
 
+          recordProposalActivity('interact', { interaction: 'generate:quotation_html' });
           genPdfBtn.disabled = true;
           genPdfBtn.textContent = currentLang === 'zh' ? '⏳ 正在生成...' : '⏳ GENERATING...';
 
@@ -369,6 +441,7 @@
           link.addEventListener('click', (e) => {
             e.preventDefault();
             if (lang === currentLang) return;
+            recordProposalActivity('interact', { interaction: `language:${lang}` });
 
             // Update params - create fresh params to avoid duplication
             const newParams = new URLSearchParams();
@@ -417,6 +490,7 @@
           btn.addEventListener('click', (e) => {
             e.preventDefault();
             if (btn.classList.contains('is-active')) return;
+            recordProposalActivity('interact', { interaction: `nav:${hashKey}` });
 
             // Update iframe
             frame.src = buildSrc(file);
@@ -444,6 +518,7 @@
 
         // Handle iframe load to sync URL if redirected
         frame.addEventListener('load', () => {
+          trackFrameView();
           try {
             const frameUrl = new URL(frame.contentWindow.location.href);
             const frameFile = frameUrl.pathname.split('/').pop();
