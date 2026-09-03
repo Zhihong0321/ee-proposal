@@ -1074,7 +1074,7 @@
           return text && text.toLowerCase() !== "null" ? text : fallback;
         };
         const isInstallationCoverage = (value) =>
-          /installation|workmanship|roof\s*leak/i.test(nonEmpty(value, ""));
+          /installation|workmanship|roof\s*leak|mounting\s*structure/i.test(nonEmpty(value, ""));
 
         function getInverters(pkg) {
           return [1, 2, 3, 4]
@@ -1111,7 +1111,7 @@
             {
               brand: "eternalgy",
               title: "Installation",
-              text: "1 Year Roof Leaking Warranty\n3 Years Workmanship Warranty",
+              text: "1 Year Roof Leaking Warranty\n3 Years Workmanship Warranty\n10 Years Mounting Structure Warranty",
             },
             {
               brand: "msig",

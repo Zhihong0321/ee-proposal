@@ -146,6 +146,7 @@ async function fetchInvoiceBundle(uid) {
   const DEFAULT_PANEL_WARRANTY = "12 Years Product Warranty\n30 Years Linear Power Warranty";
   const DEFAULT_INVERTER_MODEL = "SAJ String Inverter";
   const DEFAULT_INVERTER_WARRANTY = "10 Years Product Warranty";
+  const DEFAULT_MOUNTING_WARRANTY = "10 Years Mounting Structure Warranty";
 
   const packageName = nonEmpty(row.package_name, row.package_name_snapshot || `Package ${row.linked_package || ""}`);
   const panelProduct = productByReference(products, row.package_panel);
@@ -167,7 +168,7 @@ async function fetchInvoiceBundle(uid) {
       rating: numberValue(product?.inverter_rating),
       warranty: productWarranty(product, DEFAULT_INVERTER_WARRANTY),
     };
-  }).filter((item) => nonEmpty(item.model) && !/installation|workmanship|roof\s*leak/i.test(`${item.model} ${item.warranty}`));
+  }).filter((item) => nonEmpty(item.model) && !/installation|workmanship|roof\s*leak|mounting\s*structure/i.test(`${item.model} ${item.warranty}`));
 
   const panelModel = productName(panelProduct, DEFAULT_PANEL_MODEL);
   const panelWarranty = productWarranty(panelProduct, DEFAULT_PANEL_WARRANTY);
@@ -387,7 +388,9 @@ async function buildCombinedHtml(uid, lang) {
     panel_product_warranty: "12 Years",
     panel_power_warranty: "30 Years Linear",
     inverter_warranty: pkg.inverter_warranty,
-    workmanship_warranty: "3 Years Workmanship\n1 Year Roof Leaking",
+    mounting_structure_warranty: "10 Years",
+    mounting_warranty: "10 Years",
+    workmanship_warranty: "3 Years Workmanship\n1 Year Roof Leaking\n10 Years Mounting Structure",
     terms_and_conditions: inv.terms_and_conditions || "Standard terms and conditions apply.",
     authorised_name: nonEmpty(inv.sales_person, "Eternalgy Sales Team"),
     agent_name: bundle.agent.name,
