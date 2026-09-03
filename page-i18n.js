@@ -142,7 +142,7 @@
     set("#certification-title", "Eternalgy");
     set("#certification-subtitle", "已注册并获得以下认证");
     setAll(".cert-copy h3", [
-      "CIDB 注册承包商",
+      "CIDB G7 注册承包商",
       "SEDA 注册太阳能光伏服务商",
       "SEDA 注册太阳能光伏投资商",
       "MyHijau 设备认证",
