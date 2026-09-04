@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const { Pool } = require("pg");
+const D = require("./defaults");
+const { SQL } = require("./queries");
 
 const root = path.resolve(__dirname);
 const pdfDir = path.join(root, "html_to_pdf");
@@ -51,14 +53,17 @@ async function runSql(sql, params = []) {
   return result.rows || [];
 }
 
+async function runNamed(name, params = []) {
+  const sql = SQL[name];
+  if (!sql) throw new Error(`Unknown query: ${name}`);
+  return runSql(sql, params);
+}
+
 async function fetchOptionalProducts(references) {
   const refs = [...new Set(references.map(nonEmpty).filter(Boolean))];
   if (!refs.length) return [];
   try {
-    return await runSql(
-      `select * from product where id::text = any($1::text[]) or bubble_id = any($1::text[]) or unique_id = any($1::text[])`,
-      [refs]
-    );
+    return await runNamed("products", [refs]);
   } catch (_) {
     return [];
   }
@@ -68,10 +73,7 @@ async function fetchOptionalCustomer(reference) {
   const ref = nonEmpty(reference);
   if (!ref) return null;
   try {
-    const rows = await runSql(
-      `select * from customer where id::text = $1 or customer_id = $1 limit 1`,
-      [ref]
-    );
+    const rows = await runNamed("customer", [ref]);
     return rows[0] || null;
   } catch (_) {
     return null;
@@ -82,10 +84,7 @@ async function fetchOptionalAgent(reference) {
   const ref = nonEmpty(reference);
   if (!ref) return null;
   try {
-    const rows = await runSql(
-      `select name, contact, email, user_signature from "user" where linked_agent_profile = $1 limit 1`,
-      [ref]
-    );
+    const rows = await runNamed("agent", [ref]);
     return rows[0] || null;
   } catch (_) {
     return null;
@@ -113,24 +112,7 @@ async function fetchInvoiceBundle(uid) {
   const invoiceUid = nonEmpty(uid);
   if (!invoiceUid) throw new Error("Invoice UID is required");
 
-  const rows = await runSql(
-    `select i.*, p.id as package_db_id, p.bubble_id as package_bubble_id, p.package_name,
-      p.panel_qty as package_panel_qty, p.panel as package_panel,
-      p.inverter_1 as package_inverter_1, p.inverter_2 as package_inverter_2,
-      p.inverter_3 as package_inverter_3, p.inverter_4 as package_inverter_4,
-      p.price as package_price, p.linked_package_item as package_items,
-      it.terms_and_conditions as template_terms_and_conditions
-    from invoice i
-    left join package p on p.id::text = i.linked_package or p.bubble_id = i.linked_package
-      or p.id::text = i.package_id or p.bubble_id = i.package_id
-    left join invoice_template it on it.bubble_id = i.template_id
-      or (lower(coalesce(i.template_id, '')) = 'default' and it.is_default is true and it.active is distinct from false)
-    where (i.bubble_id = $1 or i.id::text = $1 or i.invoice_number = $1)
-      and i.is_deleted is distinct from true
-    order by i.is_latest desc nulls last, i.updated_at desc nulls last, i.id desc
-    limit 1`,
-    [invoiceUid]
-  );
+  const rows = await runNamed("invoice", [invoiceUid]);
 
   if (!rows[0]) throw new Error(`Invoice not found for UID ${invoiceUid}`);
 
@@ -142,11 +124,11 @@ async function fetchInvoiceBundle(uid) {
     fetchOptionalAgent(row.linked_agent),
   ]);
 
-  const DEFAULT_PANEL_MODEL = "650W JinkoSolar Panel N-Type TOPCon";
-  const DEFAULT_PANEL_WARRANTY = "12 Years Product Warranty\n30 Years Linear Power Warranty";
-  const DEFAULT_INVERTER_MODEL = "SAJ String Inverter";
-  const DEFAULT_INVERTER_WARRANTY = "10 Years Product Warranty";
-  const DEFAULT_MOUNTING_WARRANTY = "10 Years Warranty for Mounting Structure";
+  const DEFAULT_PANEL_MODEL = D.PANEL_MODEL;
+  const DEFAULT_PANEL_WARRANTY = D.PANEL_WARRANTY;
+  const DEFAULT_INVERTER_MODEL = D.INVERTER_MODEL;
+  const DEFAULT_INVERTER_WARRANTY = D.INVERTER_WARRANTY;
+  const DEFAULT_MOUNTING_WARRANTY = D.MOUNTING_WARRANTY;
 
   const packageName = nonEmpty(row.package_name, row.package_name_snapshot || `Package ${row.linked_package || ""}`);
   const panelProduct = productByReference(products, row.package_panel);
@@ -233,6 +215,76 @@ function addDays(dateStr, days) {
   if (Number.isNaN(d.getTime())) return "";
   d.setDate(d.getDate() + days);
   return d.toLocaleDateString("en-MY", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+/** Same fallback quote as marcap.html (cached when TradingView is unreachable). */
+const JINKO_FALLBACK = {
+  marketCap: 1082073730,
+  close: 21.53,
+  change: -3.6689,
+};
+
+function compactUsd(value) {
+  if (value >= 1e9) return `USD ${(value / 1e9).toFixed(1)}B`;
+  if (value >= 1e6) return `USD ${(value / 1e6).toFixed(0)}M`;
+  return `USD ${Math.round(value).toLocaleString("en-US")}`;
+}
+
+function marcapFromQuote(quote, live) {
+  const change = quote.change;
+  return {
+    market_cap: compactUsd(quote.marketCap),
+    stock_price: `$${quote.close.toFixed(2)}`,
+    stock_change: `${change >= 0 ? "+" : ""}${change.toFixed(1)}%`,
+    change_class: change > 0 ? "positive" : change < 0 ? "negative" : "neutral",
+    stock_meta: live
+      ? "NYSE:JKS snapshot at PDF generation"
+      : "Cached snapshot (live NYSE data unavailable)",
+  };
+}
+
+async function fetchMarcapData() {
+  try {
+    const response = await fetch("https://scanner.tradingview.com/america/scan", {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify({
+        symbols: { tickers: ["NYSE:JKS"], query: { types: [] } },
+        columns: [
+          "name",
+          "market_cap_basic",
+          "open",
+          "high",
+          "low",
+          "close",
+          "change",
+          "volume",
+          "exchange",
+          "currency",
+        ],
+      }),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!response.ok) throw new Error(`TradingView ${response.status}`);
+    const payload = await response.json();
+    const data = payload.data?.[0]?.d || [];
+    const marketCap = Number(data[1]);
+    const close = Number(data[5]);
+    const change = Number(data[6]);
+    if (!Number.isFinite(marketCap) || marketCap <= 0 || !Number.isFinite(close) || close <= 0) {
+      throw new Error("incomplete quote");
+    }
+    return marcapFromQuote(
+      {
+        marketCap,
+        close,
+        change: Number.isFinite(change) ? change : 0,
+      },
+      true,
+    );
+  } catch {
+    return marcapFromQuote(JINKO_FALLBACK, false);
+  }
 }
 
 // ── tiger-neo3 calculations ──
@@ -388,12 +440,12 @@ async function buildCombinedHtml(uid, lang) {
     subtotal: formatCurrency(pkg.price),
     discount: "RM 0.00",
     total_amount: formatCurrency(inv.total_amount),
-    panel_product_warranty: "12 Years",
-    panel_power_warranty: "30 Years Linear",
+    panel_product_warranty: D.PANEL_PRODUCT_WARRANTY_SHORT,
+    panel_power_warranty: D.PANEL_POWER_WARRANTY_SHORT,
     inverter_warranty: pkg.inverter_warranty,
-    mounting_structure_warranty: "10 Years",
-    mounting_warranty: "10 Years",
-    workmanship_warranty: "3 Years Workmanship\n1 Year Roof Leaking\n10 Years Mounting Structure",
+    mounting_structure_warranty: D.MOUNTING_WARRANTY_SHORT,
+    mounting_warranty: D.MOUNTING_WARRANTY_SHORT,
+    workmanship_warranty: D.INSTALLATION_WARRANTY_LINES.join("\n"),
     terms_and_conditions: inv.terms_and_conditions || "Standard terms and conditions apply.",
     authorised_name: nonEmpty(inv.sales_person, "Eternalgy Sales Team"),
     agent_name: bundle.agent.name,
@@ -404,14 +456,7 @@ async function buildCombinedHtml(uid, lang) {
   // Tiger Neo 3 data
   const tigerData = computeTigerNeo3Data(bundle);
 
-  // Marcap data (static for now, can be made dynamic)
-  const marcapData = {
-    market_cap: "~USD 2.8B",
-    stock_price: "~$24.50",
-    stock_change: "+2.3%",
-    change_class: "positive",
-    stock_meta: "As of latest filing",
-  };
+  const marcapData = await fetchMarcapData();
 
   // Load templates
   const proposalTemplate = loadTemplate(`proposal-pdf${suffix}.html`);
@@ -569,12 +614,12 @@ async function generateQuotationHtml(uid) {
     subtotal:             formatCurrency(pkg.price),
     discount:             "RM 0.00",
     total_amount:         formatCurrency(inv.total_amount),
-    panel_product_warranty: "12 Years",
-    panel_power_warranty:   "30 Years Linear",
+    panel_product_warranty: D.PANEL_PRODUCT_WARRANTY_SHORT,
+    panel_power_warranty: D.PANEL_POWER_WARRANTY_SHORT,
     inverter_warranty:      pkg.inverter_warranty,
-    mounting_structure_warranty: "10 Years",
-    mounting_warranty:      "10 Years",
-    workmanship_warranty:   "3 Years Workmanship\n1 Year Roof Leaking\n10 Years Mounting Structure",
+    mounting_structure_warranty: D.MOUNTING_WARRANTY_SHORT,
+    mounting_warranty:      D.MOUNTING_WARRANTY_SHORT,
+    workmanship_warranty:   D.INSTALLATION_WARRANTY_LINES.join("\n"),
     terms_and_conditions:   inv.terms_and_conditions || "Standard terms and conditions apply.",
     agent_name:           bundle.agent.name,
     agent_contact:        bundle.agent.contact,

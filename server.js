@@ -4,6 +4,7 @@ const path = require("path");
 const crypto = require("crypto");
 const { Pool } = require("pg");
 const { generatePdf, generateQuotationHtml } = require("./pdf-generator");
+const { getSql } = require("./queries");
 
 const root = __dirname;
 const port = Number(process.env.PORT || 4175);
@@ -209,7 +210,7 @@ async function handleProposalActivity(req, res) {
   }
 }
 
-async function handleSql(req, res) {
+async function handleQuery(req, res) {
   try {
     if (!pool) {
       sendJson(res, 503, { error: "DATABASE_URL is not configured" });
@@ -218,11 +219,12 @@ async function handleSql(req, res) {
 
     const body = await readBody(req);
     const payload = JSON.parse(body || "{}");
-    const sql = typeof payload.sql === "string" ? payload.sql : "";
+    const name = typeof payload.name === "string" ? payload.name : "";
+    const sql = getSql(name);
     const params = Array.isArray(payload.params) ? payload.params : [];
 
-    if (!sql.trim()) {
-      sendJson(res, 400, { error: "SQL statement is required" });
+    if (!sql) {
+      sendJson(res, 404, { error: "Unknown query" });
       return;
     }
 
@@ -333,8 +335,13 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  if (req.method === "POST" && req.url.startsWith("/api/sql")) {
-    handleSql(req, res);
+  if (req.method === "POST" && req.url.startsWith("/api/query")) {
+    handleQuery(req, res);
+    return;
+  }
+
+  if (req.url.startsWith("/api/sql")) {
+    sendJson(res, 404, { error: "Not found" });
     return;
   }
 
