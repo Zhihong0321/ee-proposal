@@ -362,6 +362,8 @@ async function buildCombinedHtml(uid, lang) {
     system_formula: `${pkg.panel_qty} × ${pkg.panel_rating}W = ${systemKw.toFixed(2)} kW DC`,
     panel_warranty: pkg.panel_warranty,
     inverter_warranty: pkg.inverter_warranty,
+    mounting_warranty: pkg.mounting_warranty || DEFAULT_MOUNTING_WARRANTY,
+    mounting_structure_warranty: "10 Years",
   };
 
   // Quotation data
