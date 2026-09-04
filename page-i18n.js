@@ -194,6 +194,7 @@
         .replace("12 Years Product Warranty", "12 年产品保修")
         .replace("30 Years Linear Power Warranty", "30 年线性功率保修")
         .replace("10 Years Product Warranty", "10 年产品保修")
+        .replace("10 Years Warranty for Mounting Structure", "10 年支架结构保修")
         .replace("10 Years Mounting Structure Warranty", "10 年支架结构保修")
         .replace("10 Years Mounting Structure", "10 年支架结构保修")
         .replace("1 Year Roof Leaking Warranty", "1 年屋顶漏水保修")
@@ -204,6 +205,8 @@
     $$(".warranty-copy strong").forEach((item) => {
       if (item.textContent === "Installation") {
         item.textContent = "安装工程";
+      } else if (item.textContent === "Mounting Structure") {
+        item.textContent = "支架结构";
       }
     });
   }

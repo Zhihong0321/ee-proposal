@@ -8,14 +8,13 @@
   const INSTALLATION_WARRANTY_LINES = [
     "1 Year Roof Leaking Warranty",
     "3 Years Workmanship Warranty",
-    "10 Years Mounting Structure Warranty",
   ];
   return {
     PANEL_MODEL: "650W JinkoSolar Panel N-Type TOPCon",
     PANEL_WARRANTY: "12 Years Product Warranty\n30 Years Linear Power Warranty",
     INVERTER_MODEL: "SAJ String Inverter",
     INVERTER_WARRANTY: "10 Years Product Warranty",
-    MOUNTING_WARRANTY: "10 Years Mounting Structure Warranty",
+    MOUNTING_WARRANTY: "10 Years Warranty for Mounting Structure",
     INSTALLATION_WARRANTY_LINES,
     INSURANCE_LINE: "3 Years MSIG Solar Insurance",
     QUOTATION_VALID_DAYS: 30,
