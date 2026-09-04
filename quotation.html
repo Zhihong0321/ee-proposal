@@ -634,10 +634,12 @@
       </div>
     </div>
 
+    <script src="./defaults.js"></script>
     <script src="./invoice-data.js"></script>
     <script>
       (() => {
         const loader = window.EternalgyInvoiceData;
+        const D = globalThis.EternalgyDefaults || {};
 
         if (!loader?.getInvoiceUid?.()) {
           return;
@@ -692,13 +694,13 @@
           setText("#inverter-model", pkg.inverter_1_model);
           setText("#panel-warranty", pkg.panel_warranty.replace(/\n/g, ", "));
           setText("#inverter-warranty", pkg.inverter_1_warranty.replace(/\n/g, ", "));
-          setText("#mounting-warranty", nonEmpty(pkg.mounting_warranty, "10 Years Mounting Structure Warranty").replace(/\n/g, ", "));
-          setText("#workmanship-warranty", "3 Years Workmanship, 1 Year Roof Leaking");
+          setText("#mounting-warranty", nonEmpty(pkg.mounting_warranty, D.MOUNTING_WARRANTY).replace(/\n/g, ", "));
+          setText("#workmanship-warranty", D.WORKMANSHIP_SHORT);
           setText("#subtotal-amount", totalText);
           setText("#quoted-total", totalText);
           setText(
             "#summary-note",
-            `Quotation #${invoiceNumber} · System ${systemSize} kWp · ${pkg.panel_qty} × ${panelRating}W panels. Valid for 30 days.`,
+            `Quotation #${invoiceNumber} · System ${systemSize} kWp · ${pkg.panel_qty} × ${panelRating}W panels. Valid for ${D.QUOTATION_VALID_DAYS} days.`,
           );
           renderTermsAndConditions(invoice.terms_and_conditions);
 

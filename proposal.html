@@ -981,58 +981,60 @@
 
     </main>
 
+    <script src="./defaults.js"></script>
     <script src="./page-i18n.js"></script>
     <script src="./invoice-data.js"></script>
     <script>
       (() => {
-        const DEFAULT_MOUNTING_WARRANTY = "10 Years Mounting Structure Warranty";
+        const D = globalThis.EternalgyDefaults;
+        const DEFAULT_MOUNTING_WARRANTY = D.MOUNTING_WARRANTY;
         const fallbackPackages = [
           {
             id: 758,
             package_name: "STRING SAJ JINKO 18 PCS",
             panel_qty: 18,
-            panel_model: "650W JinkoSolar Panel N-Type TOPCon",
+            panel_model: D.PANEL_MODEL,
             panel_rating: 650,
-            panel_warranty: "12 Years Product Warranty\n30 Years Linear Power Warranty",
+            panel_warranty: D.PANEL_WARRANTY,
             inverter_1_model: "[1P] SAJ R5 8KW String Inverter",
             inverter_1_rating: 8,
-            inverter_1_warranty: "10 Years Product Warranty",
+            inverter_1_warranty: D.INVERTER_WARRANTY,
             mounting_warranty: DEFAULT_MOUNTING_WARRANTY,
           },
           {
             id: 785,
             package_name: "STRING SAJ JINKO 45 PCS",
             panel_qty: 45,
-            panel_model: "650W JinkoSolar Panel N-Type TOPCon",
+            panel_model: D.PANEL_MODEL,
             panel_rating: 650,
-            panel_warranty: "12 Years Product Warranty\n30 Years Linear Power Warranty",
+            panel_warranty: D.PANEL_WARRANTY,
             inverter_1_model: "[3P] SAJ R6 20KW String Inverter",
             inverter_1_rating: 20,
-            inverter_1_warranty: "10 Years Product Warranty",
+            inverter_1_warranty: D.INVERTER_WARRANTY,
             mounting_warranty: DEFAULT_MOUNTING_WARRANTY,
           },
           {
             id: 774,
             package_name: "STRING SAJ JINKO 34 PCS",
             panel_qty: 34,
-            panel_model: "650W JinkoSolar Panel N-Type TOPCon",
+            panel_model: D.PANEL_MODEL,
             panel_rating: 650,
-            panel_warranty: "12 Years Product Warranty\n30 Years Linear Power Warranty",
+            panel_warranty: D.PANEL_WARRANTY,
             inverter_1_model: "[3P] SAJ R6 12.5KW String Inverter",
             inverter_1_rating: 12.5,
-            inverter_1_warranty: "10 Years Product Warranty",
+            inverter_1_warranty: D.INVERTER_WARRANTY,
             mounting_warranty: DEFAULT_MOUNTING_WARRANTY,
           },
           {
             id: 1004,
             package_name: "COMMERCIAL 24PCS JINKO 650W",
             panel_qty: 24,
-            panel_model: "650W JinkoSolar Panel N-Type TOPCon",
+            panel_model: D.PANEL_MODEL,
             panel_rating: 650,
-            panel_warranty: "12 Years Product Warranty\n30 Years Linear Power Warranty",
+            panel_warranty: D.PANEL_WARRANTY,
             inverter_1_model: "[3P] SAJ R6 12KW String Inverter",
             inverter_1_rating: 12,
-            inverter_1_warranty: "10 Years Product Warranty",
+            inverter_1_warranty: D.INVERTER_WARRANTY,
             mounting_warranty: DEFAULT_MOUNTING_WARRANTY,
           },
         ];
@@ -1116,11 +1118,11 @@
             {
               brand: "eternalgy",
               title: "Installation",
-              text: "1 Year Roof Leaking Warranty\n3 Years Workmanship Warranty\n10 Years Mounting Structure Warranty",
+              text: D.INSTALLATION_WARRANTY_LINES.join("\n"),
             },
             {
               brand: "msig",
-              title: "3 Years MSIG Solar Insurance",
+              title: D.INSURANCE_LINE,
               text: "All-risk coverage for solar panel system",
             },
           ];

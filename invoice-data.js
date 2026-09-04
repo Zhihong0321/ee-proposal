@@ -1,11 +1,12 @@
 (() => {
-  const SQL_ENDPOINT = "/api/sql";
+  const QUERY_ENDPOINT = "/api/query";
+  const D = globalThis.EternalgyDefaults || {};
 
-  const DEFAULT_PANEL_MODEL = "650W JinkoSolar Panel N-Type TOPCon";
-  const DEFAULT_PANEL_WARRANTY = "12 Years Product Warranty\n30 Years Linear Power Warranty";
-  const DEFAULT_INVERTER_MODEL = "SAJ String Inverter";
-  const DEFAULT_INVERTER_WARRANTY = "10 Years Product Warranty";
-  const DEFAULT_MOUNTING_WARRANTY = "10 Years Mounting Structure Warranty";
+  const DEFAULT_PANEL_MODEL = D.PANEL_MODEL;
+  const DEFAULT_PANEL_WARRANTY = D.PANEL_WARRANTY;
+  const DEFAULT_INVERTER_MODEL = D.INVERTER_MODEL;
+  const DEFAULT_INVERTER_WARRANTY = D.INVERTER_WARRANTY;
+  const DEFAULT_MOUNTING_WARRANTY = D.MOUNTING_WARRANTY;
 
   const getSearchParams = () => {
     const params = new URLSearchParams(window.location.search);
@@ -37,14 +38,14 @@
     ).trim();
   };
 
-  async function runSql(sql, params = []) {
-    const response = await fetch(SQL_ENDPOINT, {
+  async function runQuery(name, params = []) {
+    const response = await fetch(QUERY_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sql,
+        name,
         params,
       }),
     });
@@ -158,16 +159,7 @@
     }
 
     try {
-      return await runSql(
-        `
-          select *
-          from product
-          where id::text = any($1::text[])
-             or bubble_id = any($1::text[])
-             or unique_id = any($1::text[])
-        `,
-        [refs],
-      );
+      return await runQuery("products", [refs]);
     } catch (_error) {
       return [];
     }
@@ -181,15 +173,7 @@
     }
 
     try {
-      const rows = await runSql(
-        `
-          select name, contact, email, user_signature
-          from "user"
-          where linked_agent_profile = $1
-          limit 1
-        `,
-        [ref],
-      );
+      const rows = await runQuery("agent", [ref]);
       return rows[0] || null;
     } catch (_error) {
       return null;
@@ -204,16 +188,7 @@
     }
 
     try {
-      const rows = await runSql(
-        `
-          select *
-          from customer
-          where id::text = $1
-             or customer_id = $1
-          limit 1
-        `,
-        [ref],
-      );
+      const rows = await runQuery("customer", [ref]);
       return rows[0] || null;
     } catch (_error) {
       return null;
@@ -310,42 +285,7 @@
       return null;
     }
 
-    const rows = await runSql(
-      `
-        select
-          i.*,
-          p.id as package_db_id,
-          p.bubble_id as package_bubble_id,
-          p.package_name,
-          p.panel_qty as package_panel_qty,
-          p.panel as package_panel,
-          p.inverter_1 as package_inverter_1,
-          p.inverter_2 as package_inverter_2,
-          p.inverter_3 as package_inverter_3,
-          p.inverter_4 as package_inverter_4,
-          p.price as package_price,
-          p.linked_package_item as package_items,
-          it.terms_and_conditions as template_terms_and_conditions
-        from invoice i
-        left join package p
-          on p.id::text = i.linked_package
-          or p.bubble_id = i.linked_package
-          or p.id::text = i.package_id
-          or p.bubble_id = i.package_id
-        left join invoice_template it
-          on it.bubble_id = i.template_id
-          or (
-            lower(coalesce(i.template_id, '')) = 'default'
-            and it.is_default is true
-            and it.active is distinct from false
-          )
-        where (i.bubble_id = $1 or i.id::text = $1 or i.invoice_number = $1)
-          and i.is_deleted is distinct from true
-        order by i.is_latest desc nulls last, i.updated_at desc nulls last, i.id desc
-        limit 1
-      `,
-      [invoiceUid],
-    );
+    const rows = await runQuery("invoice", [invoiceUid]);
 
     if (!rows[0]) {
       throw new Error(`Invoice not found for UID ${invoiceUid}`);

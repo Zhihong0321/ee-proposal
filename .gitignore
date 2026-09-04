@@ -4,3 +4,8 @@ npm-debug.log*
 .claugedex/
 .playwright-cli/
 .playwright-mcp/
+/*.png
+!msig_logo.png
+AGENTS.md
+.agents/
+_inbox/
