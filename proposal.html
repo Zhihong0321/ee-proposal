@@ -985,7 +985,7 @@
     <script src="./invoice-data.js"></script>
     <script>
       (() => {
-        const DEFAULT_MOUNTING_WARRANTY = "10 Years Mounting Structure Warranty";
+        const DEFAULT_MOUNTING_WARRANTY = "10 Years Warranty for Mounting Structure";
         const fallbackPackages = [
           {
             id: 758,
@@ -1116,7 +1116,12 @@
             {
               brand: "eternalgy",
               title: "Installation",
-              text: "1 Year Roof Leaking Warranty\n3 Years Workmanship Warranty\n10 Years Mounting Structure Warranty",
+              text: "1 Year Roof Leaking Warranty\n3 Years Workmanship Warranty",
+            },
+            {
+              brand: "eternalgy",
+              title: "Mounting Structure",
+              text: nonEmpty(pkg.mounting_warranty, "10 Years Warranty for Mounting Structure"),
             },
             {
               brand: "msig",

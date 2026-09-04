@@ -5,7 +5,7 @@
   const DEFAULT_PANEL_WARRANTY = "12 Years Product Warranty\n30 Years Linear Power Warranty";
   const DEFAULT_INVERTER_MODEL = "SAJ String Inverter";
   const DEFAULT_INVERTER_WARRANTY = "10 Years Product Warranty";
-  const DEFAULT_MOUNTING_WARRANTY = "10 Years Mounting Structure Warranty";
+  const DEFAULT_MOUNTING_WARRANTY = "10 Years Warranty for Mounting Structure";
 
   const getSearchParams = () => {
     const params = new URLSearchParams(window.location.search);
