@@ -199,6 +199,7 @@ async function fetchInvoiceBundle(uid) {
       inverter_model: inverterModel,
       inverter_rating: inverterRating,
       inverter_warranty: inverterWarranty,
+      mounting_warranty: DEFAULT_MOUNTING_WARRANTY,
       price: totalAmount || packagePrice,
     },
     agent: {
@@ -569,7 +570,9 @@ async function generateQuotationHtml(uid) {
     panel_product_warranty: "12 Years",
     panel_power_warranty:   "30 Years Linear",
     inverter_warranty:      pkg.inverter_warranty,
-    workmanship_warranty:   "3 Years Workmanship\n1 Year Roof Leaking",
+    mounting_structure_warranty: "10 Years",
+    mounting_warranty:      "10 Years",
+    workmanship_warranty:   "3 Years Workmanship\n1 Year Roof Leaking\n10 Years Mounting Structure",
     terms_and_conditions:   inv.terms_and_conditions || "Standard terms and conditions apply.",
     agent_name:           bundle.agent.name,
     agent_contact:        bundle.agent.contact,

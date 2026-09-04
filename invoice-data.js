@@ -5,6 +5,7 @@
   const DEFAULT_PANEL_WARRANTY = "12 Years Product Warranty\n30 Years Linear Power Warranty";
   const DEFAULT_INVERTER_MODEL = "SAJ String Inverter";
   const DEFAULT_INVERTER_WARRANTY = "10 Years Product Warranty";
+  const DEFAULT_MOUNTING_WARRANTY = "10 Years Mounting Structure Warranty";
 
   const getSearchParams = () => {
     const params = new URLSearchParams(window.location.search);
@@ -135,7 +136,7 @@
     );
 
   const isInstallationCoverage = (value) =>
-    /installation|workmanship|roof\s*leak/i.test(nonEmpty(value, ""));
+    /installation|workmanship|roof\s*leak|mounting\s*structure/i.test(nonEmpty(value, ""));
 
   function productByReference(products, reference) {
     const ref = nonEmpty(reference);
@@ -287,6 +288,7 @@
         inverter_1_model: inverterRows[0]?.model || DEFAULT_INVERTER_MODEL,
         inverter_1_rating: inverterRows[0]?.rating || "",
         inverter_1_warranty: inverterRows[0]?.warranty || DEFAULT_INVERTER_WARRANTY,
+        mounting_warranty: DEFAULT_MOUNTING_WARRANTY,
         price: totalAmount || packagePrice,
       },
       agent: {

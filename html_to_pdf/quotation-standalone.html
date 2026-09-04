@@ -405,7 +405,7 @@
 
       .wrow:last-child { border-bottom: none; }
       .wrow .lbl { color: var(--muted); font-weight: 600; width: 52%; }
-      .wrow .val { color: var(--green); font-weight: 700; text-align: right; }
+      .wrow .val { color: var(--green); font-weight: 700; text-align: right; white-space: pre-line; }
 
       .prow {
         padding: 3.5px 0;
@@ -688,6 +688,10 @@ Taman Sri Pulai Perdana,
               <div class="wrow">
                 <span class="lbl">Inverter</span>
                 <span class="val">{{inverter_warranty}}</span>
+              </div>
+              <div class="wrow">
+                <span class="lbl">Mounting Structure</span>
+                <span class="val">{{mounting_structure_warranty}}</span>
               </div>
               <div class="wrow">
                 <span class="lbl">Workmanship</span>
