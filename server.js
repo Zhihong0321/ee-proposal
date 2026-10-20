@@ -304,19 +304,69 @@ function serveStatic(req, res) {
     return;
   }
 
-  fs.readFile(resolved, (error, data) => {
-    if (error) {
+  fs.stat(resolved, (error, stats) => {
+    if (error || !stats.isFile()) {
       res.writeHead(404);
       res.end("Not found");
       return;
     }
 
-    res.writeHead(200, {
-      "Content-Type": types[path.extname(resolved).toLowerCase()] || "application/octet-stream",
-      "Cache-Control": "no-store",
-    });
-    res.end(data);
+    const ext = path.extname(resolved).toLowerCase();
+    const size = stats.size;
+    const headers = {
+      "Content-Type": types[ext] || "application/octet-stream",
+      // Videos are large and immutable; let browsers reuse them between range requests.
+      "Cache-Control": ext === ".mp4" ? "public, max-age=86400" : "no-store",
+      "Accept-Ranges": "bytes",
+      "Last-Modified": stats.mtime.toUTCString(),
+    };
+
+    // iOS Safari only plays <video> when the server answers byte-range requests with 206.
+    const range = parseRange(req.headers.range, size);
+    if (range === "invalid") {
+      res.writeHead(416, { ...headers, "Content-Range": `bytes */${size}` });
+      res.end();
+      return;
+    }
+
+    const { start, end } = range || { start: 0, end: size - 1 };
+    if (range) headers["Content-Range"] = `bytes ${start}-${end}/${size}`;
+    headers["Content-Length"] = size === 0 ? 0 : end - start + 1;
+    res.writeHead(range ? 206 : 200, headers);
+
+    if (req.method === "HEAD" || size === 0) {
+      res.end();
+      return;
+    }
+
+    const stream = fs.createReadStream(resolved, { start, end });
+    stream.on("error", () => res.destroy());
+    stream.pipe(res);
   });
+}
+
+function parseRange(header, size) {
+  if (!header) return null;
+  const match = /^bytes=(\d*)-(\d*)$/.exec(String(header).trim());
+  // Multi-range or unknown units: ignore the header and send the whole file.
+  if (!match) return null;
+
+  const [, rawStart, rawEnd] = match;
+  let start;
+  let end;
+  if (rawStart === "") {
+    if (rawEnd === "") return "invalid";
+    const suffix = Number(rawEnd);
+    if (suffix === 0) return "invalid";
+    start = Math.max(0, size - suffix);
+    end = size - 1;
+  } else {
+    start = Number(rawStart);
+    end = rawEnd === "" ? size - 1 : Math.min(Number(rawEnd), size - 1);
+  }
+
+  if (start >= size || start > end) return "invalid";
+  return { start, end };
 }
 
 const server = http.createServer((req, res) => {
